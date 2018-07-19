@@ -29,16 +29,19 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Life',
         'brandUrl' => Yii::$app->homeUrl,
+//        'brandImage' => 'logo.png',
+        'brandLabel' => 'My Life',
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
     $menuItems_left = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
+        ['label' => '首页', 'url' => ['/site/index']],
+        ['label' => '话题', 'url' => ['/site/topic']],
+        ['label' => '问答', 'url' => ['/site/question']],
+        ['label' => '广场', 'url' => ['/site/square']],
+        ['label' => '关于本站', 'url' => ['/site/about'],'options'=>['class'=>'disabled']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems_right[] = ['label' => 'Signup', 'url' => ['/site/signup']];
@@ -51,10 +54,12 @@ AppAsset::register($this);
         ]];
     } else {
         $menuItems_right[] = '<form class="navbar-form navbar-left" role="search" method="post" action="/search/index">
-  <div class="form-group">
-    <input type="text" class="form-control" placeholder="Search">
-  </div>
-  <button type="submit" class="btn" >Submit</button>
+<div class="input-group">
+      <input type="text" class="form-control" placeholder="输入关键字">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Go!</button>
+      </span>
+    </div>
 </form>';
         $menuItems_right[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
@@ -88,9 +93,10 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
+        <p class="pull-left">&copy; <?= Html::encode('My Life') ?> <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+<!--        <p class="pull-right">--><?//= Yii::powered() ?><!--</p>-->
+        <p class="pull-right"></p>
     </div>
 </footer>
 
