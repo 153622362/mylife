@@ -18,7 +18,7 @@
 DESCRIPTION 
 -------------------
 
-###USAGE
+### USAGE
 
 ```php
 php init
