@@ -21,6 +21,19 @@ DESCRIPTION
 USAGE
 -------------------
 
-```
+```php
 php init
+```
+Configure your database in `main-local.php`
+like this
+```php
+   'components' => [
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=192.168.199.101;dbname=mylife',
+            'username' => 'root',
+            'password' => 'root',
+            'charset' => 'utf8',
+        ]
+    ],
 ```
