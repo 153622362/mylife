@@ -68,11 +68,9 @@ $this->title = 'My Life';
         <div class="panel panel-default">
             <div class="panel-heading">大家都在说</div>
             <div class="panel-body">
-                <div class="input-group  input-group-lg">
-                    <input type="text" class="form-control" placeholder="文明上网,理性发言">
-                    <span class="input-group-btn">
-                        <button class="btn btn-success" type="button">Go!</button>
-                    </span>
+                <div class="input-group">
+                    <textarea  class="form-control" placeholder="文明上网,理性发言" style="resize:none" ></textarea>
+                    <span class="input-group-btn"><button class="btn btn-success btn-lg" type="button">发布</button></span>
                 </div>
             </div>
         </div>
