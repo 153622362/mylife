@@ -13,5 +13,6 @@ return array(
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
     'Diff' => array($vendorDir . '/phpspec/php-diff/lib'),
+    'CFPropertyList' => array($vendorDir . '/rodneyrehm/plist/classes'),
     'Behat\\Gherkin' => array($vendorDir . '/behat/gherkin/src'),
 );

@@ -42,7 +42,13 @@ AppAsset::register($this);
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems_right[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems_right[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems_right[] = ['label' => 'Login', 'url' => ['/site/login'],'items'=>[
+            ['label'=>'账号登陆','url'=>['site/login']],
+            ['label'=>'<hr style="border:0.3px solid black;padding: 0px;margin: 0px"/>','encode'=>false,'options'=>['style'=>'padding:0px;margin:0px']],
+            ['label'=>'QQ登陆','options'=>['class'=>'disabled','title'=>'目前还未开通此功能']],
+            ['label'=>'微信登陆','options'=>['class'=>'disabled','title'=>'目前还未开通此功能']],
+            ['label'=>'新浪微博','options'=>['class'=>'disabled','title'=>'目前还未开通此功能']],
+        ]];
     } else {
         $menuItems_right[] = '<form class="navbar-form navbar-left" role="search" method="post" action="/search/index">
   <div class="form-group">

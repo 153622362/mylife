@@ -1,6 +1,8 @@
 <?php
 namespace frontend\controllers;
 
+
+use frontend\models\form\SiteForm;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -65,6 +67,21 @@ class SiteController extends Controller
         ];
     }
 
+    public function actionUnIpa()
+	{
+		$filename = Yii::getAlias('@frontend').'/web/source/';
+		$res = scandir($filename);
+		unset($res[0]);
+		unset($res[1]);
+		foreach ($res as $v)
+		{
+			$file = $filename.$v;
+			$ipa_info[] = SiteForm::unzipIpa($file);
+			$res = array_pop($ipa_info);
+			echo "{$v}----------------------包名:".$res['bundle_id']."------------------应用名称:{$res['app_name']}".PHP_EOL.'<br/>';
+		}
+	}
+
     /**
      * Displays homepage.
      *
@@ -72,6 +89,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+//    	echo Yii\Hello\Hello::world();
         return $this->render('index');
     }
 
