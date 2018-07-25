@@ -15,13 +15,13 @@ $this->title = 'My Life';
         white-space: nowrap;
     }
     table{
-        margin-bottom: 0px !important;
+        margin-bottom: 0 !important;
     }
     .panel-body{
         padding-bottom: 2px;
     }
     .dynamic{
-        padding-left: 0px;
+        padding-left: 0;
     }
     .dynamic li{
         padding-left: 0.5rem;
@@ -64,7 +64,7 @@ $this->title = 'My Life';
     }
 
     .box div p{
-        margin: 0px;
+        margin: 0;
         width: 30px;
     }
 
@@ -345,7 +345,7 @@ $this->title = 'My Life';
 
 
     $('#publish').on('click',function () {
-        let content  = $.trim($('#message').val());
+        var content  = $.trim($('#message').val());
 
         if ( uid == '')
         {
