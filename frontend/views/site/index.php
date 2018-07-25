@@ -4,7 +4,108 @@
 
 $this->title = 'My Life';
 ?>
+<style>
+
+    body{
+        font-size: 14px;
+    }
+    .text-one-line{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    table{
+        margin-bottom: 0px !important;
+    }
+    .panel-body{
+        padding-bottom: 2px;
+    }
+    .dynamic{
+        padding-left: 0px;
+    }
+    .dynamic li{
+        padding-left: 0.5rem;
+    }
+    h3{
+        margin: 0;
+    }
+
+
+    .panel{
+        font-size: 20px;
+    }
+
+    .box-wrapper {
+        width: 45px;
+        background: #009688;
+        position: fixed;
+        top: 100px;
+        left: 5px;
+        bottom: 100px;
+        overflow: hidden;
+        border: 1px solid grey;
+        border-radius: 0.25rem;
+    }
+
+    .box {
+        height: 100%;
+        width: calc(100% + 17px);
+        overflow-y: auto;
+        text-align: center;
+        color: #f2f2f2;
+    }
+
+    .box .item {
+        height: 40px;
+        line-height: 40px;
+        width: 40px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .box div p{
+        margin: 0px;
+        width: 30px;
+    }
+
+</style>
 <link rel="stylesheet" href="/css/stie.css">
+<meta name="csrf-token" content="<?= \Yii::$app->request->csrfToken ?>">
+<!--    <div class="online visible-lg-block">-->
+<!--            <div style="border-bottom: 1px solid darkgrey;width: inherit;word-break: break-all">-->
+<!--                <p>在线</p>-->
+<!--                <p>241<p>人</p></p>-->
+<!--            </div>-->
+
+<!--    </div>-->
+<div style="position: fixed;top: 58px;left: 5px;width: 45px;text-align: center;border: 1px solid black;border-radius: 0.25rem">在线人数<span id="people">0</span></div>
+<div class="box-wrapper visible-lg-block" >
+    <div class="box visible-lg-block" >
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+
+
+    </div>
+</div>
+
 <div class="container">
     <div class="col-lg-9">
         <div class="panel panel-default">
@@ -30,48 +131,85 @@ $this->title = 'My Life';
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading"><span class="glyphicon glyphicon-send"></span>  最新动态</div>
+            <div class="panel-heading"><h3><span class="glyphicon glyphicon-send"></span>  最新动态</h3></div>
             <div class="panel-body">
-                <div class="col-lg-6">
-					<ul class="list-unstyled">
-						<li><span class="glyphicon glyphicon-menu-right font-size" style="color: grey"></span> 1</li>
-						<li><span class="glyphicon glyphicon-menu-right" style="color: grey"></span> 2</li>
-						<li><span class="glyphicon glyphicon-menu-right" style="color: grey"></span> 3</li>
+                <?php if (is_array($dynamic) && count($dynamic) > 0){ ?>
+                <div class="col-lg-6 dynamic">
+					<ul class="list-unstyled ">
+                        <?php for ($x = 0; $x<=4; $x++){?>
+						<li >
+                            <div class="text-one-line" style="width: 20rem;display: inline-block">
+                                <span class="glyphicon glyphicon-menu-right font-size " style="color: grey"></span>
+                                <a href=""><?=$dynamic[$x]['title']?></a>
+                            </div>
+                            <span style="font-size: 1rem;float: right;color: grey" class="hidden-xs hidden-md  hidden-sm"><?php echo date('Y-m-d',strtotime($dynamic[$x]['created_at']))?></span>
+                        </li>
+                        <?php }}?>
 					</ul>
 				</div>
-                <div class="col-lg-6">
+                <?php if (is_array($dynamic) && count($dynamic) >5 ){?>
+                <div class="col-lg-6 hidden-xs hidden-md hidden-sm">
 					<ul class="list-unstyled">
-						<li><span class="glyphicon glyphicon-menu-right" style="color: grey"></span> 1</li>
-						<li><span class="glyphicon glyphicon-menu-right" style="color: grey"></span> 2</li>
-						<li><span class="glyphicon glyphicon-menu-right" style="color: grey"></span> 3</li>
+                        <?php for ($x = 5; $x<=9; $x++){ if (!empty($dynamic[$x]['title'])){?>
+                            <li class="text-one-line col-lg-9"><span class="glyphicon glyphicon-menu-right font-size" style="color: grey"></span>
+                                <a href=""><?=$dynamic[$x]['title']?></a>
+                            </li>
+                            <span style="font-size: 1rem;float: right;color: grey"><?php echo date('Y-m-d',strtotime($dynamic[$x]['created_at']))?></span>
+                        <?php }}}?>
 					</ul>
 				</div>
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading"><span class="glyphicon glyphicon-question-sign"></span>  最新问答</div>
+            <div class="panel-heading"><h3><span class="glyphicon glyphicon-question-sign"></span>  最新问答</h3></div>
             <div class="panel-body">
                 <table class="table table-hover">
-                    <tr><th>问题</th><th>版本</th><th>提问者</th><th>时间</th><th>回答</th></tr>
-                    <tr><td><span class="glyphicon glyphicon-question-sign text-danger"></span></td><td>2</td><td>3</td><td>3</td><td>3</td></tr>
-                    <tr><td><span class="glyphicon glyphicon-question-sign text-danger"></span></td><td>2</td><td>3</td><td>3</td><td>3</td></tr>
-                    <tr><td><span class="glyphicon glyphicon-question-sign text-danger"></span></td><td>2</td><td>3</td><td>3</td><td>3</td></tr>
-                    <tr><td><span class="glyphicon glyphicon-question-sign text-danger"></span></td><td>2</td><td>3</td><td>3</td><td>3</td></tr>
-                    <tr><td><span class="glyphicon glyphicon-ok-sign text-success"></span></td><td>2</td><td>3</td><td>3</td><td>3</td></tr>
+                    <tr>
+                        <th style="width: 20rem">问题</th>
+                        <th class="hidden-xs hidden-sm hidden-md">版本</th>
+                        <th class="hidden-xs hidden-sm hidden-md">提问者</th>
+                        <th class="hidden-xs hidden-sm hidden-md">时间</th>
+                        <th class="hidden-xs hidden-sm hidden-md">回答</th></tr>
+                    <?php if (is_array($question)){ foreach ($question as $v_question){ ?>
+                    <tr><td >
+                            <div class="col-lg-9 text-one-line" style="padding-left: 0px;width: 20rem">
+                            <?php if ($v_question['post_status'] == 1){ echo '<span class="glyphicon glyphicon-question-sign text-danger"></span>';}else{ echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>';}?>
+                            <a href="" class=""><?=$v_question['title']?></a>
+                            </div>
+                        </td>
+                        <td class="hidden-xs hidden-sm hidden-md"><?=$v_question['post_version']?></td>
+                        <td class="hidden-xs hidden-sm hidden-md"><?=$v_question['username']?></td>
+                        <td class="hidden-xs hidden-sm hidden-md"><?=$v_question['created_at']?></td>
+                        <td class="hidden-xs hidden-sm hidden-md"><span class="badge"><?=$v_question['count']?></span></td>
+                    </tr>
+                    <?php }}?>
                 </table>
             </div>
         </div>
 <!--		最新话题-->
         <div class="panel panel-default">
-            <div class="panel-heading"><span class="glyphicon glyphicon-magnet"></span>  最新话题</div>
+            <div class="panel-heading"><h3><span class="glyphicon glyphicon-magnet"></span>  最新话题</h3></div>
             <div class="panel-body">
                 <table class="table table-hover">
-                    <tr><th>话题</th><th>版块</th><th>发布者</th><th>时间</th><th>留言</th></tr>
-                    <tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
-                    <tr><td>1</td><td>2</td><td>3</td><td>3</td><td>3</td></tr>
-                    <tr><td>1</td><td>2</td><td>3</td><td>3</td><td>3</td></tr>
-                    <tr><td>1</td><td>2</td><td>3</td><td>3</td><td>3</td></tr>
-                    <tr><td>1</td><td>2</td><td>3</td><td>3</td><td>3</td></tr>
+                    <tr>
+                        <th style="width: 20rem">话题</th>
+                        <th class="hidden-xs hidden-sm hidden-md">版块</th>
+                        <th class="hidden-xs hidden-sm hidden-md">发布者</th>
+                        <th class="hidden-xs hidden-sm hidden-md">时间</th>
+                        <th class="hidden-xs hidden-sm hidden-md">留言</th></tr>
+                    <?php if (is_array($topic)){ foreach ($topic as $v_topic){ ?>
+                        <tr>
+                            <td>
+                                <div class="col-lg-9 text-one-line" style="padding-left: 0px;width: 20rem">
+                                <a><?=$v_topic['title']?></a>
+                                </div>
+                            </td>
+                            <td class="hidden-xs hidden-sm hidden-md"><?=$v_topic['post_category']?></td>
+                            <td class="hidden-xs hidden-sm hidden-md"><?=$v_topic['username']?></td>
+                            <td class="hidden-xs hidden-sm hidden-md"><?=$v_topic['created_at']?></td>
+                            <td class="hidden-xs hidden-sm hidden-md"><span class="badge"><?=$v_topic['count']?></span></td>
+                        </tr>
+                    <?php }}?>
 
                 </table>
             </div>
@@ -84,48 +222,32 @@ $this->title = 'My Life';
             <div class="panel-heading">大家都在说<a style="float: right">更多</a></div>
             <div class="panel-body">
                 <div class="input-group">
-                    <textarea  class="form-control" placeholder="文明上网,理性发言" style="resize:none" ></textarea>
-                    <span class="input-group-btn"><button class="btn btn-success btn-lg" type="button" style="height: 4.5rem">发布</button></span>
+                    <textarea  class="form-control" placeholder="文明上网,理性发言" style="resize:none;height: 54px" id="message"></textarea>
+                    <span class="input-group-btn"><button class="btn btn-success btn-lg" type="button" style="height: 54px" id="publish">发布</button></span>
                 </div>
 <!--                留言板-->
-                <div>
+                <div id="message-board" style="overflow: scroll;max-height: 700px">
 <!--                    一条留言的开始-->
+                    <?php if (is_array($chat) && count($chat) > 0){
+                            foreach ($chat as $v_chat){
+                        ?>
                         <hr style="margin: 10px 0px;border: 0.5px solid lightgrey">
-                        <div class="col-lg-3 col-sm-3 col-md-3" ><img src="/static/img/logo.png" style="width: 3rem" alt=""></div>
+                        <div class="col-lg-3 col-sm-3 col-md-3" ><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
                         <div class="col-lg-9 col-sm-9 col-md-9">
     <!--                        名字-->
-                            <a href="">ngyhd</a>:
+                            <a href=""><?=$v_chat['username']?></a>:
     <!--                        内容-->
-                            <span>内容</span>
+                            <span style="word-break: break-all;font-size: 16px"><?=$v_chat['content']?></span>
     <!--                        留言底部-->
-                            <div style="margin-bottom: 1rem">
-                                <span>时间</span>
+                            <div style="margin: 1rem 0;font-size: 16px" class="text-muted">
+                                <span  class=""><?=substr($v_chat['created_at'], -8,-3)?></span>
                                 <span style="float: right">
-                                    <a href="">留言数</a>
-                                    <a href="">点赞数</a>
+                                    <a href="" class="text-muted"><span class="glyphicon glyphicon-comment" ></span> <?=$v_chat['pid']?></a>
+                                    <a href="#" class="text-muted"><span class="glyphicon glyphicon-thumbs-up" title="顶"></span> <?=$v_chat['like']?></a>
                                 </span>
                             </div>
                         </div>
-<!--                    一条留言的结束-->
-                    <!--                    一条留言的开始-->
-                        <hr style="margin: 10px 0px;border: 0.5px solid lightgrey">
-                        <div class="col-lg-3 col-sm-3 col-md-3" ><img src="/static/img/logo.png" style="width: 3rem" alt=""></div>
-                        <div class="col-lg-9 col-sm-9 col-md-9">
-    <!--                        名字-->
-                            <a href="">ngyhd</a>:
-    <!--                        内容-->
-                            <span>内容</span>
-    <!--                        留言底部-->
-                            <div style="margin-bottom: 1rem">
-                                <span>时间</span>
-                                <span style="float: right">
-                                    <a href="">留言数</a>
-                                    <a href="">点赞数</a>
-                                </span>
-                            </div>
-                        </div>
-<!--                    一条留言的结束-->
-
+                    <?php }}?>
 
                 </div>
             </div>
@@ -133,20 +255,128 @@ $this->title = 'My Life';
         <div class="panel panel-default">
             <div class="panel-heading">最新教程<a style="float: right">更多</a></div>
             <div class="panel-body">
-                loading...
+                <?php if(is_array($course)){foreach ($course as $v_course){?>
+                    <p class="text-one-line"><a href=""><?=$v_course['title']?></a></p>
+                <?php }}?>
             </div>
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">最新扩展<a style="float: right">更多</a></div>
             <div class="panel-body">
-                loading...
+                <?php if(is_array($extension)){foreach ($extension as $v_extension){?>
+                    <p class="text-one-line"><a href=""><?=$v_extension['title']?></a></p>
+                <?php }}?>
             </div>
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">最新源码<a style="float: right">更多</a></div>
             <div class="panel-body">
-                loading...
+                <?php if(is_array($origin_code)){foreach ($origin_code as $v_origin_code){?>
+                    <p class="text-one-line"><a href=""><?=$v_origin_code['title']?></a></p>
+                <?php }}?>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    var uid = '<?=$uid?>';
+    var ws = new WebSocket("ws://192.168.199.102:3123");
+    ws.onopen = function() {
+        $('#message-board').prepend('<h6 style="color: grey">系统消息:连接成功</h6>');
+        console.log("连接成功");
+        var str = '';
+
+        if ( uid != '' ){
+             str = '{ "uid": "' + uid + '","message_type":"onopen" }';
+            ws.send(str);
+        }else {
+             str = '{ "message_type":"onopen" }';
+            ws.send(str);
+        }
+        str = '{ "message_type":"init" }';
+        ws.send(str);
+    };
+    ws.onmessage = function(e) {
+        console.log("收到服务端的消息：" + e.data);
+        var data = JSON.parse(e.data);
+        if (data.message_type != undefined){
+            switch (data.message_type)
+            {
+                case 'init':
+                    $('#people').html(data.message.people); //修改在线人数
+                    if ( data.message.vip != ''){
+                        for (var user_info in data.message.vip)
+                        {
+                            $('.box').prepend(
+                                '<div class="item"><img src="'+ data.message.vip[user_info] +'" style="width: 30px" alt="" id="' + user_info + '"></div>'
+                            )
+                        }
+                    }
+                    break;
+                case 'connect':
+                    break;
+                case 'onopen':
+                    $('#message-board').prepend("<h6 style='color: grey'>系统消息:" + data.message +"</h6>");
+                    break;
+                case 'publish':
+                    var html = '<hr style="margin: 10px 0px;border: 0.5px solid lightgrey"> <div class="col-lg-3 col-sm-3 col-md-3" ><img src="/static/img/logo.png" style="width: 3rem" alt=""></div> <div class="col-lg-9 col-sm-9 col-md-9"> <a href="">'+ data.message.uid + '</a> <span style="word-break: break-all;font-size: 16px">' + data.message.content +'</span> <div style="margin: 1rem 0;font-size: 16px" class="text-muted"> <span  class="">时间</span> <span style="float: right"> <a href="" class="text-muted"><span class="glyphicon glyphicon-comment" ></span> 0</a> <a href="#" class="text-muted"><span class="glyphicon glyphicon-thumbs-up" title="顶"></span> 0</a> </span> </div> </div>'
+                    $('#message-board').prepend(html);
+                    $('#message').val(''); //重置留言区
+
+                    break;
+                case 'onclose':
+                    $('#people').html(data.people); //修改在线人数
+                    $('#message-board').prepend("<h6 style='color: grey'>系统消息:" + data.message +"</h6>");
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    ws.onerror = function () {
+        $('#message-board').prepend('<h6 style="color: grey">系统消息:连接失败</h6>');
+    };
+
+    ws.onclose = function () {
+        $('#message-board').prepend('<h6 style="color: grey">系统消息:连接已关闭</h6>');
+    };
+
+
+    $('#publish').on('click',function () {
+        let content  = $.trim($('#message').val());
+
+        if ( uid == '')
+        {
+            window.location.href = '/site/login';
+            return ;
+        }
+        if ( content == '' || content == undefined)
+        {
+            alert('留言不能为空');
+        }else {
+            var str = '{ "uid": "' + uid + '","message": "'+ content +'","message_type":"publish" }';
+            ws.send(str)
+        }
+
+
+    });
+
+    function Pajax() {
+        var csrfToken = $('meta[name="csrf-token"]').attr("content");
+        $.ajax({
+            type: "POST",
+            url: "<?php echo \yii\helpers\Url::to(['/api/task/runningtask'])?>",
+            data: {
+                _csrf:csrfToken,
+            },
+            dataType: "json",
+            success: function(msg){
+                $('#message').val(''); //重置留言区
+            }
+        });
+    }
+
+
+</script>

@@ -38,8 +38,9 @@ AppAsset::register($this);
     ]);
     $menuItems_left = [
         ['label' => '首页', 'url' => ['/site/index']],
-        ['label' => '话题', 'url' => ['/site/topic']],
+        ['label' => '动态', 'url' => ['/site/topic']],
         ['label' => '问答', 'url' => ['/site/question']],
+        ['label' => '话题', 'url' => ['/site/square']],
         ['label' => '广场', 'url' => ['/site/square']],
         ['label' => '关于本站', 'url' => ['/site/about'],'options'=>['class'=>'disabled']],
     ];

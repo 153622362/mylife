@@ -44,6 +44,7 @@ class ComposerStaticInit35f0e8f7c9cf9b418804a28a0e9d8925
         ),
         'W' => 
         array (
+            'Workerman\\' => 10,
             'Webmozart\\Assert\\' => 17,
         ),
         'S' => 
@@ -79,6 +80,7 @@ class ComposerStaticInit35f0e8f7c9cf9b418804a28a0e9d8925
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
+            'GatewayWorker\\' => 14,
         ),
         'F' => 
         array (
@@ -153,6 +155,10 @@ class ComposerStaticInit35f0e8f7c9cf9b418804a28a0e9d8925
         'cebe\\jssearch\\' => 
         array (
             0 => __DIR__ . '/..' . '/cebe/js-search/lib',
+        ),
+        'Workerman\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/workerman/workerman',
         ),
         'Webmozart\\Assert\\' => 
         array (
@@ -245,6 +251,10 @@ class ComposerStaticInit35f0e8f7c9cf9b418804a28a0e9d8925
         'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'GatewayWorker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/workerman/gateway-worker/src',
         ),
         'Faker\\' => 
         array (

@@ -2,6 +2,8 @@
 namespace frontend\controllers;
 
 
+use frontend\models\form\ChatForm;
+use frontend\models\form\PostForm;
 use frontend\models\form\SiteForm;
 use Yii;
 use yii\base\InvalidParamException;
@@ -89,8 +91,25 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-//    	echo Yii\Hello\Hello::world();
-        return $this->render('index');
+    	session_start();
+		$uid = Yii::$app->user->id;
+    	$dynamic_newest = PostForm::getTheNewestDynamic();
+		$origin_code_newest = PostForm::getTheNewestOriginCode();
+		$extension_newest = PostForm::getTheNewestExtension();
+		$course_newest = PostForm::getTheNewestCourse();
+		$question_newest = PostForm::getTheNewestQuestion();
+		$topic_newest = PostForm::getTheNewestTopic();
+		$chat_newest = ChatForm::getThenewestChat();
+        return $this->render('index',[
+        	'dynamic' => $dynamic_newest,
+			'origin_code' => $origin_code_newest,
+			'extension' => $extension_newest,
+			'course' => $course_newest,
+			'question' => $question_newest,
+			'topic' => $topic_newest,
+			'chat' => $chat_newest,
+			'uid' => $uid
+		]);
     }
 
     /**
