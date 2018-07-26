@@ -26,8 +26,8 @@ class Chat extends \common\models\Chat
 		$arr = self::find()
 			->alias('c')
 			->innerJoinWith('user u',false)
-			->select(['u.username','c.content','c.created_at','c.pid','c.like'])
-			->limit(5)
+			->select(['u.username','u.avatar','c.id','c.content','c.created_at','c.pid','c.like','c.user_id','c.id'])
+			->limit(10)
 			->orderBy('created_at desc')
 			->asArray()
 			->all();
@@ -35,6 +35,19 @@ class Chat extends \common\models\Chat
 
 	}
 
+	public static function getCountChatByPid($chat_id)
+	{
+		$count = self::find()
+			->where(['pid'=>$chat_id,'deteled'=>0])
+			->count();
+
+		return $count;
+	}
+
+	/**
+	 * 关联用户表
+	 * @return \yii\db\ActiveQuery
+	 */
 	public  function getUser()
 	{
 		return $this->hasOne(User::className(), ['id'=>'user_id']);

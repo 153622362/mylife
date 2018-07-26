@@ -73,7 +73,8 @@ class User extends ActiveRecord implements IdentityInterface,
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED],'message' => '错误消息提示'],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+			['avatar','string']
         ];
     }
 
@@ -208,6 +209,11 @@ class User extends ActiveRecord implements IdentityInterface,
     {
         $this->password_reset_token = null;
     }
+
+    public function getAvatar()
+	{
+		return $this->avatar;
+	}
 
 
 

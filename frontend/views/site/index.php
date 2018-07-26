@@ -67,6 +67,15 @@ $this->title = 'My Life';
         margin: 0;
         width: 30px;
     }
+    a:hover{
+        text-decoration: none;
+    }
+    a:link{
+        text-decoration: none;
+    }
+    a:visited{
+        text-decoration: none;
+    }
 
 </style>
 <link rel="stylesheet" href="/css/stie.css">
@@ -78,31 +87,10 @@ $this->title = 'My Life';
 <!--            </div>-->
 
 <!--    </div>-->
-<div style="position: fixed;top: 58px;left: 5px;width: 45px;text-align: center;border: 1px solid black;border-radius: 0.25rem">在线人数<span id="people">0</span></div>
+<div style="position: fixed;top: 58px;left: 5px;width: 45px;text-align: center;border: 1px solid black;border-radius: 0.25rem" class="visible-lg-block">在线人数<span id="people">0</span></div>
 <div class="box-wrapper visible-lg-block" >
     <div class="box visible-lg-block" >
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-        <div class="item"><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
-
-
+<!--在线区域-->
     </div>
 </div>
 
@@ -137,7 +125,7 @@ $this->title = 'My Life';
                 <div class="col-lg-6 dynamic">
 					<ul class="list-unstyled ">
                         <?php for ($x = 0; $x<=4; $x++){?>
-						<li >
+						<li style="line-height: 35px">
                             <div class="text-one-line" style="width: 20rem;display: inline-block">
                                 <span class="glyphicon glyphicon-menu-right font-size " style="color: grey"></span>
                                 <a href=""><?=$dynamic[$x]['title']?></a>
@@ -149,7 +137,7 @@ $this->title = 'My Life';
 				</div>
                 <?php if (is_array($dynamic) && count($dynamic) >5 ){?>
                 <div class="col-lg-6 hidden-xs hidden-md hidden-sm">
-					<ul class="list-unstyled">
+					<ul class="list-unstyled" style="line-height: 35px">
                         <?php for ($x = 5; $x<=9; $x++){ if (!empty($dynamic[$x]['title'])){?>
                             <li class="text-one-line col-lg-9"><span class="glyphicon glyphicon-menu-right font-size" style="color: grey"></span>
                                 <a href=""><?=$dynamic[$x]['title']?></a>
@@ -232,18 +220,18 @@ $this->title = 'My Life';
                             foreach ($chat as $v_chat){
                         ?>
                         <hr style="margin: 10px 0px;border: 0.5px solid lightgrey">
-                        <div class="col-lg-3 col-sm-3 col-md-3" ><img src="/static/img/logo.png" style="width: 30px" alt=""></div>
+                        <div class="col-lg-3 col-sm-3 col-md-3" ><img src="<?=$v_chat['avatar']?>" style="width: 30px" alt=""></div>
                         <div class="col-lg-9 col-sm-9 col-md-9">
     <!--                        名字-->
                             <a href=""><?=$v_chat['username']?></a>:
     <!--                        内容-->
                             <span style="word-break: break-all;font-size: 16px"><?=$v_chat['content']?></span>
     <!--                        留言底部-->
-                            <div style="margin: 1rem 0;font-size: 16px" class="text-muted">
-                                <span  class=""><?=substr($v_chat['created_at'], -8,-3)?></span>
-                                <span style="float: right">
-                                    <a href="" class="text-muted"><span class="glyphicon glyphicon-comment" ></span> <?=$v_chat['pid']?></a>
-                                    <a href="#" class="text-muted"><span class="glyphicon glyphicon-thumbs-up" title="顶"></span> <?=$v_chat['like']?></a>
+                            <div style="margin: 1rem 0;font-size: 16px" class="text-muted" >
+                                <span  class="" style="font-size: 14px"><?=$v_chat['created_at']?></span>
+                                <span style="float: right;">
+                                    <a href="" class="text-muted" ><span class="glyphicon glyphicon-comment" ></span> <span><?=$v_chat['pid']?></span></a>
+                                    <a href="#" class="text-muted" chat-id="<?=$v_chat['id']?>"><span class="glyphicon glyphicon-thumbs-up <?php echo $v_chat['zan']? 'text-success':'' ?>" title="顶"  ></span> <span><?=$v_chat['like']?></span></a>
                                 </span>
                             </div>
                         </div>
@@ -308,9 +296,12 @@ $this->title = 'My Life';
                     if ( data.message.vip != ''){
                         for (var user_info in data.message.vip)
                         {
-                            $('.box').prepend(
-                                '<div class="item"><img src="'+ data.message.vip[user_info] +'" style="width: 30px" alt="" id="' + user_info + '"></div>'
-                            )
+                            var res = $('#'+ user_info).attr('src');
+                            if ( res == undefined){
+                                $('.box').prepend(
+                                    '<div class="item"><img src="'+ data.message.vip[user_info] +'" style="width: 30px" alt="" id="' + user_info + '"></div>'
+                                )
+                            }
                         }
                     }
                     break;
@@ -320,14 +311,35 @@ $this->title = 'My Life';
                     $('#message-board').prepend("<h6 style='color: grey'>系统消息:" + data.message +"</h6>");
                     break;
                 case 'publish':
-                    var html = '<hr style="margin: 10px 0px;border: 0.5px solid lightgrey"> <div class="col-lg-3 col-sm-3 col-md-3" ><img src="/static/img/logo.png" style="width: 3rem" alt=""></div> <div class="col-lg-9 col-sm-9 col-md-9"> <a href="">'+ data.message.uid + '</a> <span style="word-break: break-all;font-size: 16px">' + data.message.content +'</span> <div style="margin: 1rem 0;font-size: 16px" class="text-muted"> <span  class="">时间</span> <span style="float: right"> <a href="" class="text-muted"><span class="glyphicon glyphicon-comment" ></span> 0</a> <a href="#" class="text-muted"><span class="glyphicon glyphicon-thumbs-up" title="顶"></span> 0</a> </span> </div> </div>'
+//                    var myDate = new Date();
+//                    var seconds = myDate.getSeconds();
+//                    var message_time = parseInt(data.message.created_at.substr(-2));
+//                    console.log(parseInt(data.message.created_at.substr(-2)));
+//                    console.log(seconds);
+                    var html = '<hr style="margin: 10px 0px;border: 0.5px solid lightgrey"> <div class="col-lg-3 col-sm-3 col-md-3" ><img src="'+ data.message.avatar +'" style="width: 3rem" alt=""></div> <div class="col-lg-9 col-sm-9 col-md-9"> <a href="">'+ data.message.uid + '</a>:<span style="word-break: break-all;font-size: 16px">' + data.message.content +'</span> <div style="margin: 1rem 0;font-size: 16px" class="text-muted">  <span style="float: right"> <a href="" class="text-muted" chat-id="'+ data.message.chat_id +'"><span class="glyphicon glyphicon-comment" ></span> <span>0</span></a> <a href="#" class="text-muted"><span class="glyphicon glyphicon-thumbs-up" title="顶" ></span> <span>0</span></a> </span> </div> </div>'
                     $('#message-board').prepend(html);
                     $('#message').val(''); //重置留言区
 
                     break;
                 case 'onclose':
                     $('#people').html(data.people); //修改在线人数
+                    //修改头像
+                    var mylogo = $('#' + data.uid).attr('src');
+                    if ( mylogo != undefined )
+                    {
+//                        $('#' + data.uid).remove();
+                        $('#' + data.uid).parent().attr('id','delete');
+                        $('#delete').remove();
+                    }
                     $('#message-board').prepend("<h6 style='color: grey'>系统消息:" + data.message +"</h6>");
+                    break;
+                case 'zan':
+                    if ( data.chat_id != ''){
+                        var  zans = parseInt($('a[chat-id='+ data.chat_id +']').children().eq(1).html());
+                        zans += 1;
+                        $('a[chat-id='+ data.chat_id +']').children().eq(1).html(zans);
+                    }
+
                     break;
                 default:
                     break;
@@ -363,6 +375,16 @@ $this->title = 'My Life';
 
     });
 
+    $('a[chat-id]').each(function (i) {
+        this.addEventListener('click',function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            this.firstChild.classList.add('text-success'); //修改颜色
+            var chat_id = this.getAttribute('chat-id');
+            var str = '{ "uid": "' + uid + '","message_type":"zan" ,"chat_id":"' + chat_id + '" ,"user_id":"' + uid + '"}';
+            ws.send(str);
+        })
+    });
     function Pajax() {
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
         $.ajax({

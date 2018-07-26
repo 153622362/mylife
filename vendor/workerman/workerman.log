@@ -159,3 +159,170 @@ Stack trace:
 2018-07-25 14:23:39 pid:5326 Workerman[start.php] stopping ...
 2018-07-25 14:23:39 pid:5326 Workerman[start.php] has been stopped
 2018-07-25 14:23:46 pid:5338 Workerman[start.php] start in DEBUG mode
+2018-07-25 16:01:59 pid:5338 Workerman[start.php] stopping ...
+2018-07-25 16:01:59 pid:5338 Workerman[start.php] has been stopped
+2018-07-25 16:02:00 pid:6058 Workerman[start.php] start in DEBUG mode
+2018-07-25 16:14:20 pid:6058 Workerman[start.php] stopping ...
+2018-07-25 16:14:21 pid:6058 Workerman[start.php] has been stopped
+2018-07-25 16:14:39 pid:6184 Workerman[start.php] start in DEBUG mode
+2018-07-25 16:14:43 pid:6186 PDOException: SQLSTATE[HY000] [1049] Unknown database 'mylife' in /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/DbConnection.php:1708
+Stack trace:
+#0 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/DbConnection.php(1708): PDO->__construct('mysql:dbname=my...', 'root', 'root', Array)
+#1 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/DbConnection.php(1695): GatewayWorker\Lib\DbConnection->connect()
+#2 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/Db.php(48): GatewayWorker\Lib\DbConnection->__construct('127.0.0.1', 3306, 'root', 'root', 'mylife')
+#3 /home/www/mylife/mylife/Worker/Applications/Events.php(101): GatewayWorker\Lib\Db::instance('db1')
+#4 /home/www/mylife/mylife/Worker/Applications/Events.php(87): Events::getDbInstance()
+#5 /home/www/mylife/mylife/Worker/Applications/Events.php(44): Events::getUserInfoByUid('1')
+#6 [internal function]: Events::onMessage('7f00000108fc000...', '{ "message_type...')
+#7 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/BusinessWorker.php(395): call_user_func('Events::onMessa...', '7f00000108fc000...', '{ "message_type...')
+#8 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#9 /home/www/mylife/mylife/vendor/workerman/workerman/Connection/TcpConnection.php(645): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#10 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #56)
+#11 {main}
+2018-07-25 16:14:43 pid:6186 Worker[6186] process terminated
+2018-07-25 16:14:43 pid:6184 worker[ChatBusinessWorker:6186] exit with status 64000
+2018-07-25 16:15:36 pid:6184 Workerman[start.php] stopping ...
+2018-07-25 16:15:36 pid:6184 Workerman[start.php] has been stopped
+2018-07-25 16:15:37 pid:6195 Workerman[start.php] start in DEBUG mode
+2018-07-25 16:16:53 pid:6195 Workerman[start.php] stopping ...
+2018-07-25 16:16:54 pid:6195 Workerman[start.php] has been stopped
+2018-07-25 16:16:55 pid:6318 Workerman[start.php] start in DEBUG mode
+2018-07-25 16:17:17 pid:6318 Workerman[start.php] stopping ...
+2018-07-25 16:17:17 pid:6318 Workerman[start.php] has been stopped
+2018-07-25 16:17:20 pid:6331 Workerman[start.php] start in DEBUG mode
+2018-07-25 16:18:34 pid:6331 Workerman[start.php] stopping ...
+2018-07-25 16:18:34 pid:6331 Workerman[start.php] has been stopped
+2018-07-25 16:18:36 pid:6342 Workerman[start.php] start in DEBUG mode
+2018-07-25 16:19:13 pid:6342 Workerman[start.php] stopping ...
+2018-07-25 16:19:13 pid:6342 Workerman[start.php] has been stopped
+2018-07-25 16:19:14 pid:6352 Workerman[start.php] start in DEBUG mode
+2018-07-25 16:19:47 pid:6352 Workerman[start.php] stopping ...
+2018-07-25 16:19:48 pid:6352 Workerman[start.php] has been stopped
+2018-07-25 16:19:49 pid:6362 Workerman[start.php] start in DEBUG mode
+2018-07-25 16:29:38 pid:6362 Workerman[start.php] stopping ...
+2018-07-25 16:29:39 pid:6362 Workerman[start.php] has been stopped
+2018-07-25 16:29:41 pid:6377 Workerman[start.php] start in DEBUG mode
+2018-07-25 16:40:54 pid:6377 Workerman[start.php] stopping ...
+2018-07-25 16:40:54 pid:6377 Workerman[start.php] has been stopped
+2018-07-25 16:40:55 pid:6500 Workerman[start.php] start in DEBUG mode
+2018-07-25 16:51:59 pid:6500 Workerman[start.php] stopping ...
+2018-07-25 16:51:59 pid:6500 Workerman[start.php] has been stopped
+2018-07-25 16:53:51 pid:6629 Workerman[start.php] start in DEBUG mode
+2018-07-25 17:00:10 pid:6629 Workerman[start.php] stopping ...
+2018-07-25 17:00:10 pid:6629 Workerman[start.php] has been stopped
+2018-07-25 17:00:12 pid:6642 Workerman[start.php] start in DEBUG mode
+2018-07-25 17:17:50 pid:6642 Workerman[start.php] stopping ...
+2018-07-25 17:17:50 pid:6642 Workerman[start.php] has been stopped
+2018-07-25 17:17:51 pid:6883 Workerman[start.php] start in DEBUG mode
+2018-07-25 18:39:24 pid:6883 Workerman[start.php] stopping ...
+2018-07-25 18:39:24 pid:6883 Workerman[start.php] has been stopped
+2018-07-25 18:39:25 pid:7484 Workerman[start.php] start in DEBUG mode
+2018-07-25 18:40:18 pid:7484 Workerman[start.php] stopping ...
+2018-07-25 18:40:19 pid:7484 Workerman[start.php] has been stopped
+2018-07-25 18:40:20 pid:7494 Workerman[start.php] start in DEBUG mode
+2018-07-25 18:51:29 pid:7494 Workerman[start.php] stopping ...
+2018-07-25 18:51:29 pid:7494 Workerman[start.php] stopping ...
+2018-07-25 18:51:29 pid:7494 Workerman[start.php] has been stopped
+2018-07-26 09:47:03 pid:3215 Workerman[start.php] start in DEBUG mode
+2018-07-26 09:48:26 pid:3215 Workerman[start.php] stopping ...
+2018-07-26 09:48:26 pid:3215 Workerman[start.php] has been stopped
+2018-07-26 09:48:49 pid:3231 Workerman[start.php] start in DEBUG mode
+2018-07-26 09:48:56 pid:3233 PDOException: SQL:SELECT `user`.`avatar`,`user`.`username`,`chat`.`content`,`chat`.`created_at` FROM `chat` INNER JOIN `user` ON `chat`.`user_id` = `user`.`id` WHERE `chat`.`id` = :id SQLSTATE[HY093]: Invalid parameter number: parameter was not defined in /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/DbConnection.php:1766
+Stack trace:
+#0 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/DbConnection.php(1824): GatewayWorker\Lib\DbConnection->execute('SELECT `user`.`...', Array)
+#1 /home/www/mylife/mylife/Worker/Applications/Events.php(144): GatewayWorker\Lib\DbConnection->query()
+#2 /home/www/mylife/mylife/Worker/Applications/Events.php(69): Events::getChatById('14')
+#3 [internal function]: Events::onMessage('7f00000108ff000...', '{ "uid": "1","m...')
+#4 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/BusinessWorker.php(395): call_user_func('Events::onMessa...', '7f00000108ff000...', '{ "uid": "1","m...')
+#5 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#6 /home/www/mylife/mylife/vendor/workerman/workerman/Connection/TcpConnection.php(645): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#7 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #59)
+#8 {main}
+2018-07-26 09:48:56 pid:3233 Worker[3233] process terminated
+2018-07-26 09:48:56 pid:3231 worker[ChatBusinessWorker:3233] exit with status 64000
+2018-07-26 09:51:06 pid:3231 Workerman[start.php] stopping ...
+2018-07-26 09:51:07 pid:3231 Workerman[start.php] has been stopped
+2018-07-26 09:51:07 pid:3243 Workerman[start.php] start in DEBUG mode
+2018-07-26 09:55:30 pid:3243 Workerman[start.php] stopping ...
+2018-07-26 09:55:30 pid:3243 Workerman[start.php] has been stopped
+2018-07-26 09:55:31 pid:3265 Workerman[start.php] start in DEBUG mode
+2018-07-26 09:56:42 pid:3265 Workerman[start.php] stopping ...
+2018-07-26 09:56:42 pid:3265 Workerman[start.php] has been stopped
+2018-07-26 09:56:44 pid:3276 Workerman[start.php] start in DEBUG mode
+2018-07-26 09:58:25 pid:3276 Workerman[start.php] stopping ...
+2018-07-26 09:58:26 pid:3276 Workerman[start.php] has been stopped
+2018-07-26 09:58:27 pid:3292 Workerman[start.php] start in DEBUG mode
+2018-07-26 18:36:22 pid:3292 Workerman[start.php] stopping ...
+2018-07-26 18:36:22 pid:3292 Workerman[start.php] has been stopped
+2018-07-26 18:36:24 pid:8082 Workerman[start.php] start in DEBUG mode
+2018-07-26 19:02:19 pid:8082 Workerman[start.php] stopping ...
+2018-07-26 19:02:19 pid:8082 Workerman[start.php] has been stopped
+2018-07-26 19:02:20 pid:8374 Workerman[start.php] start in DEBUG mode
+2018-07-26 19:04:31 pid:8374 Workerman[start.php] stopping ...
+2018-07-26 19:04:32 pid:8374 Workerman[start.php] has been stopped
+2018-07-26 19:04:33 pid:8385 Workerman[start.php] start in DEBUG mode
+2018-07-26 19:04:39 pid:8386 PDOException: SQL:INSERT INTO `like` ( `user_id`,`chat_id`,`channel`,`created_at`,`updated_at`) VALUES ( :user_id,:chat_id,:channel,:created_at,:updated_at) SQLSTATE[42S22]: Column not found: 1054 Unknown column 'chat_id' in 'field list' in /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/DbConnection.php:1766
+Stack trace:
+#0 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/DbConnection.php(1824): GatewayWorker\Lib\DbConnection->execute('INSERT INTO `li...', Array)
+#1 /home/www/mylife/mylife/Worker/Applications/Events.php(97): GatewayWorker\Lib\DbConnection->query()
+#2 /home/www/mylife/mylife/Worker/Applications/Events.php(77): Events::inByChatId('1', '40')
+#3 [internal function]: Events::onMessage('7f00000108fe000...', '{ "uid": "1","m...')
+#4 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/BusinessWorker.php(395): call_user_func('Events::onMessa...', '7f00000108fe000...', '{ "uid": "1","m...')
+#5 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#6 /home/www/mylife/mylife/vendor/workerman/workerman/Connection/TcpConnection.php(645): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#7 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #57)
+#8 {main}
+2018-07-26 19:04:39 pid:8386 Worker[8386] process terminated
+2018-07-26 19:04:39 pid:8385 worker[ChatBusinessWorker:8386] exit with status 64000
+2018-07-26 19:05:11 pid:8385 Workerman[start.php] stopping ...
+2018-07-26 19:05:11 pid:8395 Exception: businessWorker::getAllGatewayAddresses return empty in /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/Gateway.php:738
+Stack trace:
+#0 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/Gateway.php(714): GatewayWorker\Lib\Gateway::getAllGatewayAddress()
+#1 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/Gateway.php(304): GatewayWorker\Lib\Gateway::getBufferFromAllGateway(Array)
+#2 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/Gateway.php(323): GatewayWorker\Lib\Gateway::getClientIdCountByGroup('')
+#3 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/Gateway.php(279): GatewayWorker\Lib\Gateway::getClientCountByGroup()
+#4 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/Gateway.php(289): GatewayWorker\Lib\Gateway::getAllClientIdCount()
+#5 /home/www/mylife/mylife/Worker/Applications/Events.php(111): GatewayWorker\Lib\Gateway::getAllClientCount()
+#6 [internal function]: Events::onClose('7f00000108fe000...')
+#7 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/BusinessWorker.php(401): call_user_func('Events::onClose', '7f00000108fe000...')
+#8 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#9 /home/www/mylife/mylife/vendor/workerman/workerman/Connection/TcpConnection.php(645): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#10 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #58)
+#11 {main}
+2018-07-26 19:05:11 pid:8395 Worker[8395] process terminated
+2018-07-26 19:05:11 pid:8385 worker[ChatBusinessWorker:8395] exit with status 64000
+2018-07-26 19:05:11 pid:8385 Workerman[start.php] has been stopped
+2018-07-26 19:05:12 pid:8397 Workerman[start.php] start in DEBUG mode
+2018-07-26 19:09:36 pid:8397 Workerman[start.php] stopping ...
+2018-07-26 19:09:36 pid:8397 Workerman[start.php] has been stopped
+2018-07-26 19:09:38 pid:8526 Workerman[start.php] start in DEBUG mode
+2018-07-26 19:10:36 pid:8526 Workerman[start.php] stopping ...
+2018-07-26 19:10:36 pid:8526 Workerman[start.php] has been stopped
+2018-07-26 19:10:48 pid:8536 Workerman[start.php] start in DEBUG mode
+2018-07-26 19:10:55 pid:8537 PDOException: SQL:SELECT id FROM `like` WHERE user_id = :user_id AND chat_id = :chat_id SQLSTATE[42S22]: Column not found: 1054 Unknown column 'chat_id' in 'where clause' in /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/DbConnection.php:1766
+Stack trace:
+#0 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/Lib/DbConnection.php(1824): GatewayWorker\Lib\DbConnection->execute('SELECT id FROM ...', Array)
+#1 /home/www/mylife/mylife/Worker/Applications/Events.php(97): GatewayWorker\Lib\DbConnection->query()
+#2 /home/www/mylife/mylife/Worker/Applications/Events.php(78): Events::outByChatId('1', '40')
+#3 [internal function]: Events::onMessage('7f00000108ff000...', '{ "uid": "1","m...')
+#4 /home/www/mylife/mylife/vendor/workerman/gateway-worker/src/BusinessWorker.php(395): call_user_func('Events::onMessa...', '7f00000108ff000...', '{ "uid": "1","m...')
+#5 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#6 /home/www/mylife/mylife/vendor/workerman/workerman/Connection/TcpConnection.php(645): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#7 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #58)
+#8 {main}
+2018-07-26 19:10:55 pid:8537 Worker[8537] process terminated
+2018-07-26 19:10:55 pid:8536 worker[ChatBusinessWorker:8537] exit with status 64000
+2018-07-26 19:11:12 pid:8536 Workerman[start.php] stopping ...
+2018-07-26 19:11:12 pid:8536 Workerman[start.php] has been stopped
+2018-07-26 19:11:13 pid:8548 Workerman[start.php] start in DEBUG mode
+2018-07-26 19:12:20 pid:8548 Workerman[start.php] stopping ...
+2018-07-26 19:12:21 pid:8548 Workerman[start.php] has been stopped
+2018-07-26 19:12:22 pid:8675 Workerman[start.php] start in DEBUG mode
+2018-07-26 19:13:32 pid:8675 Workerman[start.php] stopping ...
+2018-07-26 19:13:32 pid:8675 Workerman[start.php] has been stopped
+2018-07-26 19:13:33 pid:8686 Workerman[start.php] start in DEBUG mode
+2018-07-26 19:14:01 pid:8686 Workerman[start.php] stopping ...
+2018-07-26 19:14:01 pid:8686 Workerman[start.php] has been stopped
+2018-07-26 19:14:19 pid:8697 Workerman[start.php] start in DEBUG mode
+2018-07-26 19:14:59 pid:8697 Workerman[start.php] stopping ...
+2018-07-26 19:14:59 pid:8697 Workerman[start.php] has been stopped

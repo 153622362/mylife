@@ -48,7 +48,7 @@ AppAsset::register($this);
         $menuItems_right[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $menuItems_right[] = ['label' => 'Login', 'url' => ['/site/login'],'items'=>[
             ['label'=>'账号登陆','url'=>['site/login']],
-            ['label'=>'<hr style="border:0.3px solid black;padding: 0px;margin: 0px"/>','encode'=>false,'options'=>['style'=>'padding:0px;margin:0px']],
+            ['label'=>'<hr style="border:0.3px solid gainsboro;padding: 0px;margin: 0px"/>','encode'=>false,'options'=>['style'=>'padding:0px;margin:0px']],
             ['label'=>'QQ登陆','options'=>['class'=>'disabled','title'=>'目前还未开通此功能']],
             ['label'=>'微信登陆','options'=>['class'=>'disabled','title'=>'目前还未开通此功能']],
             ['label'=>'新浪微博','options'=>['class'=>'disabled','title'=>'目前还未开通此功能']],
@@ -62,14 +62,31 @@ AppAsset::register($this);
       </span>
     </div>
 </form>';
-        $menuItems_right[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
+//        $menuItems_right[] = '<li>'
+//            . Html::beginForm(['/site/logout'], 'post')
+//            . Html::submitButton(
+//                'Logout (' . Yii::$app->user->identity->username . ')',
+//                ['class' => 'btn btn-link logout']
+//            )
+//            . Html::endForm()
+//            . '</li>';
+
+        $menuItems_right[] =[
+            'label'=>'<img src="'.Yii::$app->user->identity->avatar.'" style="width: 30px;">',
+            'encode'=>false,
+            'items' => [
+                ['label' => '<span class="glyphicon glyphicon-user"></span>  个人中心','encode'=>false,'url'=>['user/center']],
+                ['label' => '<span class="glyphicon glyphicon-cog"></span>  账户设置','encode'=>false,'url'=>['user/center']],
+                ['label' => '<span class="glyphicon glyphicon-tasks"></span>  我的帖子','encode'=>false,'url'=>['user/center']],
+                ['label' => '<span class="glyphicon glyphicon-star"></span>  我的收藏','encode'=>false,'url'=>['user/center']],
+                ['label' => '<span class="glyphicon glyphicon-piggy-bank"></span>  我的积分','encode'=>false,'url'=>['user/center']],
+                '<li>' . Html::beginForm(['/site/logout'], 'post') . Html::submitButton('退出 (' . Yii::$app->user->identity->username . ')', ['class' => 'btn btn-link logout'])
             . Html::endForm()
-            . '</li>';
+            . '</li>'
+
+            ],
+            'linkOptions' => ['style'=>'padding:10px']
+        ];
 
     }
     echo Nav::widget([
