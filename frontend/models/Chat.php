@@ -43,6 +43,18 @@ class Chat extends \common\models\Chat
 
 		return $count;
 	}
+	public static function getChatByPid($chat_id)
+	{
+		$arr = self::find()
+			->alias('c')
+			->innerJoinWith('user u',false)
+			->select(['c.id','c.content','c.created_at','u.username','u.avatar'])
+			->where(['c.pid'=>$chat_id,'c.deteled'=>0])
+			->orderBy('created_at desc')
+			->asArray()
+			->all();
+		return $arr;
+	}
 
 	/**
 	 * 关联用户表

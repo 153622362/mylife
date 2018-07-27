@@ -38,10 +38,10 @@ AppAsset::register($this);
     ]);
     $menuItems_left = [
         ['label' => '首页', 'url' => ['/site/index']],
-        ['label' => '动态', 'url' => ['/site/topic']],
-        ['label' => '问答', 'url' => ['/site/question']],
-        ['label' => '话题', 'url' => ['/site/square']],
-        ['label' => '广场', 'url' => ['/site/square']],
+        ['label' => '动态', 'url' => ['/dynamic/index']],
+        ['label' => '问答', 'url' => ['/question/index'],'options'=>['class'=>'disabled']],
+        ['label' => '话题', 'url' => ['/topic/index'],'options'=>['class'=>'disabled']],
+        ['label' => '广场', 'url' => ['/site/square'],'options'=>['class'=>'disabled']],
         ['label' => '关于本站', 'url' => ['/site/about'],'options'=>['class'=>'disabled']],
     ];
     if (Yii::$app->user->isGuest) {

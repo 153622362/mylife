@@ -207,41 +207,52 @@ $this->title = 'My Life';
 <!--	右侧-->
     <div class="col-lg-3">
         <div class="panel panel-default">
-            <div class="panel-heading">大家都在说<a style="float: right">更多</a></div>
+            <div class="panel-heading">大家都在说<a style="float: right;cursor:pointer">更多</a></div>
             <div class="panel-body">
                 <div class="input-group">
                     <textarea  class="form-control" placeholder="文明上网,理性发言" style="resize:none;height: 54px" id="message"></textarea>
                     <span class="input-group-btn"><button class="btn btn-success btn-lg" type="button" style="height: 54px" id="publish">发布</button></span>
                 </div>
 <!--                留言板-->
-                <div id="message-board" style="overflow: scroll;max-height: 700px">
+                <div id="message-board" style="overflow-y: scroll;overflow-x: hidden;max-height: 700px">
 <!--                    一条留言的开始-->
                     <?php if (is_array($chat) && count($chat) > 0){
                             foreach ($chat as $v_chat){
                         ?>
-                        <hr style="margin: 10px 0px;border: 0.5px solid lightgrey">
-                        <div class="col-lg-3 col-sm-3 col-md-3" ><img src="<?=$v_chat['avatar']?>" style="width: 30px" alt=""></div>
-                        <div class="col-lg-9 col-sm-9 col-md-9">
-    <!--                        名字-->
-                            <a href=""><?=$v_chat['username']?></a>:
-    <!--                        内容-->
-                            <span style="word-break: break-all;font-size: 16px"><?=$v_chat['content']?></span>
-    <!--                        留言底部-->
-                            <div style="margin: 1rem 0;font-size: 16px" class="text-muted" >
-                                <span  class="" style="font-size: 14px"><?=$v_chat['created_at']?></span>
-                                <span style="float: right;">
-                                    <a href="" class="text-muted" ><span class="glyphicon glyphicon-comment" ></span> <span><?=$v_chat['pid']?></span></a>
-                                    <a href="#" class="text-muted" chat-id="<?=$v_chat['id']?>"><span class="glyphicon glyphicon-thumbs-up <?php echo $v_chat['zan']? 'text-success':'' ?>" title="顶"  ></span> <span><?=$v_chat['like']?></span></a>
-                                </span>
+                        <div>
+                            <hr style="margin: 10px 0px;border: 0.5px solid lightgrey">
+                            <div class="col-lg-3 col-sm-3 col-md-3" ><img src="<?=$v_chat['avatar']?>" style="width: 30px" alt=""></div>
+                            <div class="col-lg-9 col-sm-9 col-md-9">
+        <!--                        名字-->
+                                <a href=""><?=$v_chat['username']?></a>:
+        <!--                        内容-->
+                                <span style="word-break: break-all;font-size: 16px"><?=$v_chat['content']?></span>
+        <!--                        留言底部-->
+                                <div style="margin: 1rem 0;font-size: 16px" class="text-muted" >
+                                    <span  class="" style="font-size: 14px"><?=$v_chat['created_at']?></span>
+                                    <span style="float: right;">
+                                        <a href="#" class="text-muted" message-id="<?=$v_chat['id']?>"><span class="glyphicon glyphicon-comment" title="回复"></span> <span><?=$v_chat['pid']?></span></a>
+                                        <a href="#" class="text-muted" chat-id="<?=$v_chat['id']?>"><span class="glyphicon glyphicon-thumbs-up <?php echo $v_chat['zan']? 'text-success':'' ?>" title="顶"  ></span> <span><?=$v_chat['like']?></span></a>
+                                    </span>
+                                </div>
                             </div>
+                                <div class=" col-lg-offset-2 col-sm-offset-2 col-md-offset-2 col-xs-offset-2 col-lg-10" style="width:92%;max-height: 500px;overflow-y: scroll;display: none" message="<?=$v_chat['id']?>">
+<!--                                    一条回复的开始-->
+<!--                                    <div >-->
+<!--                                        <img src="/static/img/logo.png" style="width: 30px" alt="">-->
+<!--                                        <a>xxxx:</a>-->
+<!--                                        <span style="word-break: break-all;font-size: 16px">--><?//=$v_chat['content']?><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>-->
+<!--                                        <p><span  class="text-muted" style="font-size: 14px">--><?//=$v_chat['created_at']?><!--</span></p>-->
+<!--                                    </div>-->
+                                </div>
                         </div>
-                    <?php }}?>
+                            <?php }}?>
 
                 </div>
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading">最新教程<a style="float: right">更多</a></div>
+            <div class="panel-heading">最新教程<a style="float: right;cursor:pointer">更多</a></div>
             <div class="panel-body">
                 <?php if(is_array($course)){foreach ($course as $v_course){?>
                     <p class="text-one-line"><a href=""><?=$v_course['title']?></a></p>
@@ -249,7 +260,7 @@ $this->title = 'My Life';
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading">最新扩展<a style="float: right">更多</a></div>
+            <div class="panel-heading">最新扩展<a style="float: right;cursor:pointer">更多</a></div>
             <div class="panel-body">
                 <?php if(is_array($extension)){foreach ($extension as $v_extension){?>
                     <p class="text-one-line"><a href=""><?=$v_extension['title']?></a></p>
@@ -257,7 +268,7 @@ $this->title = 'My Life';
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading">最新源码<a style="float: right">更多</a></div>
+            <div class="panel-heading">最新源码<a style="float: right;cursor:pointer">更多</a></div>
             <div class="panel-body">
                 <?php if(is_array($origin_code)){foreach ($origin_code as $v_origin_code){?>
                     <p class="text-one-line"><a href=""><?=$v_origin_code['title']?></a></p>
@@ -299,8 +310,9 @@ $this->title = 'My Life';
                             var res = $('#'+ user_info).attr('src');
                             if ( res == undefined){
                                 $('.box').prepend(
-                                    '<div class="item"><img src="'+ data.message.vip[user_info] +'" style="width: 30px" alt="" id="' + user_info + '"></div>'
+                                    '<div class="item"><img  src="'+ data.message.vip[user_info] +'" style="width: 30px" alt="" id="' + user_info + '"></div>'
                                 )
+
                             }
                         }
                     }
@@ -316,7 +328,7 @@ $this->title = 'My Life';
 //                    var message_time = parseInt(data.message.created_at.substr(-2));
 //                    console.log(parseInt(data.message.created_at.substr(-2)));
 //                    console.log(seconds);
-                    var html = '<hr style="margin: 10px 0px;border: 0.5px solid lightgrey"> <div class="col-lg-3 col-sm-3 col-md-3" ><img src="'+ data.message.avatar +'" style="width: 3rem" alt=""></div> <div class="col-lg-9 col-sm-9 col-md-9"> <a href="">'+ data.message.uid + '</a>:<span style="word-break: break-all;font-size: 16px">' + data.message.content +'</span> <div style="margin: 1rem 0;font-size: 16px" class="text-muted">  <span style="float: right"> <a href="" class="text-muted" chat-id="'+ data.message.chat_id +'"><span class="glyphicon glyphicon-comment" ></span> <span>0</span></a> <a href="#" class="text-muted"><span class="glyphicon glyphicon-thumbs-up" title="顶" ></span> <span>0</span></a> </span> </div> </div>'
+                    var html = '<div><hr style="margin: 10px 0px;border: 0.5px solid lightgrey"> <div class="col-lg-3 col-sm-3 col-md-3" ><img src="'+ data.message.avatar +'" style="width: 3rem" alt=""></div> <div class="col-lg-9 col-sm-9 col-md-9"> <a href="">'+ data.message.uid + '</a>:<span style="word-break: break-all;font-size: 16px">' + data.message.content +'</span> <div style="margin: 1rem 0;font-size: 16px" class="text-muted">  <span style="float: right"> <a href="" class="text-muted"  title="回复"><span class="glyphicon glyphicon-comment" ></span> <span>0</span></a> <a href="#" class="text-muted" chat-id="'+ data.message.chat_id +'"><span class="glyphicon glyphicon-thumbs-up" title="顶" ></span> <span>0</span></a> </span> </div> </div></div>'
                     $('#message-board').prepend(html);
                     $('#message').val(''); //重置留言区
 
@@ -385,20 +397,49 @@ $this->title = 'My Life';
             ws.send(str);
         })
     });
-    function Pajax() {
-        var csrfToken = $('meta[name="csrf-token"]').attr("content");
+
+    $('a[message-id]').each(function (i) {
+        this.addEventListener('click',function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var message_id = this.getAttribute('message-id');
+            var url = '<?=\yii\helpers\Url::to(['chat/index'])?>';
+            Gajax(message_id,url);
+            setTimeout(function () {
+                $('[message='+ message_id +']').slideToggle();
+            },200)
+        })
+    })
+
+
+    function Gajax(pid,url) {
+//        var csrfToken = $('meta[name="csrf-token"]').attr("content");
+        var res = $('[message='+ pid +']').children().length;
+        if (res != 0 )
+        {
+                return ;
+        }
         $.ajax({
-            type: "POST",
-            url: "<?php echo \yii\helpers\Url::to(['/api/task/runningtask'])?>",
+            type: "Get",
+            url: url,
             data: {
-                _csrf:csrfToken,
+                pid:pid,
             },
             dataType: "json",
             success: function(msg){
-                $('#message').val(''); //重置留言区
+                var html = '';
+                for(v_msg in msg)
+                {
+                     html +='<div child-msg='+ msg[v_msg].id +' ><img src="'+ msg[v_msg].avatar +'" style="width: 30px" alt=""> <a>'+ msg[v_msg].username +'</a>:<span style="word-break: break-all;font-size: 16px">'+ msg[v_msg].content +'</span> <p><span  class="text-muted" style="font-size: 14px">' + msg[v_msg].created_at +'</span></p> </div>';
+                }
+                $('[message='+ pid+']').prepend(html);
+
+
             }
         });
     }
+
+
 
 
 </script>

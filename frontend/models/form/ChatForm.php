@@ -41,10 +41,11 @@ class ChatForm extends Model
 						$content = "{$min}天前";
 					}
 					$arr[$k]['created_at'] = $content;
-					$arr[$k]['pid'] = Chat::getCountChatByPid($v['id']);
-					$arr[$k]['like'] = Like::getCountLike('2', $v['id']);
+					$arr[$k]['pid'] = Chat::getCountChatByPid($v['id']); //获取留言数
+					$arr[$k]['like'] = Like::getCountLike('2', $v['id']); //获取点赞数
 					$list = Like::getUserListByChatId('2', $v['id']);
 					if (!empty($list)){
+						//判断当前用户是否对当前message进行了赞
 						if (in_array(Yii::$app->user->id, $list))
 						{
 							$arr[$k]['zan'] = 1;
