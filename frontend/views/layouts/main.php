@@ -39,10 +39,10 @@ AppAsset::register($this);
     $menuItems_left = [
         ['label' => '首页', 'url' => ['/site/index']],
         ['label' => '动态', 'url' => ['/dynamic/index']],
-        ['label' => '问答', 'url' => ['/question/index'],'options'=>['class'=>'disabled']],
-        ['label' => '话题', 'url' => ['/topic/index'],'options'=>['class'=>'disabled']],
-        ['label' => '广场', 'url' => ['/site/square'],'options'=>['class'=>'disabled']],
-        ['label' => '关于本站', 'url' => ['/site/about'],'options'=>['class'=>'disabled']],
+        ['label' => '问答', 'url' => ['/question/index']],
+        ['label' => '话题', 'url' => ['/topic/index']],
+        ['label' => '广场', 'url' => ['/site/square']],
+        ['label' => '关于本站', 'url' => ['/site/about']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems_right[] = ['label' => 'Signup', 'url' => ['/site/signup']];
@@ -76,16 +76,16 @@ AppAsset::register($this);
             'encode'=>false,
             'items' => [
                 ['label' => '<span class="glyphicon glyphicon-user"></span>  个人中心','encode'=>false,'url'=>['user/center']],
-                ['label' => '<span class="glyphicon glyphicon-cog"></span>  账户设置','encode'=>false,'url'=>['user/center']],
-                ['label' => '<span class="glyphicon glyphicon-tasks"></span>  我的帖子','encode'=>false,'url'=>['user/center']],
-                ['label' => '<span class="glyphicon glyphicon-star"></span>  我的收藏','encode'=>false,'url'=>['user/center']],
-                ['label' => '<span class="glyphicon glyphicon-piggy-bank"></span>  我的积分','encode'=>false,'url'=>['user/center']],
+                ['label' => '<span class="glyphicon glyphicon-cog"></span>  账户设置','encode'=>false,'url'=>['user/setting']],
+                ['label' => '<span class="glyphicon glyphicon-tasks"></span>  我的帖子','encode'=>false,'url'=>['user/post']],
+                ['label' => '<span class="glyphicon glyphicon-star"></span>  我的收藏','encode'=>false,'url'=>['user/favorite']],
+                ['label' => '<span class="glyphicon glyphicon-piggy-bank"></span>  我的积分','encode'=>false,'url'=>['user/score']],
                 '<li>' . Html::beginForm(['/site/logout'], 'post') . Html::submitButton('退出 (' . Yii::$app->user->identity->username . ')', ['class' => 'btn btn-link logout'])
             . Html::endForm()
             . '</li>'
 
             ],
-            'linkOptions' => ['style'=>'padding:10px']
+            'linkOptions' => ['style'=>'padding:10px;']
         ];
 
     }

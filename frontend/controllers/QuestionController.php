@@ -1,11 +1,7 @@
 <?php
 namespace frontend\controllers;
 
-
-
-
-
-class DynamicController extends BaseController
+class QuestionController extends BaseController
 {
    public function actionIndex()
    {

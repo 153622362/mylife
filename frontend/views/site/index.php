@@ -87,7 +87,7 @@ $this->title = 'My Life';
 <!--            </div>-->
 
 <!--    </div>-->
-<div style="position: fixed;top: 58px;left: 5px;width: 45px;text-align: center;border: 1px solid black;border-radius: 0.25rem" class="visible-lg-block">在线人数<span id="people">0</span></div>
+<div style="position: fixed;top: 58px;left: 5px;width: 45px;text-align: center;border: 1px solid black;border-radius: 0.25rem" class="visible-lg-block">在线<span id="people">0</span>0人</div>
 <div class="box-wrapper visible-lg-block" >
     <div class="box visible-lg-block" >
 <!--在线区域-->
@@ -221,7 +221,7 @@ $this->title = 'My Life';
                         ?>
                         <div>
                             <hr style="margin: 10px 0px;border: 0.5px solid lightgrey">
-                            <div class="col-lg-3 col-sm-3 col-md-3" ><img src="<?=$v_chat['avatar']?>" style="width: 30px" alt=""></div>
+                            <div class="col-lg-3 col-sm-3 col-md-3" ><img src="<?=$v_chat['avatar']?>" style="width: 40px" alt=""></div>
                             <div class="col-lg-9 col-sm-9 col-md-9">
         <!--                        名字-->
                                 <a href=""><?=$v_chat['username']?></a>:
@@ -312,7 +312,6 @@ $this->title = 'My Life';
                                 $('.box').prepend(
                                     '<div class="item"><img  src="'+ data.message.vip[user_info] +'" style="width: 30px" alt="" id="' + user_info + '"></div>'
                                 )
-
                             }
                         }
                     }
@@ -351,7 +350,6 @@ $this->title = 'My Life';
                         zans += 1;
                         $('a[chat-id='+ data.chat_id +']').children().eq(1).html(zans);
                     }
-
                     break;
                 default:
                     break;
@@ -366,7 +364,6 @@ $this->title = 'My Life';
     ws.onclose = function () {
         $('#message-board').prepend('<h6 style="color: grey">系统消息:连接已关闭</h6>');
     };
-
 
     $('#publish').on('click',function () {
         var content  = $.trim($('#message').val());
@@ -430,7 +427,7 @@ $this->title = 'My Life';
                 var html = '';
                 for(v_msg in msg)
                 {
-                     html +='<div child-msg='+ msg[v_msg].id +' ><img src="'+ msg[v_msg].avatar +'" style="width: 30px" alt=""> <a>'+ msg[v_msg].username +'</a>:<span style="word-break: break-all;font-size: 16px">'+ msg[v_msg].content +'</span> <p><span  class="text-muted" style="font-size: 14px">' + msg[v_msg].created_at +'</span></p> </div>';
+                     html +='<div child-msg='+ msg[v_msg].id +' ><img src="'+ msg[v_msg].avatar +'" style="width: 40px" alt=""> <a>'+ msg[v_msg].username +'</a>:<span style="word-break: break-all;font-size: 16px">'+ msg[v_msg].content +'</span> <p><span  class="text-muted" style="font-size: 14px">' + msg[v_msg].created_at +'</span></p> </div>';
                 }
                 $('[message='+ pid+']').prepend(html);
 

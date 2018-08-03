@@ -93,13 +93,13 @@ class SiteController extends BaseController
     {
     	session_start();
 		$uid = Yii::$app->user->id;
-    	$dynamic_newest = PostForm::getTheNewestDynamic();
-		$origin_code_newest = PostForm::getTheNewestOriginCode();
-		$extension_newest = PostForm::getTheNewestExtension();
-		$course_newest = PostForm::getTheNewestCourse();
-		$question_newest = PostForm::getTheNewestQuestion();
-		$topic_newest = PostForm::getTheNewestTopic();
-		$chat_newest = ChatForm::getThenewestChat();
+    	$dynamic_newest = PostForm::getTheNewestDynamic(); //最新动态
+		$origin_code_newest = PostForm::getTheNewestOriginCode(); //最新源码
+		$extension_newest = PostForm::getTheNewestExtension(); //最新扩展
+		$course_newest = PostForm::getTheNewestCourse(); //最新教程
+		$question_newest = PostForm::getTheNewestQuestion(); //最新问答
+		$topic_newest = PostForm::getTheNewestTopic(); //最新话题
+		$chat_newest = ChatForm::getThenewestChat(); //最新聊天内容
         return $this->render('index',[
         	'dynamic' => $dynamic_newest,
 			'origin_code' => $origin_code_newest,
@@ -111,6 +111,11 @@ class SiteController extends BaseController
 			'uid' => $uid
 		]);
     }
+
+	public function actionSquare()
+	{
+		return $this->render('square');
+	}
 
     /**
      * Logs in a user.

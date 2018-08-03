@@ -2,10 +2,7 @@
 namespace frontend\controllers;
 
 
-
-
-
-class DynamicController extends BaseController
+class TopicController extends BaseController
 {
    public function actionIndex()
    {
