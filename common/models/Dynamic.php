@@ -13,6 +13,7 @@ use Yii;
  * @property string $created_at
  * @property int $other_category 1.文章id 2.话题id
  * @property int $other_id id
+ * @property string $remark
  */
 class Dynamic extends \yii\db\ActiveRecord
 {
@@ -33,7 +34,7 @@ class Dynamic extends \yii\db\ActiveRecord
             [['user_id', 'category'], 'required'],
             [['user_id', 'other_category', 'other_id'], 'integer'],
             [['created_at'], 'safe'],
-            [['category'], 'string', 'max' => 255],
+            [['category', 'remark'], 'string', 'max' => 255],
         ];
     }
 
@@ -49,6 +50,7 @@ class Dynamic extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'other_category' => 'Other Category',
             'other_id' => 'Other ID',
+            'remark' => 'Remark',
         ];
     }
 }
