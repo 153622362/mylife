@@ -88,10 +88,10 @@ class SiteController extends BaseController
      * Displays homepage.
      *
      * @return mixed
+     *
      */
     public function actionIndex()
     {
-    	session_start();
 		$uid = Yii::$app->user->id;
     	$dynamic_newest = PostForm::getTheNewestDynamic(); //最新动态
 		$origin_code_newest = PostForm::getTheNewestOriginCode(); //最新源码

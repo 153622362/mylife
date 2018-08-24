@@ -30,6 +30,7 @@ class Like extends \yii\db\ActiveRecord
 	 */
 	public static function getUserListByChatId($channel,$content_id)
 	{
+	    $res = [];
 		$arr = self::find()
 			->select(['user_id'])
 			->where(['channel'=>$channel,'content_id'=>$content_id])
@@ -37,7 +38,6 @@ class Like extends \yii\db\ActiveRecord
 			->all();
 		if (!empty($arr))
 		{
-			$res = [];
 			foreach ($arr as $v){
 				array_push($res, $v['user_id']);
 			}
