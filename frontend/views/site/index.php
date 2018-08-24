@@ -87,7 +87,7 @@ $this->title = 'My Life';
 <!--            </div>-->
 
 <!--    </div>-->
-<div style="position: fixed;top: 58px;left: 5px;width: 45px;text-align: center;border: 1px solid black;border-radius: 0.25rem" class="visible-lg-block">在线<span id="people">0</span>0人</div>
+<div style="position: fixed;top: 58px;left: 5px;width: 45px;text-align: center;border: 1px solid black;border-radius: 0.25rem" class="visible-lg-block">在线<span id="people">0</span>人</div>
 <div class="box-wrapper visible-lg-block" >
     <div class="box visible-lg-block" >
 <!--在线区域-->

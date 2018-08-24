@@ -16,7 +16,7 @@ use Yii;
  * @property int $visitor 访客数
  * @property int $post_catrgory 文章类型 0默认分类 1源码 2扩展 3教程
  * @property string $created_at 创建时间
- * @property string $update_at 最后更新时间
+ * @property string $updated_at 最后更新时间
  * @property int $post_excellent 精品文章
  * @property int $post_status 1 未解决 2已解决
  * @property int $post_top 1文章置顶
@@ -39,7 +39,7 @@ class Post extends \yii\db\ActiveRecord
         return [
             [['status', 'visitor', 'post_category', 'post_excellent', 'post_status', 'post_top','status'], 'integer'],
             [['title', 'descript', 'content'], 'required'],
-            [['created_at', 'update_at'], 'safe'],
+            [['created_at', 'updated_at'], 'safe'],
             [['title', 'descript', 'content', 'author','post_version'], 'string', 'max' => 255],
         ];
     }
@@ -59,7 +59,7 @@ class Post extends \yii\db\ActiveRecord
             'visitor' => 'Visitor',
             'post_catrgory' => 'Post Catrgory',
             'created_at' => 'Created At',
-            'update_at' => 'Update At',
+            'updated_at' => 'Updated At',
             'post_excellent' => 'Post Excellent',
             'post_status' => 'Post Status',
             'post_top' => 'Post Top',

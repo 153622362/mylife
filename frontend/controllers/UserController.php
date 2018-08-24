@@ -2,6 +2,9 @@
 namespace frontend\controllers;
 
 
+use common\models\User;
+use frontend\models\form\UserForm;
+
 class UserController extends BaseController
 {
 	/**
@@ -10,7 +13,15 @@ class UserController extends BaseController
 	 */
    public function actionCenter()
    {
-   		return $this->render('center');
+	   $user_id = \Yii::$app->user->identity->id;
+	   $user_info= UserForm::userInfo($user_id); //获取用户基本信息
+	   $user_info['favorite']= UserForm::userFavorite($user_id); //获取用户关注
+	   $user_info['fans']= UserForm::userFans($user_id); //获取用户粉丝
+	   $user_info['visitors']= UserForm::userVisitors($user_id); //获取用户访客
+	   $user_info['dy'] = UserForm::dynamic($user_id);
+   		return $this->render('center',[
+   			'user' => $user_info
+		]);
    }
 
 

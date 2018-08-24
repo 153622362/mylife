@@ -15,13 +15,13 @@
 		<div class="panel-body" style="text-align: center;background-image: url('/static/img/background.jpg');background-repeat: no-repeat;background-size: 100% 120px">
 			<div style="position: relative;top: 50px;">
 			<img src="/static/img/logo.png" alt="头像" class="img-circle">
-			<h1>我的名字</h1>
-			<p style="word-break: break-all">个校签名xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
+			<h1><?=$user['username']?></h1>
+			<p style="word-break: break-all"><?=$user['descript']?></p>
 			<hr>
 				<ul class="stats" >
-				<li>财富值 <h3>25</h3></li>
-				<li>威望值 <h3>25</h3></li>
-				<li>总积分 <h3>25</h3></li>
+				<li>财富值 <h3><?=$user['wealth_score']?></h3></li>
+				<li>威望值 <h3><?=$user['honor_score']?></h3></li>
+				<li>总积分 <h3><?=$user['score']?></h3></li>
 				</ul>
 			</div>
 		</div>
@@ -30,10 +30,9 @@
 	<div class="panel panel-success">
 		<div class="panel-heading">个人信息</div>
 		<div class="panel-body">
-			<h5><span class="glyphicon glyphicon-calendar"></span> 注册日期：</h5>
-			<h5><span class="glyphicon glyphicon-log-in"></span> 最后登陆：</h5>
-			<h5><span class="glyphicon glyphicon-time"></span> 在线时长：</h5>
-			<h5><span class="glyphicon glyphicon-map-marker"></span> 城市：</h5>
+			<h5><span class="glyphicon glyphicon-calendar"></span> 注册日期：<?=date('Y-m-d', $user['created_at'])?></h5>
+			<h5><span class="glyphicon glyphicon-log-in"></span> 最后登陆：<?=substr($user['last_log_in'], 0,10)?></h5>
+			<h5><span class="glyphicon glyphicon-map-marker"></span> 城市：<?=$user['city']?></h5>
 		</div>
 	</div>
 
@@ -45,152 +44,31 @@
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">全部动态</a></li>
-			<li role="presentation"><a href="#feed" aria-controls="feed" role="tab" data-toggle="tab">说说</a></li>
-			<li role="presentation"><a href="#turorial" aria-controls="turorial" role="tab" data-toggle="tab">教程</a></li>
-			<li role="presentation"><a href="#extension" aria-controls="extension" role="tab" data-toggle="tab">扩展</a></li>
-			<li role="presentation"><a href="#origin-code" aria-controls="origin-code" role="tab" data-toggle="tab">源码</a></li>
-			<li role="presentation"><a href="#question" aria-controls="question" role="tab" data-toggle="tab">问答</a></li>
 			<li role="presentation"><a href="#topic" aria-controls="topic" role="tab" data-toggle="tab">话题</a></li>
 		</ul>
 		<!-- Tab panes -->
 <!--		全部动态-->
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="home">
+				<?php foreach ($user['dy'] as $v){?>
 					<div class="media">
 						<div class="media-left media-middle">
 							<a href="#">
-								<img class="media-object" src="/static/img/logo.png" style="width: 60px" alt="头像">
+								<img class="media-object" src="<?=$user['avatar']?>" style="width: 60px" alt="头像">
 							</a>
 						</div>
 						<div class="media-body">
-							<h4 class="media-heading">Middle aligned media</h4>
-							<p>p1</p>
-							<p>p2</p>
+
+							<h4 class="media-heading"><?=$user['username']?>
+							<?=$v['category'].$v['other_category']?>
+							</h4>
+							<p><a href=""><?=$v['title']?></a></p>
+							<p><?=$v['created_at']?></p>
 						</div>
 					</div>
-				<div class="media">
-						<div class="media-left media-middle">
-							<a href="#">
-								<img class="media-object" src="/static/img/logo.png" style="width: 60px" alt="头像">
-							</a>
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Middle aligned media</h4>
-							<p>p1</p>
-							<p>p2</p>
-						</div>
-				</div>
-				<div class="media">
-						<div class="media-left media-middle">
-							<a href="#">
-								<img class="media-object" src="/static/img/logo.png" style="width: 60px" alt="头像">
-							</a>
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Middle aligned media</h4>
-							<p>p1</p>
-							<p>p2</p>
-						</div>
-				</div>
-
-				<div class="media">
-						<div class="media-left media-middle">
-							<a href="#">
-								<img class="media-object" src="/static/img/logo.png" style="width: 60px" alt="头像">
-							</a>
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Middle aligned media</h4>
-							<p>p1</p>
-							<p>p2</p>
-						</div>
-				</div>
+				<?php }?>
 			</div>
-<!--			说说-->
-			<div role="tabpanel" class="tab-pane" id="feed">
 
-				<div class="media">
-					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" style="width: 60px" alt="头像">
-						</a>
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">Middle aligned media</h4>
-						<p>p1</p>
-						<p>p2</p>
-					</div>
-				</div>
-
-			</div>
-<!--			教程-->
-			<div role="tabpanel" class="tab-pane" id="turorial">
-
-				<div class="media">
-					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" style="width: 60px" alt="头像">
-						</a>
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">Middle aligned media</h4>
-						<p>p1</p>
-						<p>p2</p>
-					</div>
-				</div>
-
-			</div>
-<!--			扩展-->
-			<div role="tabpanel" class="tab-pane" id="extension">
-
-				<div class="media">
-					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" style="width: 60px" alt="头像">
-						</a>
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">Middle aligned media</h4>
-						<p>p1</p>
-						<p>p2</p>
-					</div>
-				</div>
-
-			</div>
-<!--			源码-->
-			<div role="tabpanel" class="tab-pane" id="origin-code">
-
-				<div class="media">
-					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" style="width: 60px" alt="头像">
-						</a>
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">Middle aligned media</h4>
-						<p>p1</p>
-						<p>p2</p>
-					</div>
-				</div>
-
-			</div>
-<!--			问答-->
-			<div role="tabpanel" class="tab-pane" id="question">
-
-				<div class="media">
-					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" style="width: 60px" alt="头像">
-						</a>
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">Middle aligned media</h4>
-						<p>p1</p>
-						<p>p2</p>
-					</div>
-				</div>
-
-			</div>
 <!--			话题-->
 			<div role="tabpanel" class="tab-pane" id="topic">
 
@@ -247,31 +125,26 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">我的关注</div>
 		<div class="panel-body">
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
+			<?php foreach ($user['favorite'] as $v){?>
+			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></div>
+			<?php }?>
 		</div>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-heading">我的粉丝</div>
 		<div class="panel-body">
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
+			<?php foreach ($user['fans'] as $v){?>
+			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></div>
+			<?php }?>
 		</div>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-heading">我的访客</div>
 		<div class="panel-body">
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="/static/img/logo2.jpg" width="100%" alt=""></div>
+			<?php foreach ($user['fans'] as $v){?>
+			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></div>
+
+			<?php }?>
 		</div>
 	</div>
 </div>

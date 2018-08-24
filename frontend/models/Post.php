@@ -28,12 +28,15 @@ class Post extends \common\models\Post
 	 * 获取最新动态文章
 	 * @return array
 	 */
-    public static function getTheNewestDynamic($limit = 10)
+    public static function getTheNewestDynamic($offset = 0, $file = ['p.id','p.title','p.created_at'], $limit = 10)
 	{
 		$arr = self::find()
-			->select(['id','title','created_at'])
-			->where(['status'=>10])
-			->orderBy('created_at desc')
+			->alias('p')
+			->innerJoinWith('user u', false)
+			->select($file)
+			->where(['p.status'=>10])
+			->orderBy('p.created_at desc')
+			->offset($offset * $limit)
 			->limit($limit)
 			->asArray()
 			->all();

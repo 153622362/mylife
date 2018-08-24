@@ -215,6 +215,11 @@ class User extends ActiveRecord implements IdentityInterface,
 		return $this->avatar;
 	}
 
+	public function getuserext()
+	{
+		return $this->hasOne(UserExt::className(), ['user_id'=>'id']);
+	}
+
 
 
 	//API 明确列出每个字段，适用于你希望数据表或
