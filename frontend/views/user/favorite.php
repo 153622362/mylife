@@ -24,7 +24,21 @@
 		</ul>
 		<!-- Tab panes -->
 		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="home">1</div>
+			<div role="tabpanel" class="tab-pane active" id="home">
+
+				<div class="media">
+					<div class="media-left media-middle">
+						<a href="#">
+							<img class="media-object" src="/static/img/logo.png" alt="...">
+						</a>
+					</div>
+					<div class="media-body">
+						<h4 class="media-heading">nickname</h4>
+						content
+					</div>
+				</div>
+
+			</div>
 			<div role="tabpanel" class="tab-pane" id="turorial">3</div>
 			<div role="tabpanel" class="tab-pane" id="extension">4</div>
 			<div role="tabpanel" class="tab-pane" id="origin-code">5</div>

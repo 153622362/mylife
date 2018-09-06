@@ -105,10 +105,14 @@ class UserForm extends Model
 					$arr['other_category'] = '文章';
 					$tmp = Post::find()->select(['title'])->where(['id'=>$arr['other_id']])->asArray()->one();
 					break;
+				case 2: //话题
+					$arr['other_category'] = '文章';
+					$tmp = Post::find()->select(['title'])->where(['id'=>$arr['other_id']])->asArray()->one();
+					break;
 
 			}
 		}
-		if (!empty($tmp)){
+		if (!empty($tmp) && !is_string($tmp)){
 			$arr['title'] = $tmp['title'];
 		}
 		return $arr;

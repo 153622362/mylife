@@ -32,7 +32,7 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'post_id', 'like', 'pid'], 'integer'],
+            [['user_id', 'post_id', 'like', 'pid','unlike'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['content'], 'string', 'max' => 255],
         ];
@@ -54,4 +54,9 @@ class Comment extends \yii\db\ActiveRecord
             'pid' => 'Pid',
         ];
     }
+
+    public function getUser()
+	{
+		return $this->hasOne(User::className(), ['id'=>'user_id']);
+	}
 }

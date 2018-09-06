@@ -46,4 +46,6 @@ class Like extends \yii\db\ActiveRecord
             'content_id' => 'Content ID',
         ];
     }
+
+
 }

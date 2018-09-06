@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use common\models\User;
 use Yii;
 
 /**
@@ -12,7 +13,7 @@ use Yii;
  * @property int $channel 点赞场景 1文章  2聊天室
  * @property int $content_id 内容id
  */
-class Like extends \yii\db\ActiveRecord
+class Like extends \common\models\Like
 {
 	/**
 	 * 获取赞数
@@ -43,5 +44,10 @@ class Like extends \yii\db\ActiveRecord
 			}
 		}
 		return $res;
+	}
+
+	public function getUser()
+	{
+		return $this->hasOne(User::className(), ['id'=>'user_id']);
 	}
 }

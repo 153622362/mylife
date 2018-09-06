@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use frontend\models\Comment;
 use frontend\models\Favorite;
+use frontend\models\form\PostForm;
 use frontend\models\Post;
 use yii\data\Pagination;
 
@@ -25,12 +26,13 @@ class DynamicController extends BaseController
 	   $count = $query->count();
 	   $pages = new Pagination(['totalCount' => $count]);
 	   $pages->defaultPageSize =10;
-
+	   $hot_dy = PostForm::hotestDynamic();
 
 	   return $this->render('index',[
 	   	'dy' => $dy,
-		   'count'=>$count,
-		   'pages'=> $pages,
+		'count'=>$count,
+		'pages'=> $pages,
+		'hot_dy' => $hot_dy
 	   ]);
    }
 }

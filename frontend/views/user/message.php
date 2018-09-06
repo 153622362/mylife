@@ -16,4 +16,15 @@
 
 <div class="col-lg-9">
 	<h1>我的私信</h1>
+	<div class="media">
+		<div class="media-left media-middle">
+			<a href="#">
+				<img class="media-object" src="/static/img/logo.png" alt="...">
+			</a>
+		</div>
+		<div class="media-body">
+			<h4 class="media-heading">nickname</h4>
+			content
+		</div>
+	</div>
 </div>

@@ -30,4 +30,6 @@ class Comment extends \common\models\Comment
 			->count();
 		return $count;
 	}
+
+
 }

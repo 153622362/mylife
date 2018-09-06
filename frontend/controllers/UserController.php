@@ -19,6 +19,7 @@ class UserController extends BaseController
 	   $user_info['fans']= UserForm::userFans($user_id); //获取用户粉丝
 	   $user_info['visitors']= UserForm::userVisitors($user_id); //获取用户访客
 	   $user_info['dy'] = UserForm::dynamic($user_id);
+//	   var_dump($user_info);exit;
    		return $this->render('center',[
    			'user' => $user_info
 		]);

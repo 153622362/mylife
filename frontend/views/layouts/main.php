@@ -39,9 +39,9 @@ AppAsset::register($this);
     $menuItems_left = [
         ['label' => '首页', 'url' => ['/site/index']],
         ['label' => '动态', 'url' => ['/dynamic/index']],
-        ['label' => '问答', 'url' => ['/question/index']],
-        ['label' => '话题', 'url' => ['/topic/index']],
-        ['label' => '广场', 'url' => ['/site/square']],
+//        ['label' => '问答', 'url' => ['/question/index']],
+//        ['label' => '话题', 'url' => ['/topic/index']],
+//        ['label' => '广场', 'url' => ['/site/square']],
         ['label' => '关于本站', 'url' => ['/site/about']],
     ];
     if (Yii::$app->user->isGuest) {

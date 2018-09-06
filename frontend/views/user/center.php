@@ -48,7 +48,7 @@
 		</ul>
 		<!-- Tab panes -->
 <!--		全部动态-->
-		<div class="tab-content">
+		<div class="tab-content" style="margin-top: 10px">
 			<div role="tabpanel" class="tab-pane active" id="home">
 				<?php foreach ($user['dy'] as $v){?>
 					<div class="media">
@@ -62,7 +62,7 @@
 							<h4 class="media-heading"><?=$user['username']?>
 							<?=$v['category'].$v['other_category']?>
 							</h4>
-							<p><a href=""><?=$v['title']?></a></p>
+							<p><a href="?<?=$v['other_id']?>"><?=$v['title']?></a></p>
 							<p><?=$v['created_at']?></p>
 						</div>
 					</div>
@@ -71,20 +71,25 @@
 
 <!--			话题-->
 			<div role="tabpanel" class="tab-pane" id="topic">
+				<?php foreach ($user['dy'] as $v){
+					if ($v['other_category'] == '文章'){
+					?>
 
 				<div class="media">
 					<div class="media-left media-middle">
 						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" style="width: 60px" alt="头像">
+							<img class="media-object" src="<?=$user['avatar']?>" style="width: 60px" alt="头像">
 						</a>
 					</div>
 					<div class="media-body">
-						<h4 class="media-heading">Middle aligned media</h4>
-						<p>p1</p>
-						<p>p2</p>
+						<h4 class="media-heading"><?=$user['username']?>
+							<?=$v['category'].$v['other_category']?>
+						</h4>
+						<p><a href="?<?=$v['other_id']?>"><?=$v['title']?></a></p>
+						<p><?=$v['created_at']?></p>
 					</div>
 				</div>
-
+				<?php }}?>
 			</div>
 		</div>
 	</div>
@@ -101,28 +106,28 @@
 <!--	</ul>-->
 </div>
 <div class="col-lg-3">
-	<div class="panel panel-default">
-		<div class="panel-heading">我的资料</div>
-		<div class="panel-body">
-			<div class="progress">
-				<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%;">
-					等级
-				</div>
-			</div>
-
-			<div class="progress">
-				<div class="progress-bar-success progress-bar-striped text-center" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 70%;">
-					资料完整度
-				</div>
-			</div>
-			<div class="progress">
-				<div class="progress-bar progress-bar-striped  active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" title="60%">
-					活跃度
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="panel panel-default">
+<!--	<div class="panel panel-default">-->
+<!--		<div class="panel-heading">我的资料</div>-->
+<!--		<div class="panel-body">-->
+<!--			<div class="progress">-->
+<!--				<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%;">-->
+<!--					等级-->
+<!--				</div>-->
+<!--			</div>-->
+<!---->
+<!--			<div class="progress">-->
+<!--				<div class="progress-bar-success progress-bar-striped text-center" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 70%;">-->
+<!--					资料完整度-->
+<!--				</div>-->
+<!--			</div>-->
+<!--			<div class="progress">-->
+<!--				<div class="progress-bar progress-bar-striped  active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" title="60%">-->
+<!--					活跃度-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+	<div class="panel panel-primary">
 		<div class="panel-heading">我的关注</div>
 		<div class="panel-body">
 			<?php foreach ($user['favorite'] as $v){?>
@@ -130,7 +135,7 @@
 			<?php }?>
 		</div>
 	</div>
-	<div class="panel panel-default">
+	<div class="panel panel-danger">
 		<div class="panel-heading">我的粉丝</div>
 		<div class="panel-body">
 			<?php foreach ($user['fans'] as $v){?>
@@ -138,7 +143,7 @@
 			<?php }?>
 		</div>
 	</div>
-	<div class="panel panel-default">
+	<div class="panel panel-info">
 		<div class="panel-heading">我的访客</div>
 		<div class="panel-body">
 			<?php foreach ($user['fans'] as $v){?>

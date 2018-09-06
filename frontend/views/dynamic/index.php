@@ -21,7 +21,7 @@
 						</a>
 					</div>
 					<div class="media-body">
-						<h4 class="media-heading"><a href=""><?=$v['title']?></a></h4>
+						<h4 class="media-heading"><a href="/post/index?id=<?=$v['id']?>"><?=$v['title']?></a></h4>
 						<span class="text-muted">
 							<span class="badge text-success"><?=$v['username']?></span> 发布于 <?=date('Y-m-d',strtotime($v['created_at']))?>
 							留言 <span class="badge"><?=$v['comment']?></span>
@@ -123,21 +123,25 @@
 <!--		<a href="#" class="list-group-item">Porta ac consectetur ac</a>-->
 <!--		<a href="#" class="list-group-item">Vestibulum at eros</a>-->
 <!--	</div>-->
-<!---->
-<!--	<div class="panel panel-default">-->
-<!--		<div class="panel-heading">标签</div>-->
-<!--		<div class="panel-body">-->
-<!---->
-<!--		</div>-->
-<!--	</div>-->
-<!---->
-<!--	<div class="panel panel-default">-->
-<!--		<div class="panel-heading">一周热门</div>-->
-<!--		<div class="panel-body">-->
-<!--			-->
-<!--		</div>-->
-<!--	</div>-->
-<!---->
+
+	<div class="panel panel-default">
+		<div class="panel-heading">热门动态</div>
+		<div class="panel-body">
+			<?php if (!empty($hot_dy)){
+				foreach ($hot_dy as $v){ ?>
+					<a href="/post/index?id=<?=$v['id']?>"><?=$v['title']?></a>
+				<?php }}?>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">热门标签</div>
+		<div class="panel-body">
+
+		</div>
+	</div>
+
+
+
 <!--	<div class="panel panel-default">-->
 <!--		<div class="panel-heading">活跃用户</div>-->
 <!--		<div class="panel-body">-->

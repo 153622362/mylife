@@ -3,7 +3,11 @@
 namespace frontend\models\form;
 
 use Chumper\Zipper\Zipper;
+use common\models\User;
 use frontend\models\Comment;
+use frontend\models\Fans;
+use frontend\models\Favorite;
+use frontend\models\Like;
 use frontend\models\Post;
 use Yii;
 use yii\base\Model;
@@ -87,6 +91,112 @@ class PostForm extends Model
 		$arr = Post::getTheNewestOriginCode();
 		if (!empty($arr)){
 			return $arr;
+		}
+	}
+
+//	获取热门动态(一周内)
+	public static function hotestDynamic()
+	{
+		$time = time();
+		$start_time = date('Y-m-d h:i:s', $time - 7 * 86400);
+		$data = Post::find()
+			->select(['title','id'])
+			->where(['status'=>10])
+			->where(['>=','updated_at',$start_time])
+			->limit(10)
+			->orderBy('visitor desc')
+			->asArray()
+			->all();
+		return $data;
+	}
+
+	//根据ID获取文章信息
+	public static function PostInfoById($post_id)
+	{
+		$data = Post::find()
+			->alias('p')
+			->innerJoinWith('user u', false)
+			->select(['p.id','p.title','p.content','p.visitor','p.created_at','p.updated_at','p.author','u.username'])
+			->where(['p.id'=>$post_id,'p.status'=>10])
+			->asArray()
+			->one();
+		return $data;
+	}
+
+	//文章点赞数
+	public static function PostLikeByID($post_id)
+	{
+		$count = Like::find()
+			->where(['channel'=>1,'content_id'=>$post_id])
+			->count();
+		return $count;
+	}
+	//文章收藏数
+	public static function PostFavByID($post_id)
+	{
+		$count = Favorite::find()
+			->where(['post_id'=>$post_id])
+			->count();
+		return $count;
+	}
+	//文章评论数
+	public static function PostComByID($post_id)
+	{
+		$count = Comment::find()
+			->where(['post_id'=>$post_id])
+			->count();
+		return $count;
+	}
+	
+	//点赞信息
+	public static function PostLikeInfoById($post_id)
+	{
+		$count = Like::find()
+			->alias('l')
+			->innerJoinWith('user u', false)
+			->select(['u.id','u.avatar'])
+			->where(['l.channel'=>1,'l.content_id'=>$post_id])
+			->asArray()
+			->all();
+		return $count;
+	}
+
+	//评论信息
+	public static function PostComInfoById($post_id)
+	{
+		$data = Comment::find()
+			->alias('c')
+			->innerJoinWith('user u', false)
+			->select(['c.created_at','c.content','u.avatar','u.username','u.id uid','c.id','c.like','c.unlike'])
+			->where(['post_id'=>$post_id])
+			->asArray()
+			->all();
+		return $data;
+	}
+
+	//根据文章信息获取用户新
+	public static function UserInfo($article)
+	{
+		if (!empty($article['author']))
+		{
+			$data = User::find()
+				->alias('u')
+				->innerJoinWith('userext ue',false)
+				->select(['u.id','u.avatar','u.username','u.created_at','ue.wealth_score','ue.honor_score','ue.score','ue.city','ue.last_log_in'])
+				->where(['u.id'=>$article['author']])
+				->asArray()
+				->one();
+			return $data;
+		}
+	}
+	
+	public static function FanCount($user_id)
+	{
+		if (!empty($user_id)){
+		$count = Fans::find()
+			->where(['user_id'=>$user_id])
+			->count();
+		return $count;
 		}
 	}
 
