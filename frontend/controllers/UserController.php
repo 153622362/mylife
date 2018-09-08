@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 
 use common\models\User;
+use frontend\models\Fans;
 use frontend\models\form\UserForm;
 
 class UserController extends BaseController
@@ -68,6 +69,27 @@ class UserController extends BaseController
    public function actionMessage()
    {
    		return $this->render('message');
+   }
+
+   //关注用户
+   public function actionUserFan()
+   {
+   		$uid = \Yii::$app->user->id;
+   		$uided = \Yii::$app->request->get('uid');
+	   	$data = Fans::findOne(['user_id'=>$uided, 'fans_user_id'=>$uid]);
+	   if (empty($data))
+	   {
+		   $fan_obj = new Fans();
+		   $fan_obj->user_id = $uided;
+		   $fan_obj->fans_user_id= $uid;
+		   $res = $fan_obj->save();
+		   return json_encode(['status'=>200,'data'=>$res,'msg'=>'','timestamp'=>time()]);
+	   }else{
+		   return json_encode(['status'=>200,'data'=>false,'msg'=>'exists','timestamp'=>time()]);
+
+	   }
+
+
    }
 
 

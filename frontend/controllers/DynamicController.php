@@ -13,7 +13,7 @@ class DynamicController extends BaseController
    public function actionIndex()
    {
 	   $page = \Yii::$app->request->get('page', '1') - 1;
-	   $dy = Post::getTheNewestDynamic($page,['p.id','p.title','p.created_at','p.updated_at','u.username','u.avatar']);
+	   $dy = Post::getTheNewestDynamic($page,['p.id','p.title','p.created_at','p.updated_at','p.visitor','u.username','u.avatar']);
 	   if (!empty($dy)){
 		   foreach ($dy as $k=>$v)
 		   {

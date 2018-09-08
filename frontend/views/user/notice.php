@@ -23,7 +23,7 @@
 			<li role="presentation"><a href="#comment" aria-controls="comment" role="tab" data-toggle="tab">评论</a></li>
 		</ul>
 		<!-- Tab panes -->
-		<div class="tab-content">
+		<div class="tab-content" style="margin-top: 5px">
 			<div role="tabpanel" class="tab-pane active" id="notice">
 				<div class="media">
 					<div class="media-left media-middle">

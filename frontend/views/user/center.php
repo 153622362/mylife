@@ -62,7 +62,7 @@
 							<h4 class="media-heading"><?=$user['username']?>
 							<?=$v['category'].$v['other_category']?>
 							</h4>
-							<p><a href="?<?=$v['other_id']?>"><?=$v['title']?></a></p>
+							<p><a href="/post/index?id=<?=$v['other_id']?>"><?=$v['title']?></a></p>
 							<p><?=$v['created_at']?></p>
 						</div>
 					</div>

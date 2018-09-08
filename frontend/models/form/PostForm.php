@@ -168,7 +168,7 @@ class PostForm extends Model
 			->alias('c')
 			->innerJoinWith('user u', false)
 			->select(['c.created_at','c.content','u.avatar','u.username','u.id uid','c.id','c.like','c.unlike'])
-			->where(['post_id'=>$post_id])
+			->where(['post_id'=>$post_id,'pid'=> 0])
 			->asArray()
 			->all();
 		return $data;
@@ -189,7 +189,7 @@ class PostForm extends Model
 			return $data;
 		}
 	}
-	
+	//用户粉丝总数
 	public static function FanCount($user_id)
 	{
 		if (!empty($user_id)){
@@ -199,5 +199,75 @@ class PostForm extends Model
 		return $count;
 		}
 	}
+
+	//评论的赞数
+	public static function ComLikeCount($cid)
+	{
+		$count = Like::find()
+			->where(['channel'=>3,'content_id'=>$cid])
+			->count();
+		return $count;
+	}
+
+	//评论的踩数
+	public static function ComUnlikeCount($cid)
+	{
+		$count = Like::find()
+			->where(['channel'=>4,'content_id'=>$cid])
+			->count();
+		return $count;
+	}
+
+	//是否收藏
+	public static function isFav($user_id, $post_id)
+	{
+		$count = Favorite::find()
+			->where(['user_id'=> $user_id, 'post_id'=> $post_id])
+			->count();
+		return $count;
+	}
+
+	//是否点赞
+	public static function isLike($user_id, $post_id)
+	{
+		$count = Like::find()
+			->where(['user_id'=>$user_id,'channel'=>1,'content_id'=>$post_id])
+			->count();
+		return $count;
+	}
+
+
+	//此条评论是否点赞
+	public static function isCLike($user_id, $cid)
+	{
+		$count = Like::find()
+			->where(['user_id'=>$user_id,'channel'=>3,'content_id'=>$cid])
+			->count();
+		return $count;
+	}
+
+	//此条评论是否踩
+	public static function isCUnlike($user_id, $cid)
+	{
+		$count = Like::find()
+			->where(['user_id'=>$user_id,'channel'=>4,'content_id'=>$cid])
+			->count();
+		return $count;
+
+	}
+
+	public static function childChild($pid, $post_id)
+	{
+		$data = Comment::find()
+			->alias('c')
+			->innerJoinWith('user u', false)
+			->select(['c.id','c.content','c.like','c.unlike','c.created_at','u.id uid','u.avatar','u.username'])
+			->where(['c.pid'=>$pid, 'c.post_id'=>$post_id])
+			->asArray()
+			->all();
+		return $data;
+	}
+
+
 
 }

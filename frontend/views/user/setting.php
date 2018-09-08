@@ -17,8 +17,6 @@
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist" style="margin-bottom: 10px">
 			<li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">个人信息</a></li>
-<!--			<li role="presentation"><a href="#favorite" aria-controls="favorite" role="tab" data-toggle="tab">个人偏好</a></li>-->
-			<li role="presentation"><a href="#avatar" aria-controls="avatar" role="tab" data-toggle="tab">修改头像</a></li>
 			<li role="presentation"><a href="#passwod" aria-controls="passwod" role="tab" data-toggle="tab">修改密码</a></li>
 			<li role="presentation"><a href="#email" aria-controls="email" role="tab" data-toggle="tab">修改邮箱</a></li>
 			<li role="presentation"><a href="#login" aria-controls="login" role="tab" data-toggle="tab">第三方登陆</a></li>
@@ -29,15 +27,6 @@
 			<div role="tabpanel" class="tab-pane active" id="profile">
 
 					<form class="form-horizontal">
-
-						<div class="form-group">
-							<label for="inputEmail3" class="col-sm-2 control-label">电子邮箱</label>
-							<div class="col-sm-7">
-								<input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-							</div>
-							<label class="col-sm-3 text-metued" style="padding-top:7px ">此邮箱将被公开</label>
-						</div>
-
 						<div class="form-group">
 							<label for="inputPassword3" class="col-sm-2 control-label">个人主页</label>
 							<div class="col-sm-7">
@@ -121,12 +110,4 @@
 			</div>
 		</div>
 	</div>
-<!--	<ul class="nav nav-tabs">-->
-<!--		<li role="presentation" class="active"><a href="#">个人信息</a></li>-->
-<!--		<li role="presentation"><a href="#">个人偏好</a></li>-->
-<!--		<li role="presentation"><a href="#">修改头像</a></li>-->
-<!--		<li role="presentation"><a href="#">修改密码</a></li>-->
-<!--		<li role="presentation"><a href="#">修改邮箱</a></li>-->
-<!--		<li role="presentation"><a href="#">第三方登陆</a></li>-->
-<!--	</ul>-->
 </div>

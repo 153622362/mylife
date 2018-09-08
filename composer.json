@@ -26,7 +26,8 @@
         "rodneyrehm/plist": "^2.0",
         "workerman/workerman": "^3.5",
         "workerman/gateway-worker": "^3.0",
-        "yiisoft/yii2-redis": "~2.0.0"
+        "yiisoft/yii2-redis": "~2.0.0",
+        "hyii2/yii2-avatar": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

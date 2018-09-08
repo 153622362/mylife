@@ -26,6 +26,7 @@
 							<span class="badge text-success"><?=$v['username']?></span> 发布于 <?=date('Y-m-d',strtotime($v['created_at']))?>
 							留言 <span class="badge"><?=$v['comment']?></span>
 							收藏 <span class="badge"><?=$v['favorite']?></span>
+							浏览数 <span class="badge"><?=$v['visitor']?></span>
 							最后修改时间 <span class="badge"><?=$v['updated_at']?></span>
 						</span>
 					</div>
