@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\User;
 use frontend\models\Fans;
 use frontend\models\form\UserForm;
+use frontend\models\Post;
 
 class UserController extends BaseController
 {
@@ -43,7 +44,15 @@ class UserController extends BaseController
 
    public function actionPost()
    {
-   		return $this->render('post');
+   		$user_id = \Yii::$app->user->id;
+	   $data = Post::find()
+		   ->alias('p')
+		   ->innerJoinWith('user u',false)
+		   ->select(['p.title','p.id pid','p.created_at','u.username','u.avatar','u.id uid'])
+		   ->where(['author'=>$user_id])->asArray()->all();
+   		return $this->render('post',[
+   			'data'=>$data
+		]);
    }
 
    public function actionFavorite()

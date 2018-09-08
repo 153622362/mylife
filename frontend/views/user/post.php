@@ -24,18 +24,22 @@
 		<!-- Tab panes -->
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="post">
-
+				<?php if (!empty($data)){
+						foreach ($data as $v){
+//							var_dump($v);exit;
+					?>
 				<div class="media">
 					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" alt="...">
+						<a href="/post/index?id=<?=$v['uid']?>">
+							<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
 						</a>
 					</div>
 					<div class="media-body">
-						<h4 class="media-heading">nickname</h4>
-						content
+						<h4 class="media-heading">发表于<?=$v['created_at']?></h4>
+						<a href="<?=$v['pid']?>"><?=$v['title']?></a>
 					</div>
 				</div>
+				<?php }}?>
 
 			</div>
 			<div role="tabpanel" class="tab-pane" id="turorial">3</div>
