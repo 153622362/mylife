@@ -23,27 +23,119 @@
 			<li role="presentation"><a href="#topic" aria-controls="topic" role="tab" data-toggle="tab">话题</a></li>
 		</ul>
 		<!-- Tab panes -->
-		<div class="tab-content">
+		<div class="tab-content" style="margin-top: 5px">
 			<div role="tabpanel" class="tab-pane active" id="home">
-
+				<?php if (!empty($data)){
+					foreach ($data as $v){
+				?>
 				<div class="media">
 					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" alt="...">
+						<a href="/user/center?id=<?=$v['uid']?>">
+							<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
 						</a>
 					</div>
 					<div class="media-body">
-						<h4 class="media-heading">nickname</h4>
-						content
+						<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
+						<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
 					</div>
 				</div>
-
+				<?php }}?>
 			</div>
-			<div role="tabpanel" class="tab-pane" id="turorial">3</div>
-			<div role="tabpanel" class="tab-pane" id="extension">4</div>
-			<div role="tabpanel" class="tab-pane" id="origin-code">5</div>
-			<div role="tabpanel" class="tab-pane" id="question">6</div>
-			<div role="tabpanel" class="tab-pane" id="topic">7</div>
+			<div role="tabpanel" class="tab-pane" id="turorial">
+				<?php if (!empty($data)){
+					foreach ($data as $v){
+						if ($v['post_category'] == 3){
+						?>
+						<div class="media">
+							<div class="media-left media-middle">
+								<a href="/user/center?id=<?=$v['uid']?>">
+									<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
+								</a>
+							</div>
+							<div class="media-body">
+								<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
+								<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+							</div>
+						</div>
+					<?php }}?>
+				    <?php }?>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="extension">
+				<?php if (!empty($data)){
+					foreach ($data as $v){
+						if ($v['post_category'] == 2){
+							?>
+							<div class="media">
+								<div class="media-left media-middle">
+									<a href="/user/center?id=<?=$v['uid']?>">
+										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
+									</a>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
+									<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+								</div>
+							</div>
+						<?php }}?>
+				<?php }?>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="origin-code">
+				<?php if (!empty($data)){
+					foreach ($data as $v){
+						if ($v['post_category'] == 1){
+							?>
+							<div class="media">
+								<div class="media-left media-middle">
+									<a href="/user/center?id=<?=$v['uid']?>">
+										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
+									</a>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
+									<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+								</div>
+							</div>
+						<?php }}?>
+				<?php }?>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="question">
+				<?php if (!empty($data)){
+					foreach ($data as $v){
+						if ($v['post_category'] == 4){
+							?>
+							<div class="media">
+								<div class="media-left media-middle">
+									<a href="/user/center?id=<?=$v['uid']?>">
+										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
+									</a>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
+									<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+								</div>
+							</div>
+						<?php }}?>
+				<?php }?>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="topic">
+				<?php if (!empty($data)){
+					foreach ($data as $v){
+						if ($v['post_category'] == 5){
+							?>
+							<div class="media">
+								<div class="media-left media-middle">
+									<a href="/user/center?id=<?=$v['uid']?>">
+										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
+									</a>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
+									<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+								</div>
+							</div>
+						<?php }}?>
+				<?php }?>
+			</div>
 		</div>
 	</div>
 <!--	<ul class="nav nav-tabs">-->

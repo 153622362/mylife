@@ -206,6 +206,10 @@ $this->title = 'My Life';
 
 <!--	右侧-->
     <div class="col-lg-3">
+        <div>
+            <span  class="btn btn-success btn-lg " style="width: 50%;border-radius:6px 0 0 6px;font-size: 10px" onclick="sign()" <?php if (!empty($sign_data)){ echo 'disabled';}?>><?php if (!empty($sign_data)){ echo '已经签到<br>明天再来';}else{ echo '点击签到<br>获取积分';}?></span>
+            <spn  class="btn btn-primary btn-lg pull-right" style="width: 50%;border-radius:0 6px 6px 0;font-size: 10px"><?=date('Y-m-d', time())?><br>签到统计</spn>
+        </div>
         <div class="panel panel-default">
             <div class="panel-heading">大家都在说<a style="float: right;cursor:pointer">更多</a></div>
             <div class="panel-body">
@@ -432,6 +436,24 @@ $this->title = 'My Life';
                 $('[message='+ pid+']').prepend(html);
 
 
+            }
+        });
+    }
+
+    //签到
+    function sign()
+    {
+        var url ='/user/sign-api';
+        $.ajax({
+            type: "Get",
+            url: url,
+
+            dataType: "json",
+            success: function(msg){
+                if(msg.data == true)
+                {
+                    location.reload();
+                }
             }
         });
     }

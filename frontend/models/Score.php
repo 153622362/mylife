@@ -1,26 +1,28 @@
 <?php
 
-namespace common\models;
+namespace frontend\models;
 
 use Yii;
 
 /**
- * This is the model class for table "fans".
+ * This is the model class for table "score".
  *
- * @property int $id
- * @property int $user_id 被关注者
- * @property int $fans_user_id 关注者
+ * @property int $id 积分表
+ * @property int $score
+ * @property string $remark
+ * @property int $user_id
+ * @property int $category 1.财富 2.威望 3.积分
  * @property string $created_at
  * @property string $updated_at
  */
-class Fans extends \yii\db\ActiveRecord
+class Score extends \common\models\Score
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'fans';
+        return 'score';
     }
 
     /**
@@ -29,9 +31,9 @@ class Fans extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'fans_user_id'], 'required'],
-            [['user_id', 'fans_user_id'], 'integer'],
+            [['score', 'user_id', 'category'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
+            [['remark'], 'string', 'max' => 255],
         ];
     }
 
@@ -42,16 +44,12 @@ class Fans extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'score' => 'Score',
+            'remark' => 'Remark',
             'user_id' => 'User ID',
-            'fans_user_id' => 'Fans User ID',
+            'category' => 'Category',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
     }
-
-    //用户关注
-	public function getUser()
-	{
-		return $this->hasOne(User::className(), ['id'=>'user_id']);
-	}
 }

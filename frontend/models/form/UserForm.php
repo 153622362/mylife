@@ -30,7 +30,7 @@ class UserForm extends Model
 	//获取用户关注
 	public static function userFavorite($user_id)
 	{
-		return \frontend\models\Fans::find()
+		return \common\models\Fans::find()
 			->alias('f')
 			->innerJoinWith('user u', false)
 			->select(['u.id','u.avatar'])
@@ -59,7 +59,7 @@ class UserForm extends Model
 			->alias('v')
 			->innerJoinWith('user u', false)
 			->select(['u.id','u.avatar'])
-			->where(['user_id'=>$user_id,'visitor_id'=>$user_id,'category' => 1])
+			->where(['user_id'=>$user_id,'category' => 1])
 			->asArray()
 			->all();
 	}

@@ -16,8 +16,9 @@ use Yii;
  */
 class Fans extends \common\models\Fans
 {
+	//用户粉丝关联
 	public function getUser()
 	{
-		return $this->hasOne(User::className(), ['id'=>'user_id']);
+		return $this->hasOne(User::className(), ['id'=>'fans_user_id']);
 	}
 }

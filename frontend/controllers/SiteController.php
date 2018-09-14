@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use frontend\models\form\ChatForm;
 use frontend\models\form\PostForm;
+use frontend\models\form\SignForm;
 use frontend\models\form\SiteForm;
 use Yii;
 use yii\base\InvalidParamException;
@@ -100,7 +101,9 @@ class SiteController extends BaseController
 		$question_newest = PostForm::getTheNewestQuestion(); //最新问答
 		$topic_newest = PostForm::getTheNewestTopic(); //最新话题
 		$chat_newest = ChatForm::getThenewestChat(); //最新聊天内容
-        return $this->render('index',[
+		$sign_data = SignForm::QuerySign();
+
+		return $this->render('index',[
         	'dynamic' => $dynamic_newest,
 			'origin_code' => $origin_code_newest,
 			'extension' => $extension_newest,
@@ -108,7 +111,8 @@ class SiteController extends BaseController
 			'question' => $question_newest,
 			'topic' => $topic_newest,
 			'chat' => $chat_newest,
-			'uid' => $uid
+			'uid' => $uid,
+			'sign_data' => $sign_data
 		]);
     }
 

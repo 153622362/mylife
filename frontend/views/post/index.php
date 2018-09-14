@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 				</div>
 				<div class="media-body">
 
-					<div cid="<?=$v['id']?>">
+					<div cid="<?=$v['id']?>" >
 						<h4 class="media-heading" uid="<?=$v['uid']?>" id=""><a href="/user/center?id=<?=$v['uid']?>"><?=$v['username']?> </a><span class="text-muted">评论于<?=$v['created_at']?></span>
 							<span class="pull-right glyphicon glyphicon-flag blue" style="cursor: pointer" data-toggle="tooltip" data-placement="top" title="举报此评论!" cid="<?=$v['id']?>">举报</span></h4>
 						<h4><?=$v['content']?></h4>

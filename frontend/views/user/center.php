@@ -14,7 +14,7 @@
 	<div class="panel panel-default">
 		<div class="panel-body" style="text-align: center;background-image: url('/static/img/background.jpg');background-repeat: no-repeat;background-size: 100% 120px">
 			<div style="position: relative;top: 50px;">
-			<img src="/static/img/logo.png" alt="头像" class="img-circle">
+			<img src="<?=$user['avatar']?>" alt="头像" class="img-circle" style="width:10rem ">
 			<h1><?=$user['username']?></h1>
 			<p style="word-break: break-all"><?=$user['descript']?></p>
 			<hr>
@@ -128,7 +128,13 @@
 <!--		</div>-->
 <!--	</div>-->
 	<div class="panel panel-primary">
-		<div class="panel-heading">我的关注</div>
+		<?php  if ($other == 1){
+			$content = '我的';
+		}else{
+			$content = $user['username'];
+		}
+		?>
+		<div class="panel-heading"><?=$content?>关注</div>
 		<div class="panel-body">
 			<?php foreach ($user['favorite'] as $v){?>
 			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></div>
@@ -136,7 +142,7 @@
 		</div>
 	</div>
 	<div class="panel panel-danger">
-		<div class="panel-heading">我的粉丝</div>
+		<div class="panel-heading"><?=$content?>粉丝</div>
 		<div class="panel-body">
 			<?php foreach ($user['fans'] as $v){?>
 			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></div>
@@ -144,9 +150,9 @@
 		</div>
 	</div>
 	<div class="panel panel-info">
-		<div class="panel-heading">我的访客</div>
+		<div class="panel-heading"><?=$content?>访客</div>
 		<div class="panel-body">
-			<?php foreach ($user['fans'] as $v){?>
+			<?php foreach ($user['visitors'] as $v){?>
 			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></div>
 
 			<?php }?>

@@ -17,7 +17,7 @@ class Visitor extends \common\models\Visitor
 {
 	public function getUser()
 	{
-		return $this->hasOne(User::className(), ['id'=>'user_id']);
+		return $this->hasOne(User::className(), ['id'=>'visitor_id']);
 	}
 
 }

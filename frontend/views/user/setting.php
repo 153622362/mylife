@@ -1,9 +1,10 @@
+<meta name="csrf-token" content="<?= \Yii::$app->request->csrfToken ?>">
 <div class="col-lg-3">
 
 	<div class="list-group">
 		<a href="/user/setting" class="list-group-item active">账户设置</a>
 		<a href="/user/notice"  class="list-group-item">我的提醒</a>
-<!--		<a href="/user/message" class="list-group-item">我的私信</a>-->
+		<a href="/user/message" class="list-group-item">我的私信</a>
 		<a href="/user/sign" 		 class="list-group-item">我的签到</a>
 		<a href="/user/post" 		 class="list-group-item">我的帖子</a>
 		<a href="/user/favorite" class="list-group-item">我的收藏</a>
@@ -17,6 +18,7 @@
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist" style="margin-bottom: 10px">
 			<li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">个人信息</a></li>
+			<li role="presentation"><a href="#avatar" aria-controls="avatar" role="tab" data-toggle="tab">个人头像</a></li>
 			<li role="presentation"><a href="#passwod" aria-controls="passwod" role="tab" data-toggle="tab">修改密码</a></li>
 			<li role="presentation"><a href="#email" aria-controls="email" role="tab" data-toggle="tab">修改邮箱</a></li>
 			<li role="presentation"><a href="#login" aria-controls="login" role="tab" data-toggle="tab">第三方登陆</a></li>
@@ -25,68 +27,52 @@
 		<div class="tab-content">
 <!--			个人信息-->
 			<div role="tabpanel" class="tab-pane active" id="profile">
-
-					<form class="form-horizontal">
-						<div class="form-group">
-							<label for="inputPassword3" class="col-sm-2 control-label">个人主页</label>
-							<div class="col-sm-7">
-								<input type="password" class="form-control" id="inputPassword3" placeholder="个人主页">
-							</div>
-							<label class="col-sm-3" style="padding-top:7px "></label>
-						</div>
+					<form class="form-horizontal" name="profile">
 						<div class="form-group">
 							<label for="tag" class="col-sm-2 control-label">个性签名</label>
 							<div class="col-sm-7">
-								<input type="password" class="form-control" id="tag" placeholder="个性签名">
+								<input type="text" class="form-control" id="tag" name="tag" placeholder="个性签名" value="<?=$tag?>">
 							</div>
 							<label class="col-sm-3" style="padding-top:7px "></label>
 						</div>
-
-
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
-								<button type="submit" class="btn btn-default">修改</button>
+								<button type="submit" class="btn btn-default" id="tag-update">修改</button>
 							</div>
 						</div>
 					</form>
-
 			</div>
 <!--			个人偏好-->
-			<div role="tabpanel" class="tab-pane" id="favorite">2</div>
+<!--			<div role="tabpanel" class="tab-pane" id="favorite">2</div>-->
 <!--			修改头像-->
-			<div role="tabpanel" class="tab-pane" id="avatar"></div>
+			<div role="tabpanel" class="tab-pane" id="avatar">
+				<?= \hyii2\avatar\AvatarWidget::widget(['imageUrl'=>\Yii::$app->user->identity->getavatar()]); ?>
+			</div>
 <!--			修改密码-->
 			<div role="tabpanel" class="tab-pane" id="passwod">
-				<form class="form-horizontal">
-
+				<?php $form = \yii\widgets\ActiveForm::begin(['id' => 'request-password-reset-form']); ?>
+				<?= $form->field($model, 'old_password')->textInput(['autofocus' => true]) ?>
+				<?= $form->field($model, 'new_password')->textInput() ?>
+				<?= $form->field($model, 'comfirm_password')->textInput() ?>
 				<div class="form-group">
-					<label for="inputPassword4" class="col-sm-2 control-label">新的密码</label>
-					<div class="col-sm-7">
-						<input type="email" class="form-control" id="inputPassword4" placeholder="请输入新的密码">
-					</div>
-					<label class="col-sm-3 text-metued" style="padding-top:7px "></label>
+					<?= \yii\helpers\Html::submitButton('修改', ['class' => 'btn btn-primary']) ?>
 				</div>
-					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-10">
-							<button type="submit" class="btn btn-default">修改</button>
-						</div>
-					</div>
-				</form>
+				<?php \yii\widgets\ActiveForm::end(); ?>
 			</div>
 <!--			修改邮箱-->
 			<div role="tabpanel" class="tab-pane" id="email">
-				<form class="form-horizontal">
-				<div class="form-group">
-					<label for="inputEmail4" class="col-sm-2 control-label">电子邮箱</label>
-					<div class="col-sm-7">
-						<input type="email" class="form-control" id="inputEmail4" placeholder="请输入新的邮箱">
-					</div>
-					<label class="col-sm-3 text-metued" style="padding-top:7px ">此邮箱将被公开</label>
-				</div>
+				<form class="form-horizontal" name="email-form">
 					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-10">
-							<button type="submit" class="btn btn-default">修改</button>
+						<label for="inputEmail4" class="col-sm-2 control-label">电子邮箱</label>
+						<div class="col-sm-7">
+							<input type="email" class="form-control" id="inputEmail4"  name="email" placeholder="请输入新的邮箱">
 						</div>
+						<label class="col-sm-3 text-metued" style="padding-top:7px ">此邮箱将被公开</label>
+					</div>
+					<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<span type="submit" class="btn btn-default" id="email-update">修改</span>
+							</div>
 					</div>
 				</form>
 			</div>
@@ -111,3 +97,59 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	var csrfToken = $('meta[name="csrf-token"]').attr("content");
+
+	$('#tag-update').on('click',function (e) {
+		e.preventDefault();
+		var param = {
+			profile: encodeURI($('form[name="profile"]').serialize()),
+			_csrf: csrfToken,
+		};
+		var url = '/user/profile-update';//收藏的的地址
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: param,
+			dataType: 'json',
+			async: true,
+			success: function (msg) {
+				if (msg.data == true)
+				{
+					location.reload();
+				}
+			}
+
+		});
+	})
+
+	$('#email-update').on('click', function (e) {
+		e.preventDefault();
+		var param = {
+			email: encodeURI($('form[name="email-form"]').serialize()),
+			_csrf: csrfToken,
+		};
+		var url = '/user/email-update';//邮箱的地址
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: param,
+			dataType: 'json',
+			async: true,
+			success: function (msg) {
+					location.reload();
+
+			},
+			error:function (msg) {
+				if (msg.status == 500)
+				{
+					alert('系统出现异常，请稍后再试');
+				}else {
+					alert('出现未知异常')
+				}
+			}
+
+		});
+	})
+</script>

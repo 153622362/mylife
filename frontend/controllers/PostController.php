@@ -65,10 +65,10 @@ class PostController extends BaseController
 				$comment_obj->post_id = $post_id;
 				$res = $comment_obj->save();
 				if (!empty($res)){
-					return $this->redirect(['post/index','id'=>$post_id]);
+					return $this->redirect(['/post/index','id'=>$post_id]);
 				}
 			}
-			return $this->redirect(['post/index','id'=>$post_id]);
+			return $this->redirect(['/post/index','id'=>$post_id]);
 
 		}
 		$data['article_info'] = PostForm::PostInfoById($post_id); //文章信息
@@ -133,7 +133,6 @@ class PostController extends BaseController
 				$data['ufav'] = 0;
 			}
 		}
-//		var_dump($data);exit;
 		return $this->render('index',[
 			'data'=>$data
 		]);
@@ -245,10 +244,10 @@ class PostController extends BaseController
 				$arr[$tmp_arr[0]] = $tmp_arr[1];
 			}
 		}
-
 		$arr['content'] = trim($arr['content']);
 		$arr['content'] = strip_tags($arr['content']);
-		$arr['content'] = urldecode($arr['content']);
+		$arr['content'] = urldecode(urldecode($arr['content']));
+//		var_dump(urldecode(urldecode($arr['content'])));
 		$res =  false;
 		if (!empty($arr['content']) && !empty($post_id)){
 			//如果回复的是子评论
