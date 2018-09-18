@@ -52,7 +52,7 @@ class Post extends \common\models\Post
 		$arr = self::find()
 			->alias('p')
 			->innerJoinWith('user u',false)
-			->select(['p.id','p.post_status','p.title','p.post_version','u.username','p.created_at'])
+			->select(['p.id','p.post_status','p.title','u.username','p.created_at'])
 			->where(['p.status'=>10,'p.post_category'=>4])
 			->orderBy('created_at desc')
 			->limit($limit)

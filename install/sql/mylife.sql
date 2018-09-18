@@ -350,7 +350,6 @@ CREATE TABLE `post` (
   `post_excellent` tinyint(255) DEFAULT NULL COMMENT '精品文章',
   `post_status` tinyint(4) DEFAULT NULL COMMENT '1 未解决 2已解决',
   `post_top` tinyint(2) NOT NULL DEFAULT '0' COMMENT '1文章置顶',
-  `post_version` varchar(5) DEFAULT '0.0.0' COMMENT '讨论的版本 此字段有写冗余',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 

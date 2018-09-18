@@ -16,7 +16,7 @@
 				<span aria-hidden="true">&laquo;</span>
 			</a>
 		</li>
-		<?php $count_page = ceil($count / 10);
+		<?php $count_page = ceil($count / $pageSize);
 		for ($i = 1 ; $i<= $count_page; $i++){
 			?>
 			<li class="<?php if (Yii::$app->request->get('page')== $i){echo 'active';}?>"><a href="?<?php $params = Yii::$app->request->get();

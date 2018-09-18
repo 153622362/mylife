@@ -9,6 +9,7 @@ use frontend\models\Fans;
 use frontend\models\Favorite;
 use frontend\models\Like;
 use frontend\models\Post;
+use frontend\models\TagUnion;
 use Yii;
 use yii\base\Model;
 
@@ -266,6 +267,26 @@ class PostForm extends Model
 			->asArray()
 			->all();
 		return $data;
+	}
+
+	public static function postTag($post_id)
+	{
+		$data = TagUnion::find()
+			->alias('tu')
+			->innerJoinWith('tag t', false)
+			->select(['t.tag_name','t.id'])
+			->where(['tu.content_id'=>$post_id])
+			->asArray()
+			->all();
+		if (!empty($data))
+		{
+			foreach ($data as $k=>$v)
+			{
+				$data['tag'][$v['id']] = $v['tag_name'];
+			}
+		}
+		return $data['tag'];
+
 	}
 
 

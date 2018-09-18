@@ -1,14 +1,83 @@
+<style>
+	.avatar-width{
+		width: 40px;
+	}
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	.media{
+		margin: 0;
+	}
+	.mt5{
+		margin-top: 5px;
+	}
+	.category{
+		display: inline-block;
+		min-width: 40px;
+		max-width: 100px;
+		word-break: break-all;
+		text-align: center;
+		background-color: #5cb85c;
+		border-radius: 0.25rem;
+		padding: 4px 2px;
+		color: white;
+		margin-right: 10px;
+		font-size: 10px;
+	}
+	a{
+		text-decoration: none;
+		color: #555;
+	}
+	a:hover{
+		text-decoration: none;
+		color: #555;
+	}
+	a:active{
+		color: grey;
+	}
+	.media:hover{
+		background-color: gainsboro;
+	}
+	.media{
+		border-bottom: 1px solid gainsboro;
+		padding: 10px 0px;
+	}
+
+	.mw360{
+		max-width: 360px;
+	}
+	.mw200{
+		max-width: 200px;
+	}
+	.title{
+		text-overflow: ellipsis;
+		display: inline-block;
+		word-break: keep-all;
+		overflow: hidden;
+	}
+	p{
+		margin: 0;
+	}
+	.tag{
+		border-radius: 0.25rem;
+		padding: 3px;
+		background-color: gainsboro;
+		border: 1px dotted grey;
+	}
+	.tag:hover{
+		background-color: lightgreen;
+	}
+</style>
 <div class="col-lg-9">
 	<div>
-		<h1 style="display: inline-block">动态</h1>
 		<!-- Nav tabs -->
-		<ul class="nav nav-tabs navbar-right" role="tablist">
-			<li role="presentation" class="active"><a href="#dynamice" aria-controls="dynamice" role="tab" data-toggle="tab">全部动态</a></li>
-<!--			<li role="presentation" class=""><a href="#newestdynamic" aria-controls="newestdynamic" role="tab" data-toggle="tab">最新动态</a></li>-->
-<!--			<li role="presentation"><a href="#hotestdynamic" aria-controls="hotestdynamic" role="tab" data-toggle="tab">最热动态</a></li>-->
+		<ul class="nav nav-tabs " role="tablist">
+			<li role="presentation" class="active"><a href="/dynamic/index" aria-controls="dynamice" role="tab" data-toggle="tab">全部动态</a></li>
+
 		</ul>
 		<!-- Tab panes -->
-		<div class="tab-content">
+		<div class="tab-content mt5">
 <!--			全部动态-->
 			<div role="tabpanel" class="tab-pane active" id="dynamice">
 				<?php if (!empty($dy)){
@@ -16,94 +85,33 @@
 				?>
 				<div class="media">
 					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="<?=$v['avatar']?>" alt="" style="width: 40px">
+						<a href="/user/center?id=<?=$v['uid']?>">
+							<img class="media-object avatar-width" src="<?=$v['avatar']?>" alt="" title="<?=$v['username']?>" data-toggle="tooltip" data-placement="bottom">
 						</a>
 					</div>
 					<div class="media-body">
-						<h4 class="media-heading"><a href="/post/index?id=<?=$v['id']?>"><?=$v['title']?></a></h4>
+						<h4 class="media-heading">
+							<span class="category"><?=$v['post_category']?></span>
+							<a href="/post/index?id=<?=$v['id']?>" class="title mw360"><?=$v['title']?></a>
+						</h4>
 						<span class="text-muted">
-							<span class="badge text-success"><?=$v['username']?></span> 发布于 <?=date('Y-m-d',strtotime($v['created_at']))?>
-							留言 <span class="badge"><?=$v['comment']?></span>
-							收藏 <span class="badge"><?=$v['favorite']?></span>
-							浏览数 <span class="badge"><?=$v['visitor']?></span>
-							最后修改时间 <span class="badge"><?=$v['updated_at']?></span>
+							 <span title="留言" data-toggle="tooltip" data-placement="bottom" ><?=$v['comment']?></span>/
+							 <span title="收藏" data-toggle="tooltip" data-placement="bottom"><?=$v['favorite']?></span>/
+							 <span title="浏览量" data-toggle="tooltip" data-placement="bottom"><?=$v['visitor']?></span>/
+							 <span title="最后更新时间" data-toggle="tooltip" data-placement="bottom"><?=$v['updated_at']?></span>
 						</span>
 					</div>
-					<hr>
 				</div>
 					<?php }}?>
 
 <!--				导航栏-->
+				<?php if (!empty($dy)){?>
 				<?= \common\widgets\Nav::widget([
-					'count_page' => $count
+							'count_page' => $count,
+							'page_size' => $limit,
 				])?>
+				<?php }?>
 				<!--导航栏-->
-
-			</div>
-<!--			最新动态-->
-			<div role="tabpanel" class="tab-pane" id="newestdynamic">
-
-				<div class="media">
-					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" alt="" style="width: 40px">
-						</a>
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">Middle aligned media</h4>
-						...
-					</div>
-					<hr>
-				</div>
-				<div class="media">
-					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" alt="" style="width: 40px">
-						</a>
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">Middle aligned media</h4>
-						...
-					</div>
-					<hr>
-				</div>
-				<?=\yii\widgets\LinkPager::widget([
-					'pagination' => $pages,
-				])?>
-
-			</div>
-<!--			最热动态-->
-			<div role="tabpanel" class="tab-pane" id="hotestdynamic">
-
-				<div class="media">
-					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" alt="" style="width: 40px">
-						</a>
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">Middle aligned media</h4>
-						...
-					</div>
-					<hr>
-				</div>
-				<div class="media">
-					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="/static/img/logo.png" alt="" style="width: 40px">
-						</a>
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading">Middle aligned media</h4>
-						...
-					</div>
-					<hr>
-				</div>
-				<?= \common\widgets\Nav::widget([
-					'count_page' => $count
-				])?>
-
 			</div>
 
 		</div>
@@ -113,40 +121,39 @@
 
 <div class="col-lg-3">
 	<div class="panel panel-default">
-	<button class="btn btn-lg btn-success" style="width: 100%"><span class="glyphicon glyphicon-plus-sign"></span> <span>发布</span></button>
+		<a class="btn btn-lg btn-success btn-block"  href="/post/create" >
+			<span class="glyphicon glyphicon-plus-sign"></span> <span>发布</span>
+		</a>
 	</div>
-<!--	<div class="list-group">-->
-<!--		<a href="#" class="list-group-item active">-->
-<!--			Cras justo odio-->
-<!--		</a>-->
-<!--		<a href="#" class="list-group-item">Dapibus ac facilisis in</a>-->
-<!--		<a href="#" class="list-group-item">Morbi leo risus</a>-->
-<!--		<a href="#" class="list-group-item">Porta ac consectetur ac</a>-->
-<!--		<a href="#" class="list-group-item">Vestibulum at eros</a>-->
-<!--	</div>-->
 
+	<?php if (!empty($hot_dy)){ ?>
 	<div class="panel panel-default">
 		<div class="panel-heading">热门动态</div>
 		<div class="panel-body">
-			<?php if (!empty($hot_dy)){
-				foreach ($hot_dy as $v){ ?>
-					<a href="/post/index?id=<?=$v['id']?>"><?=$v['title']?></a>
-				<?php }}?>
+			<?php foreach ($hot_dy as $v){ ?>
+					<p>
+					<a href="/post/index?id=<?=$v['id']?>" class="title mw200" ><?=$v['title']?></a>
+					</p>
+				<?php }?>
 		</div>
 	</div>
+	<?php } ?>
+
+	<?php if (!empty($tag_arr)){ ?>
 	<div class="panel panel-default">
 		<div class="panel-heading">热门标签</div>
 		<div class="panel-body">
-
+			<?php foreach ($tag_arr as $v){ ?>
+					<a href="/dynamic/index?tag=<?=$v['id']?>" class="title mw200 tag" ><?=$v['tag_name']?></a>
+			<?php }?>
 		</div>
 	</div>
-
-
-
-<!--	<div class="panel panel-default">-->
-<!--		<div class="panel-heading">活跃用户</div>-->
-<!--		<div class="panel-body">-->
-<!--			活跃用户-->
-<!--		</div>-->
-<!--	</div>-->
+	<?php }?>
 </div>
+
+<script>
+	//bootstrap提示
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
+</script>

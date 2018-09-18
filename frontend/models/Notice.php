@@ -33,10 +33,10 @@ class Notice extends \common\models\Notice
     public function rules()
     {
         return [
-            [['sender', 'receiver', 'content'], 'required'],
+            [['sender', 'receiver', 'content_id'], 'required'],
             [['sender', 'receiver', 'read_status', 'status', 'category'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['content'], 'string', 'max' => 255],
+            [['content_id'], 'string', 'max' => 255],
         ];
     }
 

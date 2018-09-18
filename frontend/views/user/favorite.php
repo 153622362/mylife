@@ -16,11 +16,11 @@
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">全部收藏</a></li>
-			<li role="presentation"><a href="#turorial" aria-controls="turorial" role="tab" data-toggle="tab">教程</a></li>
-			<li role="presentation"><a href="#extension" aria-controls="extension" role="tab" data-toggle="tab">扩展</a></li>
-			<li role="presentation"><a href="#origin-code" aria-controls="origin-code" role="tab" data-toggle="tab">源码</a></li>
-			<li role="presentation"><a href="#question" aria-controls="question" role="tab" data-toggle="tab">问答</a></li>
-			<li role="presentation"><a href="#topic" aria-controls="topic" role="tab" data-toggle="tab">话题</a></li>
+			<li role="presentation"><a href="#turorial" aria-controls="turorial" role="tab" data-toggle="tab"><?=$category[0]['name']?></a></li>
+			<li role="presentation"><a href="#extension" aria-controls="extension" role="tab" data-toggle="tab"><?=$category[1]['name']?></a></li>
+			<li role="presentation"><a href="#origin-code" aria-controls="origin-code" role="tab" data-toggle="tab"><?=$category[2]['name']?></a></li>
+			<li role="presentation"><a href="#question" aria-controls="question" role="tab" data-toggle="tab"><?=$category[3]['name']?></a></li>
+			<li role="presentation"><a href="#topic" aria-controls="topic" role="tab" data-toggle="tab"><?=$category[4]['name']?></a></li>
 		</ul>
 		<!-- Tab panes -->
 		<div class="tab-content" style="margin-top: 5px">
@@ -31,7 +31,7 @@
 				<div class="media">
 					<div class="media-left media-middle">
 						<a href="/user/center?id=<?=$v['uid']?>">
-							<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
+							<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 						</a>
 					</div>
 					<div class="media-body">
@@ -44,12 +44,12 @@
 			<div role="tabpanel" class="tab-pane" id="turorial">
 				<?php if (!empty($data)){
 					foreach ($data as $v){
-						if ($v['post_category'] == 3){
+						if ($v['post_category'] == 1){
 						?>
 						<div class="media">
 							<div class="media-left media-middle">
 								<a href="/user/center?id=<?=$v['uid']?>">
-									<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
+									<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 								</a>
 							</div>
 							<div class="media-body">
@@ -68,7 +68,7 @@
 							<div class="media">
 								<div class="media-left media-middle">
 									<a href="/user/center?id=<?=$v['uid']?>">
-										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
+										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 									</a>
 								</div>
 								<div class="media-body">
@@ -82,12 +82,12 @@
 			<div role="tabpanel" class="tab-pane" id="origin-code">
 				<?php if (!empty($data)){
 					foreach ($data as $v){
-						if ($v['post_category'] == 1){
+						if ($v['post_category'] == 3){
 							?>
 							<div class="media">
 								<div class="media-left media-middle">
 									<a href="/user/center?id=<?=$v['uid']?>">
-										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
+										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 									</a>
 								</div>
 								<div class="media-body">
@@ -106,7 +106,7 @@
 							<div class="media">
 								<div class="media-left media-middle">
 									<a href="/user/center?id=<?=$v['uid']?>">
-										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
+										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 									</a>
 								</div>
 								<div class="media-body">
@@ -125,7 +125,7 @@
 							<div class="media">
 								<div class="media-left media-middle">
 									<a href="/user/center?id=<?=$v['uid']?>">
-										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 3rem">
+										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 									</a>
 								</div>
 								<div class="media-body">

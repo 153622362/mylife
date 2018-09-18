@@ -30,12 +30,12 @@
 				?>
 				<div class="media">
 					<div class="media-left media-middle">
-						<a href="/user/post?id=<?=$v['uid']?>">
+						<a href="/user/center?id=<?=$v['uid']?>">
 							<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 						</a>
 					</div>
 					<div class="media-body">
-						<a href="/user/post?id=<?=$v['uid']?>"><?=$v['username']?></a>
+<!--						<a href="/user/post?id=--><?//=$v['uid']?><!--">--><?//=$v['username']?><!--</a>-->
 						<span><?=$v['text_content']?></span>
 						<h5 class="text-muted"><?=$v['created_at']?></h5>
 					</div>

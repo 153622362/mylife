@@ -1,28 +1,25 @@
 <?php
 
-namespace common\models;
+namespace frontend\models;
 
 use Yii;
 
 /**
- * This is the model class for table "score".
+ * This is the model class for table "category".
  *
- * @property int $id 积分表
- * @property int $score
- * @property string $remark
- * @property int $user_id
- * @property int $category 1.财富 2.威望 3.积分
+ * @property int $id
+ * @property string $name
  * @property string $created_at
  * @property string $updated_at
  */
-class Score extends Base
+class Category extends \common\models\Category
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'score';
+        return 'category';
     }
 
     /**
@@ -31,9 +28,9 @@ class Score extends Base
     public function rules()
     {
         return [
-            [['score', 'user_id', 'category'], 'integer'],
+            [['name'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
-            [['remark'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 60],
         ];
     }
 
@@ -44,12 +41,14 @@ class Score extends Base
     {
         return [
             'id' => 'ID',
-            'score' => 'Score',
-            'remark' => 'Remark',
-            'user_id' => 'User ID',
-            'category' => 'Category',
+            'name' => 'Name',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
     }
+
+    public function getcategoryunion()
+	{
+		return $this->hasMany(CategoryUnion::className(), ['category_id'=>'id']);
+	}
 }

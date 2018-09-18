@@ -17,7 +17,7 @@ use Yii;
  * @property int $status 0 已删除 10正常
  * @property int $category 通知类型 0 评论 1@ 2关注
  */
-class Notice extends \yii\db\ActiveRecord
+class Notice extends Base
 {
     /**
      * {@inheritdoc}

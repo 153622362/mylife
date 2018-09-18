@@ -25,6 +25,7 @@ use Yii;
 class Nav extends \yii\bootstrap\Widget
 {
 	public $count_page = '';
+	public $page_size = 10;
 
 
     /**
@@ -34,6 +35,7 @@ class Nav extends \yii\bootstrap\Widget
     {
         return $this->render('nav',[
         	'count'=>$this->count_page,
+			'pageSize'=>$this->page_size,
 		]);
 
     }

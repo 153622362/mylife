@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "post".
@@ -23,6 +26,21 @@ use Yii;
  */
 class Post extends \yii\db\ActiveRecord
 {
+	public function behaviors()
+	{
+		return [
+			[
+				'class' => TimestampBehavior::className(),
+				'attributes' => [
+					ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+					ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+				],
+				// if you're using datetime instead of UNIX timestamp:
+				'value' => new Expression('NOW()'),
+			],
+		];
+	}
+
     /**
      * {@inheritdoc}
      */
@@ -37,10 +55,10 @@ class Post extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'visitor', 'post_category', 'post_excellent', 'post_status', 'post_top','status'], 'integer'],
+            [['status', 'visitor', 'post_category', 'post_excellent', 'post_status', 'post_top','status','author'], 'integer'],
             [['title', 'descript', 'content'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
-            [['title', 'descript', 'content', 'author','post_version'], 'string', 'max' => 255],
+            [['title', 'descript', 'tag'], 'string', 'max' => 255],
         ];
     }
 

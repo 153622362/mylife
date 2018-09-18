@@ -4,12 +4,12 @@ namespace frontend\controllers;
 
 use common\models\User;
 use common\models\UserExt;
+use frontend\models\Category;
 use frontend\models\Comment;
 use frontend\models\Fans;
 use frontend\models\Favorite;
 use frontend\models\form\ResetPasswordForm;
 use frontend\models\form\SignForm;
-use frontend\models\form\SiteForm;
 use frontend\models\form\UserForm;
 use frontend\models\Letter;
 use frontend\models\Notice;
@@ -57,7 +57,8 @@ class UserController extends BaseController
 	   $user_info['fans']= UserForm::userFans($user_id); //获取用户粉丝
 	   $user_info['visitors']= UserForm::userVisitors($user_id); //获取用户访客
 	   $user_info['dy'] = UserForm::dynamic($user_id);
-//	   var_dump($user_info);exit;
+	   $user_info['score'] = UserForm::userScore($user_id);
+
    		return $this->render('center',[
    			'user' => $user_info,
 			'other'=>$other
@@ -171,24 +172,22 @@ class UserController extends BaseController
 	   return json_encode(['status'=>200,'data'=>$res,'msg'=>'','timestamp'=>time()]);
    }
 
-//   public function actionCrop()
-//   {
-//	   $post = \Yii::$app->request->post();
-//		var_dump($post['result']);
-//   }
+
 
    public function actionPost()
    {
    		$user_id = \Yii::$app->user->id;
-	   $data = Post::find()
+	    $data = Post::find()
 		   ->alias('p')
 		   ->innerJoinWith('user u',false)
 		   ->select(['p.title','p.id pid','p.created_at','p.post_category','u.username','u.avatar','u.id uid'])
 		   ->where(['author'=>$user_id])
 		   ->asArray()
 		   ->all();
+	   $category = Category::find()->asArray()->orderBy('id asc')->all();
    		return $this->render('post',[
-   			'data'=>$data
+   			'data'=>$data,
+			'category' => $category
 		]);
    }
 
@@ -203,9 +202,10 @@ class UserController extends BaseController
 			->where(['user_id'=> $user_id])
 			->asArray()
 			->all();
-
-   		return $this->render('favorite', [
-   			'data' => $data
+	   $category = Category::find()->asArray()->orderBy('id asc')->all();
+	   return $this->render('favorite', [
+   			'data' => $data,
+		   	'category' => $category
 		]);
    }
 
@@ -222,7 +222,7 @@ class UserController extends BaseController
    		$data = Notice::find()
 			->alias('n')
 			->innerJoinWith('user u', false)
-			->select(['n.created_at','n.sender','n.category','n.content_id','u.id uid','u.avatar','u.username'])
+			->select(['n.created_at','n.sender','n.category','n.content_id'])
 			->where(['receiver'=>\Yii::$app->user->id])
 			->orderBy('read_status ASC, created_at DESC')
 			->asArray()
@@ -231,27 +231,28 @@ class UserController extends BaseController
 		{
 			foreach ($data as $k=>$v)
 			{
-
+				$user_obj = User::findOne($v['sender']);
+				$data[$k]['uid'] = $user_obj->id;
+				$data[$k]['avatar'] = $user_obj->avatar;
+				$data[$k]['username'] = $user_obj->username;
 				$text_content = '';
 				switch ($v['category']){
 					case 0: //评论
-						$user_obj = User::findOne($v['sender']);
 						$post_obj = Post::findOne($v['content_id']);
+
 						$text_content = '用户<a href="/user/center?id='.$user_obj->id.'">'.$user_obj->username.'</a>评论了你的文章<a href="/post/index?id='.$post_obj->id.'">'.$post_obj->title.'</a>';
 						break;
 					case 1: //@
-						$user_obj = User::findOne($v['sender']);
 						$comment_obj = Comment::findOne($v['content_id']);
-						$text_content = '用户<a href="/user/center?id='.$user_obj->id.'">'.$user_obj->username.'</a>回复了你的评论<a href="/post/index?id='.$comment_obj->post_id.'">'.$comment_obj->content.'</a>';
+						$text_content = '用户<a href="/user/center?id='.$user_obj->id.'">'.$user_obj->username.'</a>回复了你的评论<a href="/post/index?id='.$comment_obj->post_id.'">'.strip_tags($comment_obj->content).'</a>';
 						break;
 					case 2: //关注
-						$user_obj = User::findOne([$v['sender']]);
 						$text_content = '用户<a href="/user/center?id='.$user_obj->id.'">'.$user_obj->username.'</a>关注了你';
 						break;
 					default:
 						break;
 				}
-				$data[$k]['text_content'] = $text_content;
+				$data[$k]['text_content'] = urldecode($text_content);
 			}
 		}
    		return $this->render('notice',[
@@ -283,24 +284,29 @@ class UserController extends BaseController
 			->andWhere(['user_id'=>\Yii::$app->user->id])
 			->asArray()
 			->all();
-	   $sign_days = [];
+	   $sign_days = []; //本月签到的日期
 	   if (!empty($sign_data))
 	   {
 	   	 foreach ($sign_data as $v)
 		 {
-		 	$sign_days[] = substr($v['created_at'],8,2);
+		 	$sign_days[] = substr($v['created_at'],8,2); //[0=>'1',1=>'14']
 		 }
 	   }
+		//获取签到记录的数据
+	   $sign_statistics = SignForm::StatisticsSign(\Yii::$app->user->id, $first_day, $last_day);
+
    		return $this->render('sign',[
    			'data' => $data,
-			'sign_days' => $sign_days
+			'sign_days' => $sign_days,
+			'sign_statistics' => $sign_statistics
 		]);
    }
 
    //签到和补签API
    public function actionSignApi()
    {
-   		if (!empty(\Yii::$app->request->get()))
+	   $user_id = \Yii::$app->user->id;
+	   if (!empty(\Yii::$app->request->get()))
 		{
 			//补签
 			$date = strtotime(\Yii::$app->request->get('date'));
@@ -314,46 +320,52 @@ class UserController extends BaseController
 				$sign_data = Sign::find()
 					->andWhere(['>=','created_at', $begin])
 					->andWhere(['<=','created_at', $end])
-					->andWhere(['user_id'=>\Yii::$app->user->id])
+					->andWhere(['user_id'=> $user_id])
 					->asArray()
 					->one();
 				if (empty($sign_data))
 				{
 					$sign_obj = new Sign();
-					$sign_obj->user_id = \Yii::$app->user->id;
+					$sign_obj->user_id =  $user_id;
 					$sign_obj->created_at = date('Y-m-d H:i:s', $date);
 					$res = $sign_obj->save();
 					if (!empty($res))
 					{
-						$score_obj = new Score();
-						$score_obj->score = 10;
-						$score_obj->remark = date('Y-m-d H:i:s', $date) . '补签';
-						$score_obj->category = 3;
-						$score_obj->save();
-						\Yii::$app->session->setFlash('success', '补签成功');
+						//添加分数
+						$res = SignForm::addScore($user_id, $date);
+						if (!empty($res)){
+							$res = true;
+							\Yii::$app->session->setFlash('success', '补签成功');
+						}
 					}
 				}else{
 					$message = '你已经签到过了';
 				}
 				return json_encode(['status'=>200,'data'=>$res,'msg'=>"$message",'timestamp'=>time()], JSON_UNESCAPED_UNICODE);
-
-
 			}
-			return 1;
 		}
 	   $res = false;
-	   $sign_data = SignForm::QuerySign();
+	   $sign_data = SignForm::QuerySign(); //查询是否已签到
 	   if (empty($sign_data)){
+	   	//未签到则进行签到
+		   $transaction = \Yii::$app->db->beginTransaction();
 		   $sign_obj = new Sign();
-		   $sign_obj->user_id = \Yii::$app->user->id;
+		   $sign_obj->user_id =  $user_id;
 		   $sign_obj->created_at = date('Y-m-d H:i:s', time());
 		   $res = $sign_obj->save();
 		   if (!empty($res)) {
-			   $score_obj = new Score();
-			   $score_obj->score = 10;
-			   $score_obj->remark = date('Y-m-d H:i:s', time()) . '签到';
-			   $score_obj->category = 3;
-			   $score_obj->save();
+			   $res = SignForm::addScore($user_id);
+			   if (!empty($res)){
+				    $transaction->commit();
+			   		$res = true;
+				   \Yii::$app->session->setFlash('success', '签到成功');
+			   }else{
+				   \Yii::$app->session->setFlash('error','积分系统出现错误');
+				   $transaction->rollBack();
+			   }
+		   }else{
+			   \Yii::$app->session->setFlash('error','积分系统出现错误');
+			   $transaction->rollBack();
 		   }
 
 	   }
@@ -467,6 +479,16 @@ class UserController extends BaseController
 		   $fan_obj->user_id = $uided;
 		   $fan_obj->fans_user_id= $uid;
 		   $res = $fan_obj->save();
+		   if (!empty($res)){
+		   $notice_obj = new Notice();
+		   $notice_obj->receiver = $uided;
+		   $notice_obj->sender = $uid;
+		   $notice_obj->category = 2;
+		   $notice_obj->read_status = 0;
+		   $notice_obj->content_id = $fan_obj->id;
+		   $notice_obj->status = 10;
+		   $res = $notice_obj->save();
+		   }
 		   return json_encode(['status'=>200,'data'=>$res,'msg'=>'','timestamp'=>time()]);
 	   }else{
 		   return json_encode(['status'=>200,'data'=>false,'msg'=>'exists','timestamp'=>time()]);

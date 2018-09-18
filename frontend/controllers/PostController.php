@@ -4,11 +4,13 @@ namespace frontend\controllers;
 
 use common\models\Post;
 use common\models\User;
+use frontend\models\Category;
 use frontend\models\Comment;
 use frontend\models\Fans;
 use frontend\models\Favorite;
 use frontend\models\form\PostForm;
 use frontend\models\Like;
+use frontend\models\Notice;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -50,27 +52,33 @@ class PostController extends BaseController
 
     public function actionIndex()
 	{
-		$post_id = Yii::$app->request->get('id',0);
-		$post_obj = Post::findOne($post_id);
-		$post_obj->visitor += 1;
-		$post_obj->save();
+
 		if (Yii::$app->request->isPost)
 		{
-			$post = Yii::$app->request->post();
-			$content = strip_tags($post['content']);
-			if (!empty($content) && !empty($post_id)){
-				$comment_obj = new Comment();
-				$comment_obj->content = strip_tags($post['content']);
-				$comment_obj->user_id = Yii::$app->user->id;
-				$comment_obj->post_id = $post_id;
-				$res = $comment_obj->save();
-				if (!empty($res)){
-					return $this->redirect(['/post/index','id'=>$post_id]);
+			$user_id = Yii::$app->user->id;
+			//添加评论
+			if (!empty($user_id)){
+				$post = Yii::$app->request->post();
+				$post_id = $post['post_id'];
+				$content = strip_tags($post['content']);
+				if (!empty($content) && !empty($post_id)){
+					$comment_obj = new Comment();
+					$comment_obj->content = strip_tags($post['content']);
+					$comment_obj->user_id = $user_id;
+					$comment_obj->post_id = $post_id;
+					$res = $comment_obj->save();
+					if (!empty($res)){
+						return $this->redirect(['/post/index','id'=>$post_id]);
+					}
 				}
 			}
 			return $this->redirect(['/post/index','id'=>$post_id]);
 
 		}
+		$post_id = Yii::$app->request->get('id',0);
+		$post_obj = Post::findOne($post_id);
+		$post_obj->visitor += 1;
+		$post_obj->save();
 		$data['article_info'] = PostForm::PostInfoById($post_id); //文章信息
 		$data['clike'] = PostForm::PostLikeByID($post_id); //点赞数
 		$data['cfav'] = PostForm::PostFavByID($post_id); //收藏数
@@ -80,6 +88,7 @@ class PostController extends BaseController
 		$data['hotdy'] = PostForm::hotestDynamic(); //热门动态
 		$data['userinfo'] = PostForm::UserInfo($data['article_info']); //作者信息
 		$data['cfan'] = PostForm::FanCount($data['article_info']['author']); //用户粉丝数
+		$data['tag'] = PostForm::postTag($post_id); //用户粉丝数
 		$user_id = Yii::$app->user->id;
 		$data['isfan'] = Fans::findOne(['user_id'=>$data['article_info']['author'], 'fans_user_id'=>$user_id]); //是否关注文章作者
 		if (!empty($user_id)){
@@ -146,7 +155,7 @@ class PostController extends BaseController
 
 		$count = PostForm::isLike($user_id, $post_id);
 		$res = false;
-		if (empty($count))
+		if (empty($count) && $user_id)
 		{
 			$obj = new Like();
 			$obj->user_id = $user_id;
@@ -166,7 +175,7 @@ class PostController extends BaseController
 
 		$count = PostForm::isFav($user_id, $post_id);
 		$res = false;
-		if (empty($count))
+		if (empty($count) && !empty($user_id))
 		{
 			$obj = new Favorite();
 			$obj->user_id = $user_id;
@@ -231,10 +240,12 @@ class PostController extends BaseController
 	//回复评论
 	public function actionReplyComment()
 	{
+		//回复主评论
+		//回复子评论
 		$reply_comment = Yii::$app->request->post('reply_comment'); //评论ID
-		$replyed_user_id = Yii::$app->request->post('replyed_user'); //子评论被回复ID
-//		$child_cid = Yii::$app->request->post('child_cid'); //子评论ID
+		$replyed_user_id = Yii::$app->request->post('replyed_user'); //被回复评论作者id
 		$post_id = Yii::$app->request->post('post_id'); //文章ID
+		$ccid = Yii::$app->request->post('child_cid'); //子评论id
 		$param_arr = explode( '&', $reply_comment);
 		if (is_array($param_arr))
 		{
@@ -244,33 +255,58 @@ class PostController extends BaseController
 				$arr[$tmp_arr[0]] = $tmp_arr[1];
 			}
 		}
-		$arr['content'] = trim($arr['content']);
-		$arr['content'] = strip_tags($arr['content']);
-		$arr['content'] = urldecode(urldecode($arr['content']));
-//		var_dump(urldecode(urldecode($arr['content'])));
+//		---------------------
 		$res =  false;
-		if (!empty($arr['content']) && !empty($post_id)){
-			//如果回复的是子评论
-			if (!empty($replyed_user_id))
-			{
-				$user_obj = User::findOne($replyed_user_id);
-				if (!empty($user_obj))
-				{
-					$username = $user_obj->username;
-				}
-				$a_tag_content = "<a href='/user/center?id=$replyed_user_id'>@$username</a>&nbsp;&nbsp;";
-				//通知被@用户 //TODO
+		$user_id = Yii::$app->user->id;
+		if (!empty($user_id)){
+			$message = '不能回复自己的评论';
+			if ($replyed_user_id != Yii::$app->user->id){
+				$message = '';
+			$arr['content'] = trim($arr['content']);
+			$arr['content'] = strip_tags($arr['content']);
+			$arr['content'] = urldecode(urldecode($arr['content']));
+			if (!empty($arr['content']) && !empty($post_id)){ //内容不为空和文章idb不为空
 
+				if (!empty($replyed_user_id))
+				{
+					//如果回复的是子评论
+					$user_obj = User::findOne($replyed_user_id);
+					if (!empty($user_obj))
+					{
+						$username = $user_obj->username;
+					}
+					$a_tag_content = "<a href='/user/center?id=$replyed_user_id'>@$username</a>&nbsp;&nbsp;";
+				}
+				$arr['content'] = $a_tag_content.$arr['content'];
+				$obj = new Comment();
+				$obj->content = $arr['content'];
+				$obj->user_id = $user_id;
+				$obj->post_id = $post_id;
+				$obj->pid = $arr['pid'];
+				$res = $obj->save();
+				//通知被@用户或文章作者 //TODO
+				if (!empty($replyed_user_id))
+				{
+					$user_id = $replyed_user_id;
+					$category = 1;
+					$content_id = $ccid;
+				}else{
+					$user_id = Post::findOne($post_id)['author']; //文章作者
+					$category = 0;
+					$content_id = $post_id;
+				}
+				$notice_obj = new Notice();
+				$notice_obj->receiver = $user_id;
+				$notice_obj->sender = $user_id;
+				$notice_obj->category = $category;
+				$notice_obj->read_status = 0;
+				$notice_obj->content_id = $content_id;
+				$notice_obj->status = 10;
+				$res = $notice_obj->save();
+				}
 			}
-			$arr['content'] = $a_tag_content.$arr['content'];
-			$obj = new Comment();
-			$obj->content = $arr['content'];
-			$obj->user_id = Yii::$app->user->id;
-			$obj->post_id = $post_id;
-			$obj->pid = $arr['pid'];
-			$res = $obj->save();
 		}
-		return json_encode(['status'=>200,'data'=>$res,'msg'=>'','timestamp'=>time()]);
+		return json_encode(['status'=>200,'data'=>$res,'msg'=>$message,'timestamp'=>time()]);
 	}
 
 	//文章举报
@@ -278,6 +314,34 @@ class PostController extends BaseController
 	{
 		var_dump(Yii::$app->request->post());
 		var_dump(urldecode(Yii::$app->request->post('form')));
+	}
+
+	public function actionCreate()
+	{
+		if (Yii::$app->request->isPost)
+		{
+//			var_dump(Yii::$app->request->post());exit;
+			$user_id = Yii::$app->user->id;
+			if (!empty($user_id)){
+				$post_obj = new Post();
+				$post_obj->title = Yii::$app->request->post('title');
+				$post_obj->content = Yii::$app->request->post('content');
+				$post_obj->status = 10;
+				$post_obj->descript = substr(strip_tags(Yii::$app->request->post('content')), 0,60).'...';
+				$post_obj->author = $user_id;
+				$post_obj->post_category = Yii::$app->request->post('category');
+				$res = $post_obj->save();
+				if (!empty($res))
+				{
+					return $this->redirect('/post/index?id='.$post_obj->id);
+				}
+			}
+
+		}
+		$category = Category::find()->asArray()->all();
+		return $this->render('create',[
+			'category' => $category
+		]);
 	}
 
 

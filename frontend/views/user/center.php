@@ -19,9 +19,9 @@
 			<p style="word-break: break-all"><?=$user['descript']?></p>
 			<hr>
 				<ul class="stats" >
-				<li>财富值 <h3><?=$user['wealth_score']?></h3></li>
-				<li>威望值 <h3><?=$user['honor_score']?></h3></li>
-				<li>总积分 <h3><?=$user['score']?></h3></li>
+					<li>财富值 <h3><?=$user['score']['wealth']?:0?></h3></li>
+					<li>威望值 <h3><?=$user['score']['honor']?:0?></h3></li>
+					<li>总积分 <h3><?=$user['score']['score']?:0?></h3></li>
 				</ul>
 			</div>
 		</div>
@@ -43,8 +43,8 @@
 	<div>
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">全部动态</a></li>
-			<li role="presentation"><a href="#topic" aria-controls="topic" role="tab" data-toggle="tab">话题</a></li>
+			<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">动态</a></li>
+<!--			<li role="presentation"><a href="#topic" aria-controls="topic" role="tab" data-toggle="tab">话题</a></li>-->
 		</ul>
 		<!-- Tab panes -->
 <!--		全部动态-->
@@ -127,13 +127,14 @@
 <!--			</div>-->
 <!--		</div>-->
 <!--	</div>-->
+	<?php  if ($other == 1){
+		$content = '我的';
+	}else{
+		$content = $user['username'];
+	}
+	?>
+	<?php if (!empty($user['favorite'])){?>
 	<div class="panel panel-primary">
-		<?php  if ($other == 1){
-			$content = '我的';
-		}else{
-			$content = $user['username'];
-		}
-		?>
 		<div class="panel-heading"><?=$content?>关注</div>
 		<div class="panel-body">
 			<?php foreach ($user['favorite'] as $v){?>
@@ -141,6 +142,9 @@
 			<?php }?>
 		</div>
 	</div>
+	<?php }?>
+
+	<?php if (!empty($user['fans'])){?>
 	<div class="panel panel-danger">
 		<div class="panel-heading"><?=$content?>粉丝</div>
 		<div class="panel-body">
@@ -149,6 +153,9 @@
 			<?php }?>
 		</div>
 	</div>
+	<?php }?>
+
+	<?php if (!empty($user['visitors'])){?>
 	<div class="panel panel-info">
 		<div class="panel-heading"><?=$content?>访客</div>
 		<div class="panel-body">
@@ -158,5 +165,6 @@
 			<?php }?>
 		</div>
 	</div>
+	<?php }?>
 </div>
 

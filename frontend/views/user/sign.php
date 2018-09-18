@@ -136,15 +136,16 @@
 		<div class="col-lg-6">
 			<h1>签到统计</h1>
 			<ul>
-				<li>总签到天数：天</li>
-				<li>当月连续签到：天</li>
-				<li>最多连续签到：天</li>
+				<li>月签到天数：<?=$sign_statistics['m_count']?>天</li>
+				<li>总签到天数：<?=$sign_statistics['count']?>天</li>
+				<li>当月连续签到：<?=$sign_statistics['m_sign']?>天</li>
+				<li>最多连续签到：<?=$sign_statistics['t_sign']?>天</li>
 			</ul>
 			<h1>补签记录</h1>
 			<ul>
-				<li>已用补签卡数量：张</li>
-				<li>可用补签卡数量：张</li>
-				<li>失效补签卡数量：张</li>
+<!--				<li>已用补签卡数量：张</li>-->
+<!--				<li>可用补签卡数量：张</li>-->
+<!--				<li>失效补签卡数量：张</li>-->
 				<blockquote class="note">补签说明：只能补签近3天的日期</blockquote>
 			</ul>
 		</div>

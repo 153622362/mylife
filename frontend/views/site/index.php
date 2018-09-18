@@ -5,7 +5,6 @@
 $this->title = 'My Life';
 ?>
 <style>
-
     body{
         font-size: 14px;
     }
@@ -20,21 +19,15 @@ $this->title = 'My Life';
     .panel-body{
         padding-bottom: 2px;
     }
-    .dynamic{
-        padding-left: 0;
-    }
     .dynamic li{
         padding-left: 0.5rem;
     }
     h3{
         margin: 0;
     }
-
-
     .panel{
         font-size: 20px;
     }
-
     .box-wrapper {
         width: 45px;
         background: #009688;
@@ -46,7 +39,6 @@ $this->title = 'My Life';
         border: 1px solid grey;
         border-radius: 0.25rem;
     }
-
     .box {
         height: 100%;
         width: calc(100% + 17px);
@@ -54,7 +46,6 @@ $this->title = 'My Life';
         text-align: center;
         color: #f2f2f2;
     }
-
     .box .item {
         height: 40px;
         line-height: 40px;
@@ -62,7 +53,6 @@ $this->title = 'My Life';
         cursor: pointer;
         position: relative;
     }
-
     .box div p{
         margin: 0;
         width: 30px;
@@ -80,13 +70,6 @@ $this->title = 'My Life';
 </style>
 <link rel="stylesheet" href="/css/stie.css">
 <meta name="csrf-token" content="<?= \Yii::$app->request->csrfToken ?>">
-<!--    <div class="online visible-lg-block">-->
-<!--            <div style="border-bottom: 1px solid darkgrey;width: inherit;word-break: break-all">-->
-<!--                <p>在线</p>-->
-<!--                <p>241<p>人</p></p>-->
-<!--            </div>-->
-
-<!--    </div>-->
 <div style="position: fixed;top: 58px;left: 5px;width: 45px;text-align: center;border: 1px solid black;border-radius: 0.25rem" class="visible-lg-block">在线<span id="people">0</span>人</div>
 <div class="box-wrapper visible-lg-block" >
     <div class="box visible-lg-block" >
@@ -96,39 +79,39 @@ $this->title = 'My Life';
 
 <div class="container">
     <div class="col-lg-9">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div>
-						<h1 style="float: left"><span class="text-danger">快速</span>、和<span class="text-success">安全</span>、<span class="text-primary">专业</span>的 PHP 框架</h1>
-						<h3 style="clear:both;">Yii 是一个 高性能 的，适用于开发 WEB 2.0 应用的 PHP 框架。</h3>
-						<h4> Yii 自带了 丰富的功能，包括 MVC，DAO/ActiveRecord，I18N/L10N，缓存，身份验证和基于角色的访问控制，脚手架，测试等，可显著缩短开发时间。</h4>
-				</div>
-                <div>
-                    <button type="button" class="btn btn-success "><span class="glyphicon glyphicon-facetime-video"></span>  视频教程</button>
-                    <button type="button" class="btn btn-primary "><span class="glyphicon glyphicon-book"></span>  中文文档</button>
-                    <button type="button" class="btn btn-danger "><span class="glyphicon glyphicon glyphicon-save"></span>  下载框架</button>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="col-lg-4"><h1><span class="glyphicon glyphicon-flash text-danger">快速</span></h1><h5 class="text-muted">Yii 仅加载您需要的功能，具有强大的缓存支持，通过尽可能少的开销提供最大化的功能。</h5></div>
-                <div class="col-lg-4"><h1><span class="glyphicon glyphicon-link text-success">安全</span></h1><h5 class="text-muted">Yii 的标准是安全的，健全的默认设置和内置工具可帮助您编写更加稳定和安全的代码。</h5></div>
-                <div class="col-lg-4"><h1><span class="glyphicon glyphicon-thumbs-up text-primary">专业</span></h1><h5 class="text-muted">Yii 使用简单但功能强大的 API 和代码生成功能，让您在更短的时间内编写更多代码。</h5></div>
-
-            </div>
-        </div>
+<!--        <div class="panel panel-default">-->
+<!--            <div class="panel-body">-->
+<!--                <div>-->
+<!--						<h1 style="float: left"><span class="text-danger">快速</span>、和<span class="text-success">安全</span>、<span class="text-primary">专业</span>的 PHP 框架</h1>-->
+<!--						<h3 style="clear:both;">Yii 是一个 高性能 的，适用于开发 WEB 2.0 应用的 PHP 框架。</h3>-->
+<!--						<h4> Yii 自带了 丰富的功能，包括 MVC，DAO/ActiveRecord，I18N/L10N，缓存，身份验证和基于角色的访问控制，脚手架，测试等，可显著缩短开发时间。</h4>-->
+<!--				</div>-->
+<!--                <div>-->
+<!--                    <button type="button" class="btn btn-success "><span class="glyphicon glyphicon-facetime-video"></span>  视频教程</button>-->
+<!--                    <button type="button" class="btn btn-primary "><span class="glyphicon glyphicon-book"></span>  中文文档</button>-->
+<!--                    <button type="button" class="btn btn-danger "><span class="glyphicon glyphicon glyphicon-save"></span>  下载框架</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="panel panel-default">-->
+<!--            <div class="panel-body">-->
+<!--                <div class="col-lg-4"><h1><span class="glyphicon glyphicon-flash text-danger">快速</span></h1><h5 class="text-muted">Yii 仅加载您需要的功能，具有强大的缓存支持，通过尽可能少的开销提供最大化的功能。</h5></div>-->
+<!--                <div class="col-lg-4"><h1><span class="glyphicon glyphicon-link text-success">安全</span></h1><h5 class="text-muted">Yii 的标准是安全的，健全的默认设置和内置工具可帮助您编写更加稳定和安全的代码。</h5></div>-->
+<!--                <div class="col-lg-4"><h1><span class="glyphicon glyphicon-thumbs-up text-primary">专业</span></h1><h5 class="text-muted">Yii 使用简单但功能强大的 API 和代码生成功能，让您在更短的时间内编写更多代码。</h5></div>-->
+<!---->
+<!--            </div>-->
+<!--        </div>-->
         <div class="panel panel-default">
             <div class="panel-heading"><h3><span class="glyphicon glyphicon-send"></span>  最新动态</h3></div>
             <div class="panel-body">
                 <?php if (is_array($dynamic) && count($dynamic) > 0){ ?>
-                <div class="col-lg-6 dynamic">
+                <div class="col-lg-6 ">
 					<ul class="list-unstyled ">
                         <?php for ($x = 0; $x<=4; $x++){?>
 						<li style="line-height: 35px">
                             <div class="text-one-line" style="width: 20rem;display: inline-block">
                                 <span class="glyphicon glyphicon-menu-right font-size " style="color: grey"></span>
-                                <a href=""><?=$dynamic[$x]['title']?></a>
+                                <a href="/post/index?id=<?=$dynamic[$x]['id']?>"><?=$dynamic[$x]['title']?></a>
                             </div>
                             <span style="font-size: 1rem;float: right;color: grey" class="hidden-xs hidden-md  hidden-sm"><?php echo date('Y-m-d',strtotime($dynamic[$x]['created_at']))?></span>
                         </li>
@@ -137,12 +120,15 @@ $this->title = 'My Life';
 				</div>
                 <?php if (is_array($dynamic) && count($dynamic) >5 ){?>
                 <div class="col-lg-6 hidden-xs hidden-md hidden-sm">
-					<ul class="list-unstyled" style="line-height: 35px">
+					<ul class="list-unstyled">
                         <?php for ($x = 5; $x<=9; $x++){ if (!empty($dynamic[$x]['title'])){?>
-                            <li class="text-one-line col-lg-9"><span class="glyphicon glyphicon-menu-right font-size" style="color: grey"></span>
-                                <a href=""><?=$dynamic[$x]['title']?></a>
+                            <li  style="line-height: 35px">
+                                <div class="text-one-line" style="width: 20rem;display: inline-block">
+                                    <span class="glyphicon glyphicon-menu-right font-size" style="color: grey"></span>
+                                    <a href="/post/index?id=<?=$dynamic[$x]['id']?>"><?=$dynamic[$x]['title']?></a>
+                                </div>
+                                <span style="font-size: 1rem;float: right;color: grey"><?php echo date('Y-m-d',strtotime($dynamic[$x]['created_at']))?></span>
                             </li>
-                            <span style="font-size: 1rem;float: right;color: grey"><?php echo date('Y-m-d',strtotime($dynamic[$x]['created_at']))?></span>
                         <?php }}}?>
 					</ul>
 				</div>
@@ -154,7 +140,7 @@ $this->title = 'My Life';
                 <table class="table table-hover">
                     <tr>
                         <th style="width: 20rem">问题</th>
-                        <th class="hidden-xs hidden-sm hidden-md">版本</th>
+<!--                        <th class="hidden-xs hidden-sm hidden-md">版本</th>-->
                         <th class="hidden-xs hidden-sm hidden-md">提问者</th>
                         <th class="hidden-xs hidden-sm hidden-md">时间</th>
                         <th class="hidden-xs hidden-sm hidden-md">回答</th></tr>
@@ -162,10 +148,10 @@ $this->title = 'My Life';
                     <tr><td >
                             <div class="col-lg-9 text-one-line" style="padding-left: 0px;width: 20rem">
                             <?php if ($v_question['post_status'] == 1){ echo '<span class="glyphicon glyphicon-question-sign text-danger"></span>';}else{ echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>';}?>
-                            <a href="" class=""><?=$v_question['title']?></a>
+                            <a href="/post/index?id=<?=$v_question['id']?>" class=""><?=$v_question['title']?></a>
                             </div>
                         </td>
-                        <td class="hidden-xs hidden-sm hidden-md"><?=$v_question['post_version']?></td>
+<!--                        <td class="hidden-xs hidden-sm hidden-md">--><?//=$v_question['post_version']?><!--</td>-->
                         <td class="hidden-xs hidden-sm hidden-md"><?=$v_question['username']?></td>
                         <td class="hidden-xs hidden-sm hidden-md"><?=$v_question['created_at']?></td>
                         <td class="hidden-xs hidden-sm hidden-md"><span class="badge"><?=$v_question['count']?></span></td>
@@ -181,7 +167,7 @@ $this->title = 'My Life';
                 <table class="table table-hover">
                     <tr>
                         <th style="width: 20rem">话题</th>
-                        <th class="hidden-xs hidden-sm hidden-md">版块</th>
+<!--                        <th class="hidden-xs hidden-sm hidden-md">版块</th>-->
                         <th class="hidden-xs hidden-sm hidden-md">发布者</th>
                         <th class="hidden-xs hidden-sm hidden-md">时间</th>
                         <th class="hidden-xs hidden-sm hidden-md">留言</th></tr>
@@ -189,10 +175,10 @@ $this->title = 'My Life';
                         <tr>
                             <td>
                                 <div class="col-lg-9 text-one-line" style="padding-left: 0px;width: 20rem">
-                                <a><?=$v_topic['title']?></a>
+                                <a href="/post/index?id=<?=$v_topic['id']?>"><?=$v_topic['title']?></a>
                                 </div>
                             </td>
-                            <td class="hidden-xs hidden-sm hidden-md"><?=$v_topic['post_category']?></td>
+<!--                            <td class="hidden-xs hidden-sm hidden-md">--><?//=$v_topic['post_category']?><!--</td>-->
                             <td class="hidden-xs hidden-sm hidden-md"><?=$v_topic['username']?></td>
                             <td class="hidden-xs hidden-sm hidden-md"><?=$v_topic['created_at']?></td>
                             <td class="hidden-xs hidden-sm hidden-md"><span class="badge"><?=$v_topic['count']?></span></td>
@@ -211,7 +197,7 @@ $this->title = 'My Life';
             <spn  class="btn btn-primary btn-lg pull-right" style="width: 50%;border-radius:0 6px 6px 0;font-size: 10px"><?=date('Y-m-d', time())?><br>签到统计</spn>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading">大家都在说<a style="float: right;cursor:pointer">更多</a></div>
+            <div class="panel-heading">大家都在说</div>
             <div class="panel-body">
                 <div class="input-group">
                     <textarea  class="form-control" placeholder="文明上网,理性发言" style="resize:none;height: 54px" id="message"></textarea>
@@ -255,30 +241,30 @@ $this->title = 'My Life';
                 </div>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">最新教程<a style="float: right;cursor:pointer">更多</a></div>
-            <div class="panel-body">
-                <?php if(is_array($course)){foreach ($course as $v_course){?>
-                    <p class="text-one-line"><a href=""><?=$v_course['title']?></a></p>
-                <?php }}?>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">最新扩展<a style="float: right;cursor:pointer">更多</a></div>
-            <div class="panel-body">
-                <?php if(is_array($extension)){foreach ($extension as $v_extension){?>
-                    <p class="text-one-line"><a href=""><?=$v_extension['title']?></a></p>
-                <?php }}?>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">最新源码<a style="float: right;cursor:pointer">更多</a></div>
-            <div class="panel-body">
-                <?php if(is_array($origin_code)){foreach ($origin_code as $v_origin_code){?>
-                    <p class="text-one-line"><a href=""><?=$v_origin_code['title']?></a></p>
-                <?php }}?>
-            </div>
-        </div>
+<!--        <div class="panel panel-default">-->
+<!--            <div class="panel-heading">最新教程</div>-->
+<!--            <div class="panel-body">-->
+<!--                --><?php //if(is_array($course)){foreach ($course as $v_course){?>
+<!--                    <p class="text-one-line"><a href="">--><?//=$v_course['title']?><!--</a></p>-->
+<!--                --><?php //}}?>
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="panel panel-default">-->
+<!--            <div class="panel-heading">最新扩展</div>-->
+<!--            <div class="panel-body">-->
+<!--                --><?php //if(is_array($extension)){foreach ($extension as $v_extension){?>
+<!--                    <p class="text-one-line"><a href="">--><?//=$v_extension['title']?><!--</a></p>-->
+<!--                --><?php //}}?>
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="panel panel-default">-->
+<!--            <div class="panel-heading">最新源码</div>-->
+<!--            <div class="panel-body">-->
+<!--                --><?php //if(is_array($origin_code)){foreach ($origin_code as $v_origin_code){?>
+<!--                    <p class="text-one-line"><a href="">--><?//=$v_origin_code['title']?><!--</a></p>-->
+<!--                --><?php //}}?>
+<!--            </div>-->
+<!--        </div>-->
     </div>
 </div>
 

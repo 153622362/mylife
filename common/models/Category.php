@@ -5,20 +5,21 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "sign".
+ * This is the model class for table "category".
  *
  * @property int $id
- * @property int $user_id
+ * @property string $name
  * @property string $created_at
+ * @property string $updated_at
  */
-class Sign extends \yii\db\ActiveRecord
+class Category extends Base
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'sign';
+        return 'category';
     }
 
     /**
@@ -27,10 +28,10 @@ class Sign extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'integer'],
-            [['created_at'], 'safe'],
-			[['created_at', 'updated_at'], 'safe'],
-		];
+            [['name'], 'required'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['name'], 'string', 'max' => 60],
+        ];
     }
 
     /**
@@ -40,8 +41,9 @@ class Sign extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
+            'name' => 'Name',
             'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 }

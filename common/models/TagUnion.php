@@ -5,20 +5,22 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "sign".
+ * This is the model class for table "tag_union".
  *
  * @property int $id
- * @property int $user_id
+ * @property int $content_id
+ * @property int $tag_id
  * @property string $created_at
+ * @property string $updated_at
  */
-class Sign extends \yii\db\ActiveRecord
+class TagUnion extends Base
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'sign';
+        return 'tag_union';
     }
 
     /**
@@ -27,10 +29,10 @@ class Sign extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'integer'],
-            [['created_at'], 'safe'],
-			[['created_at', 'updated_at'], 'safe'],
-		];
+            [['content_id'], 'required'],
+            [['content_id', 'tag_id'], 'integer'],
+            [['created_at', 'updated_at'], 'safe'],
+        ];
     }
 
     /**
@@ -40,8 +42,10 @@ class Sign extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
+            'content_id' => 'Content ID',
+            'tag_id' => 'Tag ID',
             'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 }

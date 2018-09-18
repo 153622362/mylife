@@ -6,6 +6,7 @@ use common\models\Favorite;
 use common\models\User;
 use frontend\models\Dynamic;
 use frontend\models\Post;
+use frontend\models\Score;
 use frontend\models\Visitor;
 use Yii;
 use yii\base\Model;
@@ -15,13 +16,27 @@ use yii\base\Model;
  */
 class UserForm extends Model
 {
+	public static function userScore($user_id)
+	{
+		$data['wealth'] =Score::find() //财富
+			->where(['user_id'=>$user_id,'category'=>1])
+			->sum('score');
+		$data['honor'] =Score::find() //威望
+			->where(['user_id'=>$user_id,'category'=>2])
+			->sum('score');
+		$data['score'] =Score::find() //积分
+			->where(['user_id'=>$user_id,'category'=>3])
+			->sum('score');
+		return $data;
+
+	}
 	//获取用户基本信息
 	public static function userInfo($user_id)
 	{
 		return User::find()
 			->alias('u')
 			->innerJoinWith('userext ue', false)
-			->select(['u.id','u.username','u.created_at','u.avatar','ue.city','ue.descript','ue.last_log_in','ue.wealth_score','ue.honor_score','ue.score'])
+			->select(['u.id','u.username','u.created_at','u.avatar','ue.city','ue.descript','ue.last_log_in'])
 			->where(['u.id'=>$user_id])
 			->asArray()
 			->one();
