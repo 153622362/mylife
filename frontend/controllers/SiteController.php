@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 
+use frontend\models\Category;
 use frontend\models\form\ChatForm;
 use frontend\models\form\PostForm;
 use frontend\models\form\SignForm;
@@ -95,21 +96,20 @@ class SiteController extends BaseController
     {
 		$uid = Yii::$app->user->id;
     	$dynamic_newest = PostForm::getTheNewestDynamic(); //最新动态
-		$origin_code_newest = PostForm::getTheNewestOriginCode(); //最新源码
-		$extension_newest = PostForm::getTheNewestExtension(); //最新扩展
-		$course_newest = PostForm::getTheNewestCourse(); //最新教程
-		$question_newest = PostForm::getTheNewestQuestion(); //最新问答
-		$topic_newest = PostForm::getTheNewestTopic(); //最新话题
+		$category_arr = Category::find()->asArray()->all();
+		if (!empty($category_arr)){
+			foreach ($category_arr as $v)
+			{
+				$data[$v['name']] = PostForm::PostInfo($v['id']);
+
+			}
+		}
 		$chat_newest = ChatForm::getThenewestChat(); //最新聊天内容
 		$sign_data = SignForm::QuerySign();
 
 		return $this->render('index',[
         	'dynamic' => $dynamic_newest,
-			'origin_code' => $origin_code_newest,
-			'extension' => $extension_newest,
-			'course' => $course_newest,
-			'question' => $question_newest,
-			'topic' => $topic_newest,
+			'data' => $data,
 			'chat' => $chat_newest,
 			'uid' => $uid,
 			'sign_data' => $sign_data

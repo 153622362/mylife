@@ -65,6 +65,18 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 		margin: 0;
 	}
 
+	@-webkit-keyframes rotation{
+		from {-webkit-transform: rotate(0deg);}
+		to {-webkit-transform: rotate(360deg);}
+	}
+	.rotate:hover{
+		-webkit-transform: rotate(360deg);
+		animation: rotation 3s linear infinite;
+		-moz-animation: rotation 3s linear infinite;
+		-webkit-animation: rotation 3s linear infinite;
+		-o-animation: rotation 3s linear infinite;
+	}
+
 </style>
 <div class="row">
 	<div class="col-lg-9">
@@ -72,7 +84,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 		<hr>
 		<h4 class="text-muted">
 			<span class="blue">
-				<span data-toggle="tooltip" data-placement="top" title="作者">🧑<?=$data['article_info']['username']?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/user/center?id=<?=$data['article_info']['author']?>" data-toggle="tooltip" data-placement="top" title="作者">🧑<?=$data['article_info']['username']?></a>&nbsp;&nbsp;&nbsp;&nbsp;
 			</span>
 		<span class="blue">
 			   <span data-toggle="tooltip" data-placement="top" title="创建时间">⏰<?=substr($data['article_info']['created_at'],0,10)?> </span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -81,13 +93,13 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 				<span  data-toggle="tooltip" data-placement="top" title="文章浏览数!">🎃<?=$data['article_info']['visitor']?></span>&nbsp;&nbsp;&nbsp;&nbsp;
 			</span>
 			<span class="blue">
-				<span data-toggle="tooltip" data-placement="top" title="文章评论数!">📝</span> <?=$data['ccom']?:0?> &nbsp;&nbsp;&nbsp;&nbsp;
+				<span data-toggle="tooltip" data-placement="top" title="文章评论数!">📝</span> <?=$data['article_info']['ccom']?:0?> &nbsp;&nbsp;&nbsp;&nbsp;
 			</span>
 			<span class="blue">
-				<span class=" pointer yellow <?php if (!empty($data['ufav'])) echo 'text-success';?>" data-toggle="tooltip" data-placement="top" title="<?php echo !empty($data['ufav'])?"已收藏":"收藏一下"?>" onclick="fav(this)"><?php echo !empty($data['ufav'])?"🧡":"💛"; ?> <?=$data['cfav']?:0?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class=" pointer yellow <?php if (!empty($data['article_info']['ufav'])) echo 'text-success';?>" data-toggle="tooltip" data-placement="top" title="<?php echo !empty($data['article_info']['ufav'])?"已收藏":"收藏一下"?>" onclick="fav(this)"><?php echo !empty($data['article_info']['ufav'])?"🧡":"💛"; ?> <?=$data['article_info']['cfav']?:0?></span>&nbsp;&nbsp;&nbsp;&nbsp;
 			</span>
 			<span class="pull-right">
-		<span class="glyphicon glyphicon-thumbs-up pointer green <?php if (!empty($data['ulike'])) echo 'text-success';?>"  data-toggle="tooltip" data-placement="top" title="点个赞!" onclick="zan(this)"><?=$data['clike']?:0?></span>&nbsp;&nbsp;
+		<span class="glyphicon glyphicon-thumbs-up pointer green <?php if (!empty($data['article_info']['ulike'])) echo 'text-success';?>"  data-toggle="tooltip" data-placement="top" title="点个赞!" onclick="zan(this)"><?=$data['article_info']['clike']?:0?></span>&nbsp;&nbsp;
 <!--		<span class="glyphicon glyphicon-thumbs-down red" data-toggle="tooltip" data-placement="top" title="踩一下!">踩数</span>-->
 				</span>
 		</h4>
@@ -97,12 +109,12 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 		</div>
 		<hr>
 		<div class="row">
-			<?php if (!empty($data['likeinfo'])){
+			<?php if (!empty($data['article_info']['likeinfo'])){
 				echo '	<h5>喜欢这篇文章的人</h5>';
-				 foreach ($data['likeinfo'] as $v){
+				 foreach ($data['article_info']['likeinfo'] as $v){
 				?>
 					<a href="/user/center?id=<?=$v['id']?>" class="thumbnail inline-block" >
-						<img src="<?=$v['avatar']?>" alt="..." class="img-avatar">
+						<img src="<?=$v['avatar']?>" alt="..." class="img-avatar rotate">
 					</a>
 					<?php }}?>
 		</div>
@@ -119,11 +131,11 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 		<a href="/dynamic/index?tag=<?=$k?>" class="btn btn-success"><?=$v?></a>
 		<?php }}?>
 <!--		评论-->
-		<h4>共 <span><?=$data['ccom']?></span>条评论</h4>
+		<h4>共 <span><?=$data['article_info']['ccom']?></span>条评论</h4>
 		<hr>
 		<div>
-			<?php if (!empty($data['cominfo'])){
-				foreach ($data['cominfo'] as $v){
+			<?php if (!empty($data['article_info']['cominfo'])){
+				foreach ($data['article_info']['cominfo'] as $v){
 					?>
 			<div class="media">
 				<div class="media-left">
@@ -138,7 +150,9 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 							<span class="pull-right glyphicon glyphicon-flag blue pointer"  data-toggle="tooltip" data-placement="top" title="举报此评论!" cid="<?=$v['id']?>">举报</span></h4>
 						<h4><?=$v['content']?></h4>
 						<h5 >
-							<span class="glyphicon glyphicon-share-alt blue pointer"  onclick="replyComment(this)">回复</span>
+					<?php if (!empty(Yii::$app->user->id)){?>
+						<span class="glyphicon glyphicon-share-alt blue pointer"  onclick="replyComment(this)">回复</span>
+						<?php }?>
 							<span class="pull-right">
 								<span class="glyphicon glyphicon-thumbs-up green pointer<?php if (!empty($v['ulike'])) echo 'text-success'?>"  data-toggle="tooltip" data-placement="top" title="点个赞!" onclick="czan(this)"><?=$v['like']?> </span>
 								<span class="glyphicon glyphicon-thumbs-down red pointer <?php if (!empty($v['uunlike'])) echo 'text-danger'?> "  data-toggle="tooltip" data-placement="top" title="踩一下!" onclick="cunzan(this)"><?=$v['unlike']?></span>
@@ -165,7 +179,9 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 
 										</span>
 										<h5 ><?=urldecode($vv['content'])?></h5>
+									<?php if (!empty(Yii::$app->user->id)){?>
 										<span class="glyphicon glyphicon-share-alt blue pointer"  onclick="replyChildComment(this)" username="<?=$vv['username']?>" uid="<?=$vv['uid']?>">回复</span>
+										<?php }?>
 
 										<h4 >
 
@@ -179,6 +195,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 			</div>
 			<?php }}?>
 		</div>
+		<?php if (!empty(Yii::$app->user->id)){?>
 		<h2>
 		发表评论
 			<hr>
@@ -192,6 +209,9 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 			<input name="post_id" type="hidden" id="_csrf-frontend" value="<?= Yii::$app->request->get('id') ?>">
 			<button class="btn btn-primary publish" >发表</button>
 		</form>
+		<?php }else{?>
+			<a href="/site/login" class="btn btn-primary">登陆后即可发言</a>
+		<?php }?>
 	</div>
 
 	<div class="col-lg-3">
@@ -213,13 +233,13 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 				</div>
 				<table class="table-width">
 					<tr>
-						<td>粉丝 <p><?=$data['cfan']?></p></td>
-						<td>金钱 <p><?=$data['userinfo']['wealth_score']?></p></td>
-						<td>威望 <p><?=$data['userinfo']['honor_score']?></p></td>
-						<td>积分 <p><?=$data['userinfo']['score']?></p></td>
+						<td>粉丝 <p><?=$data['userinfo']['cfan']?></p></td>
+						<td>金钱 <p><?=$data['userinfo']['score']['wealth']?></p></td>
+						<td>威望 <p><?=$data['userinfo']['score']['honor']?></p></td>
+						<td>积分 <p><?=$data['userinfo']['score']['score']?></p></td>
 					</tr>
 				</table>
-				<span class="btn <?php if (!empty($data['isfan'])){ echo 'btn-danger';}else{echo 'btn-success';}?> btn-sm" <?php if (!empty($data['isfan'])){ echo 'disabled';}?> onclick="fan(this)" uid="<?=$data['userinfo']['id']?>"><?php if (!empty($data['isfan'])){ echo '已关注';}else{echo '关注';}?></span>&nbsp;
+				<span class="btn <?php if (!empty($data['userinfo']['isfan'])){ echo 'btn-danger';}else{echo 'btn-success';}?> btn-sm" <?php if (!empty($data['userinfo']['isfan'])){ echo 'disabled';}?> onclick="fan(this)" uid="<?=$data['userinfo']['id']?>"><?php if (!empty($data['userinfo']['isfan'])){ echo '已关注';}else{echo '关注';}?></span>&nbsp;
 <!--				<span class="btn btn-primary btn-sm">私信</span>-->
 			</div>
 		</div>
@@ -227,9 +247,9 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 			<h4 class="panel-heading m0" >热门动态</h4>
 			<div class="panel-body">
 				<?php if (!empty($data['hotdy'])){
-					foreach ($data['hotdy'] as $v)?>
-				<a href="/post/index?id=<?=$v['id']?>"><?=$v['title']?></a>
-				<?php }?>
+					foreach ($data['hotdy'] as $v){?>
+						<p><a href="/post/index?id=<?=$v['id']?>"><?=$v['title']?></a></p>
+				<?php }}?>
 			</div>
 		</div>
 	</div>
@@ -405,6 +425,9 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 				success: function(msg){
 					$(obj).addClass('text-success');
 					$(obj).html(parseInt($(obj).html()) + 1 );
+				},
+				error:function (msg) {
+					alert(msg.responseText);
 				}
 
 			});

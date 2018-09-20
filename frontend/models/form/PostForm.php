@@ -2,7 +2,6 @@
 
 namespace frontend\models\form;
 
-use Chumper\Zipper\Zipper;
 use common\models\User;
 use frontend\models\Comment;
 use frontend\models\Fans;
@@ -12,12 +11,20 @@ use frontend\models\Post;
 use frontend\models\TagUnion;
 use Yii;
 use yii\base\Model;
+use yii\db\Expression;
 
 /**
  * ContactForm is the model behind the contact form.
  */
 class PostForm extends Model
 {
+	public static function addVisistor($post_id)
+	{
+		Post::findOne($post_id);
+		if (!empty($post_id)){
+			Yii::$app->db->createCommand()->upsert('post', ['id'=> $post_id],['visitor'=> new Expression('visitor + 1')])->execute(); //访问+1
+		}
+	}
 	/**
 	 * 获取最新动态文章
 	 * @return array
@@ -33,67 +40,22 @@ class PostForm extends Model
 	/**
 	 * 获取最新问答文章
 	 */
-	public static function getTheNewestQuestion()
+	public static function PostInfo($category)
 	{
-		$arr = Post::getTheNewestQuestion();
+		$arr = Post::PostInfoByCa($category);
 		if (!empty($arr)){
 			foreach ($arr as $k =>$value)
 			{
-				$count = Comment::getArticleCountComment($value['id']);
-				$arr[$k]['count'] = $count;
+				$post_id = $value['id'];
+				$arr[$k]['cfav'] = PostForm::PostFavByID($post_id); //收藏数
+				$arr[$k]['count'] = PostForm::PostComByID($post_id); //评论数
 			}
 			return $arr;
 		}
 	}
 
-	/**
-	 * 获取最新话题文章
-	 */
-	public static function getTheNewestTopic()
-	{
-		$arr = Post::getTheNewestTopic();
-		if (!empty($arr)){
-			foreach ($arr as $k =>$value)
-			{
-				$count = Comment::getArticleCountComment($value['id']);
-				$arr[$k]['count'] = $count;
-			}
-			return $arr;
-		}
-	}
 
-	/**
-	 * 获取最新教程文章
-	 */
-	public static function getTheNewestCourse()
-	{
-		$arr = Post::getTheNewestCourse();
-		if (!empty($arr)){
-			return $arr;
-		}
-	}
 
-	/**
-	 * 获取最新扩展文章
-	 */
-	public static function getTheNewestExtension()
-	{
-		$arr = Post::getTheNewestExtension();
-		if (!empty($arr)){
-			return $arr;
-		}
-	}
-
-	/**
-	 * 获取最新源码文章
-	 */
-	public static function getTheNewestOriginCode()
-	{
-		$arr = Post::getTheNewestOriginCode();
-		if (!empty($arr)){
-			return $arr;
-		}
-	}
 
 //	获取热门动态(一周内)
 	public static function hotestDynamic()
@@ -112,7 +74,7 @@ class PostForm extends Model
 	}
 
 	//根据ID获取文章信息
-	public static function PostInfoById($post_id)
+	public static function PostInfoById($post_id, $user_id)
 	{
 		$data = Post::find()
 			->alias('p')
@@ -121,6 +83,16 @@ class PostForm extends Model
 			->where(['p.id'=>$post_id,'p.status'=>10])
 			->asArray()
 			->one();
+		$data['clike'] = self::PostLikeByID($post_id); //点赞数
+		$data['cfav'] = self::PostFavByID($post_id); //收藏数
+		$data['ccom'] = self::PostComByID($post_id); //评论数
+		$fav = PostForm::isFav($user_id, $post_id);
+		$like = PostForm::isLike($user_id, $post_id);
+		$data['ulike'] = $like > 0?1:0; //用户是否已点赞
+		$data['ufav'] = $fav > 0?1:0; //用户是否已收藏
+		$data['likeinfo'] = PostForm::PostLikeInfoById($post_id); //点赞信息
+		$data['cominfo'] = PostForm::PostComInfoById($post_id); //评论信息
+		self::addVisistor($post_id); //文章阅读+1
 		return $data;
 	}
 
@@ -144,7 +116,7 @@ class PostForm extends Model
 	public static function PostComByID($post_id)
 	{
 		$count = Comment::find()
-			->where(['post_id'=>$post_id])
+			->where(['post_id'=>$post_id,'pid'=>0])
 			->count();
 		return $count;
 	}
@@ -169,14 +141,14 @@ class PostForm extends Model
 			->alias('c')
 			->innerJoinWith('user u', false)
 			->select(['c.created_at','c.content','u.avatar','u.username','u.id uid','c.id','c.like','c.unlike'])
-			->where(['post_id'=>$post_id,'pid'=> 0])
+			->where(['c.post_id'=>$post_id,'c.pid'=> 0])
 			->asArray()
 			->all();
 		return $data;
 	}
 
 	//根据文章信息获取用户新
-	public static function UserInfo($article)
+	public static function UserInfo($article, $user_id)
 	{
 		if (!empty($article['author']))
 		{
@@ -187,6 +159,9 @@ class PostForm extends Model
 				->where(['u.id'=>$article['author']])
 				->asArray()
 				->one();
+			$data['cfan'] = PostForm::FanCount($data['article_info']['author']); //用户粉丝数
+			$data['score'] = UserForm::userScore($data['article_info']['author']); //积分
+			$data['isfan'] = Fans::findOne(['user_id'=>$data['article_info']['author'], 'fans_user_id'=>$user_id]); //是否关注文章作者
 			return $data;
 		}
 	}
@@ -288,7 +263,4 @@ class PostForm extends Model
 		return $data['tag'];
 
 	}
-
-
-
 }

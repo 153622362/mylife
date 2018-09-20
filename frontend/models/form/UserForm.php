@@ -4,6 +4,7 @@ namespace frontend\models\form;
 
 use common\models\Favorite;
 use common\models\User;
+use frontend\models\Comment;
 use frontend\models\Dynamic;
 use frontend\models\Post;
 use frontend\models\Score;
@@ -16,15 +17,28 @@ use yii\base\Model;
  */
 class UserForm extends Model
 {
+	public static function addComment($user_id,$post_id,$content)
+	{
+		$res = false;
+		if (!empty($content) && !empty($post_id)) {
+			$comment_obj = new Comment();
+			$comment_obj->content = $content;
+			$comment_obj->user_id = $user_id;
+			$comment_obj->post_id = $post_id;
+			$res = $comment_obj->save();
+		}
+		return $res;
+	}
+
 	public static function userScore($user_id)
 	{
-		$data['wealth'] =Score::find() //财富
+		$data['wealth'] = Score::find() //财富
 			->where(['user_id'=>$user_id,'category'=>1])
 			->sum('score');
-		$data['honor'] =Score::find() //威望
+		$data['honor'] = Score::find() //威望
 			->where(['user_id'=>$user_id,'category'=>2])
 			->sum('score');
-		$data['score'] =Score::find() //积分
+		$data['score'] = Score::find() //积分
 			->where(['user_id'=>$user_id,'category'=>3])
 			->sum('score');
 		return $data;

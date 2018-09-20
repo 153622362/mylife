@@ -36,7 +36,17 @@ class SignupForm extends Model
         ];
     }
 
-    /**
+
+    public function attributeLabels()
+	{
+		return [
+			'username' => '用户名',
+			'email' => '电子邮件',
+			'password' => '用户密码',
+		];
+	}
+
+	/**
      * Signs user up.
      *
      * @return User|null the saved model or null if saving fails

@@ -45,8 +45,8 @@ AppAsset::register($this);
         ['label' => '关于本站', 'url' => ['/site/about']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems_right[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems_right[] = ['label' => 'Login', 'url' => ['/site/login'],'items'=>[
+        $menuItems_right[] = ['label' => '注册', 'url' => ['/site/signup']];
+        $menuItems_right[] = ['label' => '登陆', 'url' => ['/site/login'],'items'=>[
             ['label'=>'账号登陆','url'=>['site/login']],
             ['label'=>'<hr style="border:0.3px solid gainsboro;padding: 0px;margin: 0px"/>','encode'=>false,'options'=>['style'=>'padding:0px;margin:0px']],
             ['label'=>'QQ登陆','options'=>['class'=>'disabled','title'=>'目前还未开通此功能']],

@@ -57,8 +57,13 @@ $this->title = 'My Life';
         margin: 0;
         width: 30px;
     }
+    a{
+        font-size: 16px;
+        color: #555555;
+    }
     a:hover{
         text-decoration: none;
+        color: inherit;
     }
     a:link{
         text-decoration: none;
@@ -79,28 +84,6 @@ $this->title = 'My Life';
 
 <div class="container">
     <div class="col-lg-9">
-<!--        <div class="panel panel-default">-->
-<!--            <div class="panel-body">-->
-<!--                <div>-->
-<!--						<h1 style="float: left"><span class="text-danger">快速</span>、和<span class="text-success">安全</span>、<span class="text-primary">专业</span>的 PHP 框架</h1>-->
-<!--						<h3 style="clear:both;">Yii 是一个 高性能 的，适用于开发 WEB 2.0 应用的 PHP 框架。</h3>-->
-<!--						<h4> Yii 自带了 丰富的功能，包括 MVC，DAO/ActiveRecord，I18N/L10N，缓存，身份验证和基于角色的访问控制，脚手架，测试等，可显著缩短开发时间。</h4>-->
-<!--				</div>-->
-<!--                <div>-->
-<!--                    <button type="button" class="btn btn-success "><span class="glyphicon glyphicon-facetime-video"></span>  视频教程</button>-->
-<!--                    <button type="button" class="btn btn-primary "><span class="glyphicon glyphicon-book"></span>  中文文档</button>-->
-<!--                    <button type="button" class="btn btn-danger "><span class="glyphicon glyphicon glyphicon-save"></span>  下载框架</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="panel panel-default">-->
-<!--            <div class="panel-body">-->
-<!--                <div class="col-lg-4"><h1><span class="glyphicon glyphicon-flash text-danger">快速</span></h1><h5 class="text-muted">Yii 仅加载您需要的功能，具有强大的缓存支持，通过尽可能少的开销提供最大化的功能。</h5></div>-->
-<!--                <div class="col-lg-4"><h1><span class="glyphicon glyphicon-link text-success">安全</span></h1><h5 class="text-muted">Yii 的标准是安全的，健全的默认设置和内置工具可帮助您编写更加稳定和安全的代码。</h5></div>-->
-<!--                <div class="col-lg-4"><h1><span class="glyphicon glyphicon-thumbs-up text-primary">专业</span></h1><h5 class="text-muted">Yii 使用简单但功能强大的 API 和代码生成功能，让您在更短的时间内编写更多代码。</h5></div>-->
-<!---->
-<!--            </div>-->
-<!--        </div>-->
         <div class="panel panel-default">
             <div class="panel-heading"><h3><span class="glyphicon glyphicon-send"></span>  最新动态</h3></div>
             <div class="panel-body">
@@ -134,60 +117,42 @@ $this->title = 'My Life';
 				</div>
             </div>
         </div>
+        <?php if (!empty($data)){
+            foreach ($data as $k=>$v){
+            ?>
         <div class="panel panel-default">
-            <div class="panel-heading"><h3><span class="glyphicon glyphicon-question-sign"></span>  最新问答</h3></div>
+            <div class="panel-heading"></span>  <?=$k?></h3></div>
             <div class="panel-body">
                 <table class="table table-hover">
                     <tr>
-                        <th style="width: 20rem">问题</th>
+                        <th style="width: 20rem">标题</th>
 <!--                        <th class="hidden-xs hidden-sm hidden-md">版本</th>-->
-                        <th class="hidden-xs hidden-sm hidden-md">提问者</th>
-                        <th class="hidden-xs hidden-sm hidden-md">时间</th>
-                        <th class="hidden-xs hidden-sm hidden-md">回答</th></tr>
-                    <?php if (is_array($question)){ foreach ($question as $v_question){ ?>
+                        <th class="hidden-xs hidden-sm hidden-md">作者</th>
+                        <th class="hidden-xs hidden-sm hidden-md">发表时间</th>
+                        <th class="hidden-xs hidden-sm hidden-md"></th></tr>
+                    <?php foreach ($v as $vv){
+                        ?>
                     <tr><td >
                             <div class="col-lg-9 text-one-line" style="padding-left: 0px;width: 20rem">
-                            <?php if ($v_question['post_status'] == 1){ echo '<span class="glyphicon glyphicon-question-sign text-danger"></span>';}else{ echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>';}?>
-                            <a href="/post/index?id=<?=$v_question['id']?>" class=""><?=$v_question['title']?></a>
+<!--                            --><?php //if ($v_question['post_status'] == 1){ echo '<span class="glyphicon glyphicon-question-sign text-danger"></span>';}else{ echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>';}?>
+                            <a href="/post/index?id=<?=$vv['id']?>" class=""><?=$vv['title']?></a>
                             </div>
                         </td>
-<!--                        <td class="hidden-xs hidden-sm hidden-md">--><?//=$v_question['post_version']?><!--</td>-->
-                        <td class="hidden-xs hidden-sm hidden-md"><?=$v_question['username']?></td>
-                        <td class="hidden-xs hidden-sm hidden-md"><?=$v_question['created_at']?></td>
-                        <td class="hidden-xs hidden-sm hidden-md"><span class="badge"><?=$v_question['count']?></span></td>
+<!--                        <td class="hidden-xs hidden-sm hidden-md">--><?//=$vv['post_version']?><!--</td>-->
+                        <td class="hidden-xs hidden-sm hidden-md"><a href="/user/center?id=<?=$vv['uid']?>"><?=$vv['username']?></a></td>
+                        <td class="hidden-xs hidden-sm hidden-md"><?=$vv['created_at']?></td>
+                        <td class="hidden-xs hidden-sm hidden-md">
+                                <span data-toggle="tooltip" data-placement="bottom" title="评论数"><?=$vv['count']?></span>/
+                                <span data-toggle="tooltip" data-placement="bottom" title="收藏数"><?=$vv['cfav']?></span>/
+                                <span data-toggle="tooltip" data-placement="bottom" title="浏览数"><?=$vv['visitor']?></span>
+                        </td>
                     </tr>
-                    <?php }}?>
+                    <?php }?>
                 </table>
             </div>
         </div>
+        <?php }}?>
 <!--		最新话题-->
-        <div class="panel panel-default">
-            <div class="panel-heading"><h3><span class="glyphicon glyphicon-magnet"></span>  最新话题</h3></div>
-            <div class="panel-body">
-                <table class="table table-hover">
-                    <tr>
-                        <th style="width: 20rem">话题</th>
-<!--                        <th class="hidden-xs hidden-sm hidden-md">版块</th>-->
-                        <th class="hidden-xs hidden-sm hidden-md">发布者</th>
-                        <th class="hidden-xs hidden-sm hidden-md">时间</th>
-                        <th class="hidden-xs hidden-sm hidden-md">留言</th></tr>
-                    <?php if (is_array($topic)){ foreach ($topic as $v_topic){ ?>
-                        <tr>
-                            <td>
-                                <div class="col-lg-9 text-one-line" style="padding-left: 0px;width: 20rem">
-                                <a href="/post/index?id=<?=$v_topic['id']?>"><?=$v_topic['title']?></a>
-                                </div>
-                            </td>
-<!--                            <td class="hidden-xs hidden-sm hidden-md">--><?//=$v_topic['post_category']?><!--</td>-->
-                            <td class="hidden-xs hidden-sm hidden-md"><?=$v_topic['username']?></td>
-                            <td class="hidden-xs hidden-sm hidden-md"><?=$v_topic['created_at']?></td>
-                            <td class="hidden-xs hidden-sm hidden-md"><span class="badge"><?=$v_topic['count']?></span></td>
-                        </tr>
-                    <?php }}?>
-
-                </table>
-            </div>
-        </div>
     </div>
 
 <!--	右侧-->
@@ -214,26 +179,19 @@ $this->title = 'My Life';
                             <div class="col-lg-3 col-sm-3 col-md-3" ><img src="<?=$v_chat['avatar']?>" style="width: 40px" alt=""></div>
                             <div class="col-lg-9 col-sm-9 col-md-9">
         <!--                        名字-->
-                                <a href=""><?=$v_chat['username']?></a>:
+                                <a href="/user/center?id=<?=$v_chat['id']?>"><?=$v_chat['username']?></a>:
         <!--                        内容-->
                                 <span style="word-break: break-all;font-size: 16px"><?=$v_chat['content']?></span>
         <!--                        留言底部-->
                                 <div style="margin: 1rem 0;font-size: 16px" class="text-muted" >
                                     <span  class="" style="font-size: 14px"><?=$v_chat['created_at']?></span>
                                     <span style="float: right;">
-                                        <a href="#" class="text-muted" message-id="<?=$v_chat['id']?>"><span class="glyphicon glyphicon-comment" title="回复"></span> <span><?=$v_chat['pid']?></span></a>
+                                        <a href="/chat/detail?id=<?=$v_chat['id']?>" class="text-muted" message-id="<?=$v_chat['id']?>"><span class="glyphicon glyphicon-comment" title="回复"></span> <span><?=$v_chat['pid']?></span></a>
                                         <a href="#" class="text-muted" chat-id="<?=$v_chat['id']?>"><span class="glyphicon glyphicon-thumbs-up <?php echo $v_chat['zan']? 'text-success':'' ?>" title="顶"  ></span> <span><?=$v_chat['like']?></span></a>
                                     </span>
                                 </div>
                             </div>
                                 <div class=" col-lg-offset-2 col-sm-offset-2 col-md-offset-2 col-xs-offset-2 col-lg-10" style="width:92%;max-height: 500px;overflow-y: scroll;display: none" message="<?=$v_chat['id']?>">
-<!--                                    一条回复的开始-->
-<!--                                    <div >-->
-<!--                                        <img src="/static/img/logo.png" style="width: 30px" alt="">-->
-<!--                                        <a>xxxx:</a>-->
-<!--                                        <span style="word-break: break-all;font-size: 16px">--><?//=$v_chat['content']?><!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>-->
-<!--                                        <p><span  class="text-muted" style="font-size: 14px">--><?//=$v_chat['created_at']?><!--</span></p>-->
-<!--                                    </div>-->
                                 </div>
                         </div>
                             <?php }}?>
@@ -241,34 +199,15 @@ $this->title = 'My Life';
                 </div>
             </div>
         </div>
-<!--        <div class="panel panel-default">-->
-<!--            <div class="panel-heading">最新教程</div>-->
-<!--            <div class="panel-body">-->
-<!--                --><?php //if(is_array($course)){foreach ($course as $v_course){?>
-<!--                    <p class="text-one-line"><a href="">--><?//=$v_course['title']?><!--</a></p>-->
-<!--                --><?php //}}?>
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="panel panel-default">-->
-<!--            <div class="panel-heading">最新扩展</div>-->
-<!--            <div class="panel-body">-->
-<!--                --><?php //if(is_array($extension)){foreach ($extension as $v_extension){?>
-<!--                    <p class="text-one-line"><a href="">--><?//=$v_extension['title']?><!--</a></p>-->
-<!--                --><?php //}}?>
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="panel panel-default">-->
-<!--            <div class="panel-heading">最新源码</div>-->
-<!--            <div class="panel-body">-->
-<!--                --><?php //if(is_array($origin_code)){foreach ($origin_code as $v_origin_code){?>
-<!--                    <p class="text-one-line"><a href="">--><?//=$v_origin_code['title']?><!--</a></p>-->
-<!--                --><?php //}}?>
-<!--            </div>-->
-<!--        </div>-->
     </div>
 </div>
 
 <script>
+    //bootstrap提示
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+
     var uid = '<?=$uid?>';
     var ws = new WebSocket("ws://192.168.199.102:3123");
     ws.onopen = function() {
@@ -415,9 +354,10 @@ $this->title = 'My Life';
             dataType: "json",
             success: function(msg){
                 var html = '';
+                html += '<a href="/chat/detail?id=' + pid + '" class="glyphicon glyphicon-share-alt blue pointer text-danger">回复</a>';
                 for(v_msg in msg)
                 {
-                     html +='<div child-msg='+ msg[v_msg].id +' ><img src="'+ msg[v_msg].avatar +'" style="width: 40px" alt=""> <a>'+ msg[v_msg].username +'</a>:<span style="word-break: break-all;font-size: 16px">'+ msg[v_msg].content +'</span> <p><span  class="text-muted" style="font-size: 14px">' + msg[v_msg].created_at +'</span></p> </div>';
+                     html +='<div child-msg='+ msg[v_msg].id +' ><img src="'+ msg[v_msg].avatar +'" style="width: 40px" alt=""> <a href="/user/center?id= '+ msg[v_msg].uid + '">'+ msg[v_msg].username +'</a>:<span style="word-break: break-all;font-size: 16px">'+ msg[v_msg].content +'</span> <p><span  class="text-muted" style="font-size: 14px">' + msg[v_msg].created_at +'</span></p> </div>';
                 }
                 $('[message='+ pid+']').prepend(html);
 

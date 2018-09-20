@@ -16,9 +16,27 @@ use frontend\models\Notice;
 use frontend\models\Post;
 use frontend\models\Score;
 use frontend\models\Sign;
+use yii\filters\AccessControl;
 
 class UserController extends BaseController
 {
+
+	public function behaviors()
+	{
+		return [
+			'access' => [
+				'class' => AccessControl::className(),
+				'only' => ['setting', 'profile-update','email-update','post','favorite','score','notice','sign','sign-api','message','letter','user-fan'],
+				'rules' => [
+					[
+						'actions'=> ['setting', 'profile-update','email-update','post','favorite','score','notice','sign','sign-api','message','letter','user-fan'],
+						'allow' => true,
+						'roles' => ['@'],
+					],
+				],
+			],
+		];
+	}
 	//在当前控制器的actions中添加如下配置
 	public function actions()
 	{
@@ -77,21 +95,17 @@ class UserController extends BaseController
 	 */
    public function actionSetting()
    {
+   		$u_obj = User::findOne(\Yii::$app->user->id);
    		$ue_obj = UserExt::findOne(['user_id'=>\Yii::$app->user->id]);
 		$model = new ResetPasswordForm();
 	   if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
-//		   if ($model->sendEmail()) {
 		   $model->resetPassword();
 		   \Yii::$app->session->setFlash('success', '修改密码成功！');
 		   return $this->redirect('/user/setting');
-
-//			   return $this->goHome();
-//		   } else {
-//			   \Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
-//		   }
 	   }
    		return $this->render('setting',[
    			'tag' => $ue_obj->descript,
+			'u_obj' => $u_obj,
 			'model' => $model
 		]);
    }
@@ -110,6 +124,8 @@ class UserController extends BaseController
 			   $arr[$tmp_arr[0]] = $tmp_arr[1];
 		   }
 		   $user_obj = User::findOne(['id'=>\Yii::$app->user->id,'status'=>User::STATUS_ACTIVE]);
+		   $user_obj->username = $arr['nickname'];
+		   $user_obj->save();
 		   if (!empty($user_obj))
 		   {
 			   $ue_obj = UserExt::findOne(['user_id'=>$user_obj->id]);
@@ -129,17 +145,16 @@ class UserController extends BaseController
 	   $email = \Yii::$app->request->post('email');
 	   $param_arr = explode( '&', $email);
 	   $res = false;
-	   $message = '';
 	   if (is_array($param_arr)) {
 		   $arr = [];
 		   foreach ($param_arr as $v) {
 			   $tmp_arr = explode('=', $v);
 			   $arr[$tmp_arr[0]] = $tmp_arr[1];
 		   }
-		   $user_obj = User::findOne(['id'=>\Yii::$app->user->id,'status'=>User::STATUS_ACTIVE]);
 		   $email = urldecode(urldecode($arr['email']));
 		   $email_exists = User::findOne(['email'=>$email]);
 		   if (empty($email_exists)) {
+			   $user_obj = User::findOne(['id'=>\Yii::$app->user->id,'status'=>User::STATUS_ACTIVE]);
 			   if (empty($user_obj->email))
 		   		{
 		   		//第一次绑定
@@ -174,6 +189,7 @@ class UserController extends BaseController
 
 
 
+   //我的帖子
    public function actionPost()
    {
    		$user_id = \Yii::$app->user->id;
@@ -191,6 +207,7 @@ class UserController extends BaseController
 		]);
    }
 
+   //我的收藏
    public function actionFavorite()
    {
 	   $user_id = \Yii::$app->user->id;
@@ -217,6 +234,7 @@ class UserController extends BaseController
 		]);
    }
 
+   //我的通知
    public function actionNotice()
    {
    		$data = Notice::find()
@@ -260,6 +278,7 @@ class UserController extends BaseController
 		]);
    }
 
+   //我的签到
    public function actionSign()
    {
    		$year = \Yii::$app->request->get('year', date('Y', time())); //获取年份，默认为当年
@@ -374,6 +393,7 @@ class UserController extends BaseController
 
    }
 
+   //我的私信
    public function actionMessage()
    {
    		$data = Letter::find()
@@ -462,9 +482,6 @@ class UserController extends BaseController
 	   return $this->render('letter', [
 	   			'data'=>$data,
 	   ]);
-
-
-
    }
 
    //关注用户
@@ -475,6 +492,10 @@ class UserController extends BaseController
 	   	$data = Fans::findOne(['user_id'=>$uided, 'fans_user_id'=>$uid]);
 	   if (empty($data))
 	   {
+		   if (empty($uid))
+		   {
+		   		return $this->redirect(['/site/login']);
+		   }
 		   $fan_obj = new Fans();
 		   $fan_obj->user_id = $uided;
 		   $fan_obj->fans_user_id= $uid;
@@ -494,8 +515,6 @@ class UserController extends BaseController
 		   return json_encode(['status'=>200,'data'=>false,'msg'=>'exists','timestamp'=>time()]);
 
 	   }
-
-
    }
 
 

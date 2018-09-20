@@ -9,10 +9,11 @@ use frontend\models\Comment;
 use frontend\models\Fans;
 use frontend\models\Favorite;
 use frontend\models\form\PostForm;
+use frontend\models\form\UserForm;
 use frontend\models\Like;
 use frontend\models\Notice;
 use Yii;
-use yii\filters\VerbFilter;
+use yii\db\Expression;
 use yii\filters\AccessControl;
 
 
@@ -27,24 +28,13 @@ class PostController extends BaseController
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['fav','zan','create'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
+                        'actions' => ['fav','zan','create'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
                 ],
             ],
         ];
@@ -52,96 +42,59 @@ class PostController extends BaseController
 
     public function actionIndex()
 	{
-
+		//发表评论
+		$user_id = Yii::$app->user->id;
 		if (Yii::$app->request->isPost)
 		{
-			$user_id = Yii::$app->user->id;
+			$res = false;
+			$post = Yii::$app->request->post();
+			$post_id = strip_tags($post['post_id']);
+			$content = strip_tags($post['content']);
 			//添加评论
-			if (!empty($user_id)){
-				$post = Yii::$app->request->post();
-				$post_id = $post['post_id'];
-				$content = strip_tags($post['content']);
-				if (!empty($content) && !empty($post_id)){
-					$comment_obj = new Comment();
-					$comment_obj->content = strip_tags($post['content']);
-					$comment_obj->user_id = $user_id;
-					$comment_obj->post_id = $post_id;
-					$res = $comment_obj->save();
-					if (!empty($res)){
-						return $this->redirect(['/post/index','id'=>$post_id]);
-					}
-				}
+			if (!empty($user_id) && !empty($post_id) && !empty($content)){
+				$res = UserForm::addComment($user_id,$post_id,$content); //添加评论
 			}
-			return $this->redirect(['/post/index','id'=>$post_id]);
-
+			if (!empty($res)){
+				return $this->redirect(['/post/index','id'=>$post_id]);
+			}else{
+				return $this->redirect(['/site/login']);
+			}
 		}
+
+		//信息页加载
 		$post_id = Yii::$app->request->get('id',0);
-		$post_obj = Post::findOne($post_id);
-		$post_obj->visitor += 1;
-		$post_obj->save();
-		$data['article_info'] = PostForm::PostInfoById($post_id); //文章信息
-		$data['clike'] = PostForm::PostLikeByID($post_id); //点赞数
-		$data['cfav'] = PostForm::PostFavByID($post_id); //收藏数
-		$data['ccom'] = PostForm::PostComByID($post_id); //评论数
-		$data['likeinfo'] = PostForm::PostLikeInfoById($post_id); //点赞信息
-		$data['cominfo'] = PostForm::PostComInfoById($post_id); //评论信息
+		$data['article_info'] = PostForm::PostInfoById($post_id, $user_id); //文章信息
+		$data['userinfo'] = PostForm::UserInfo($data['article_info'], $user_id); //作者信息
+		$data['tag'] = PostForm::postTag($post_id); //文章标签
 		$data['hotdy'] = PostForm::hotestDynamic(); //热门动态
-		$data['userinfo'] = PostForm::UserInfo($data['article_info']); //作者信息
-		$data['cfan'] = PostForm::FanCount($data['article_info']['author']); //用户粉丝数
-		$data['tag'] = PostForm::postTag($post_id); //用户粉丝数
-		$user_id = Yii::$app->user->id;
-		$data['isfan'] = Fans::findOne(['user_id'=>$data['article_info']['author'], 'fans_user_id'=>$user_id]); //是否关注文章作者
-		if (!empty($user_id)){
-			if (!empty($data['cominfo'])){
-				foreach ($data['cominfo'] as $k => $v)
+		$data['hotdy'] = PostForm::hotestDynamic(); //热门动态
+		if (!empty($data['article_info']['cominfo'])){
+				foreach ($data['article_info']['cominfo'] as $k => $v)
 				{
 					//此评论是否已赞
 					$clike = PostForm::isCLike($user_id, $v['id']);
 					$cunlike = PostForm::isCUnlike($user_id, $v['id']);
-					if ($clike > 0 )
-					{
-						$data['cominfo'][$k]['ulike'] = 1; //评论点赞
-					}else{
-						$data['cominfo'][$k]['ulike'] = 0;
-					}
-					if ($cunlike > 0 )
-					{
-						$data['cominfo'][$k]['uunlike'] = 1; //评论踩
-					}else{
-						$data['cominfo'][$k]['uunlike'] = 0;
-					}
-
+					$data['article_info']['cominfo'][$k]['ulike'] = $clike > 0 ?1:0;
+					$data['article_info']['cominfo'][$k]['uunlike'] = $cunlike > 0 ? 1: 0;
 					//查询评论子评论
-					$data['cominfo'][$k]['child_comment'] = PostForm::childChild($v['id'],$post_id);
-//					var_dump($data['cominfo'][$k]['child_comment']);exit;
-					if (is_array($data['cominfo'][$k]['child_comment']))
+					$data['article_info']['cominfo'][$k]['child_comment'] = PostForm::childChild($v['id'],$post_id);
+					if (is_array($data['article_info']['cominfo'][$k]['child_comment']))
 					{
-						foreach ($data['cominfo'][$k]['child_comment'] as $kk=>$vv)
+						foreach ($data['article_info']['cominfo'][$k]['child_comment'] as $kk=>$vv)
 						{
-								$data['cominfo'][$k]['child_comment'][$kk]['ulike'] = PostForm::isCLike($vv['uid'], $vv['id']); //子评论赞
-								$data['cominfo'][$k]['child_comment'][$kk]['uunlike'] = PostForm::isCUnlike($vv['uid'], $vv['id']); //子评论踩
+							$arr = explode('@ngyhd@', $vv['content']);
+							if (!empty($arr[1]) && !empty(intval($arr[1])))
+							{
+								$user_obj = User::findOne($arr[1]);
+								$data['article_info']['cominfo'][$k]['child_comment'][$kk]['content'] = "<a href='/user/center?id={$user_obj->id}'>@".$user_obj->username .'</a>'.'&nbsp;&nbsp;'.$arr['2'];
+							}
+								$data['article_info']['cominfo'][$k]['child_comment'][$kk]['ulike'] = PostForm::isCLike($vv['uid'], $vv['id']); //子评论赞
+								$data['article_info']['cominfo'][$k]['child_comment'][$kk]['uunlike'] = PostForm::isCUnlike($vv['uid'], $vv['id']); //子评论踩
 						}
 					}
 				}
 			}
 
-
-			$fav = PostForm::isFav($user_id, $post_id);
-			$like = PostForm::isLike($user_id, $post_id);
-			if ($like > 0)
-			{
-				$data['ulike'] = 1; //用户已点赞文章
-			}else{
-				$data['ulike'] = 0;
-			}
-
-			if ($fav > 0)
-			{
-				$data['ufav'] = 1; //用户已收藏文章
-			}else{
-				$data['ufav'] = 0;
-			}
-		}
 		return $this->render('index',[
 			'data'=>$data
 		]);
@@ -152,7 +105,10 @@ class PostController extends BaseController
 	{
 		$post_id = Yii::$app->request->get('post_id');
 		$user_id = Yii::$app->user->id;
-
+		if (empty($user_id))
+		{
+			return $this->redirect(['/site/login']);
+		}
 		$count = PostForm::isLike($user_id, $post_id);
 		$res = false;
 		if (empty($count) && $user_id)
@@ -163,7 +119,6 @@ class PostController extends BaseController
 			$obj->content_id = $post_id;
 			$res = $obj->save();
 		}
-
 		return json_encode(['status'=>200,'data'=>$res,'msg'=>'','timestamp'=>time()]);
 	}
 
@@ -192,6 +147,10 @@ class PostController extends BaseController
 	{
 		$comment_id = Yii::$app->request->get('comment_id');
 		$user_id = Yii::$app->user->id;
+		if (empty($user_id))
+		{
+			return $this->redirect(['/site/login']);
+		}
 		$count = PostForm::isCLike($user_id, $comment_id);
 		$res = false;
 		if (empty($count))
@@ -240,7 +199,7 @@ class PostController extends BaseController
 	//回复评论
 	public function actionReplyComment()
 	{
-		//回复主评论
+		//回复评论
 		//回复子评论
 		$reply_comment = Yii::$app->request->post('reply_comment'); //评论ID
 		$replyed_user_id = Yii::$app->request->post('replyed_user'); //被回复评论作者id
@@ -266,18 +225,8 @@ class PostController extends BaseController
 			$arr['content'] = strip_tags($arr['content']);
 			$arr['content'] = urldecode(urldecode($arr['content']));
 			if (!empty($arr['content']) && !empty($post_id)){ //内容不为空和文章idb不为空
-
-				if (!empty($replyed_user_id))
-				{
-					//如果回复的是子评论
-					$user_obj = User::findOne($replyed_user_id);
-					if (!empty($user_obj))
-					{
-						$username = $user_obj->username;
-					}
-					$a_tag_content = "<a href='/user/center?id=$replyed_user_id'>@$username</a>&nbsp;&nbsp;";
-				}
-				$arr['content'] = $a_tag_content.$arr['content'];
+				$prefix = $replyed_user_id?"@ngyhd@".$replyed_user_id.'@ngyhd@':'';
+				$arr['content'] = $prefix.$arr['content'];
 				$obj = new Comment();
 				$obj->content = $arr['content'];
 				$obj->user_id = $user_id;
@@ -305,8 +254,10 @@ class PostController extends BaseController
 				$res = $notice_obj->save();
 				}
 			}
+			return json_encode(['status'=>200,'data'=>$res,'msg'=>$message,'timestamp'=>time()]);
+		}else{
+			return $this->redirect(['/site/login']);
 		}
-		return json_encode(['status'=>200,'data'=>$res,'msg'=>$message,'timestamp'=>time()]);
 	}
 
 	//文章举报
@@ -320,7 +271,6 @@ class PostController extends BaseController
 	{
 		if (Yii::$app->request->isPost)
 		{
-//			var_dump(Yii::$app->request->post());exit;
 			$user_id = Yii::$app->user->id;
 			if (!empty($user_id)){
 				$post_obj = new Post();
@@ -335,6 +285,8 @@ class PostController extends BaseController
 				{
 					return $this->redirect('/post/index?id='.$post_obj->id);
 				}
+			}else{
+				return $this->redirect(['/site/login']);
 			}
 
 		}

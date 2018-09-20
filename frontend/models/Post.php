@@ -44,16 +44,14 @@ class Post extends \common\models\Post
 
 	}
 
-	/**
-	 * 获取最新问答文章
-	 */
-	public static function getTheNewestQuestion($limit = 10)
+
+	public static function PostInfoByCa($category, $limit = 10)
 	{
 		$arr = self::find()
 			->alias('p')
 			->innerJoinWith('user u',false)
-			->select(['p.id','p.post_status','p.title','u.username','p.created_at'])
-			->where(['p.status'=>10,'p.post_category'=>4])
+			->select(['p.id','p.post_status','p.title','p.created_at','p.post_category','p.visitor','u.username','u.id uid'])
+			->where(['p.status'=>10,'p.post_category'=>$category])
 			->orderBy('created_at desc')
 			->limit($limit)
 			->asArray()
@@ -78,50 +76,7 @@ class Post extends \common\models\Post
 		return $arr;
 	}
 
-	/**
-	 * 获取最新教程文章
-	 */
-	public static function getTheNewestCourse($limit = 10)
-	{
-		$arr = self::find()
-			->select(['title'])
-			->where(['status'=>10,'post_category'=>3])
-			->orderBy('created_at desc')
-			->limit($limit)
-			->asArray()
-			->all();
-		return $arr;
-	}
 
-	/**
-	 * 获取最新扩展文章
-	 */
-	public static function getTheNewestExtension($limit = 10)
-	{
-		$arr = self::find()
-			->select(['title'])
-			->where(['status'=>10,'post_category'=>2])
-			->orderBy('created_at desc')
-			->limit($limit)
-			->asArray()
-			->all();
-		return $arr;
-	}
-
-	/**
-	 * 获取最新源码文章
-	 */
-	public static function getTheNewestOriginCode($limit = 10)
-	{
-		$arr = self::find()
-			->select(['title'])
-			->where(['status'=>10,'post_category'=>1])
-			->orderBy('created_at desc')
-			->limit($limit)
-			->asArray()
-			->all();
-		return $arr;
-	}
 
 
 

@@ -15,7 +15,7 @@ use Yii;
  * @property int $like 赞同
  * @property int $pid 自评论
  */
-class Chat extends \yii\db\ActiveRecord
+class Chat extends Base
 {
     /**
      * {@inheritdoc}

@@ -29,6 +29,13 @@
 			<div role="tabpanel" class="tab-pane active" id="profile">
 					<form class="form-horizontal" name="profile">
 						<div class="form-group">
+							<label for="nickname" class="col-sm-2 control-label">昵称</label>
+							<div class="col-sm-7">
+								<input type="text" class="form-control" id="nickname" name="nickname" placeholder="昵称" value="<?=$u_obj->username?>">
+							</div>
+							<label class="col-sm-3" style="padding-top:7px "></label>
+						</div>
+						<div class="form-group">
 							<label for="tag" class="col-sm-2 control-label">个性签名</label>
 							<div class="col-sm-7">
 								<input type="text" class="form-control" id="tag" name="tag" placeholder="个性签名" value="<?=$tag?>">
@@ -62,12 +69,20 @@
 <!--			修改邮箱-->
 			<div role="tabpanel" class="tab-pane" id="email">
 				<form class="form-horizontal" name="email-form">
+					<?php if (!empty($u_obj->email)){?>
+					<div class="form-group">
+						<label for="inputEmail5" class="col-sm-2 control-label"></label>
+						<div class="col-sm-7">
+							<input type="email" class="form-control disabled" disabled title="当前电子账户邮箱" id="inputEmail5"   placeholder="<?=$u_obj->email?>">
+						</div>
+					</div>
+					<?php }?>
 					<div class="form-group">
 						<label for="inputEmail4" class="col-sm-2 control-label">电子邮箱</label>
 						<div class="col-sm-7">
 							<input type="email" class="form-control" id="inputEmail4"  name="email" placeholder="请输入新的邮箱">
 						</div>
-						<label class="col-sm-3 text-metued" style="padding-top:7px ">此邮箱将被公开</label>
+						<label class="col-sm-3 text-metued" style="padding-top:7px "></label>
 					</div>
 					<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">

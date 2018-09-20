@@ -60,4 +60,83 @@ class ChatForm extends Model
 				return $arr;
 			}
 		}
+
+
+	//根据ID获取聊天信息
+	public static function ChatInfoById($chat_id)
+	{
+		$data = Chat::find()
+			->alias('c')
+			->innerJoinWith('user u', false)
+			->select(['c.id','c.content','c.created_at','c.user_id','u.username'])
+			->where(['c.id'=>$chat_id,'c.deteled'=>0])
+			->asArray()
+			->one();
+		return $data;
+	}
+
+	//点赞数
+	public static function ChatLikeByID($chat_id)
+	{
+		$count = Like::find()
+			->where(['channel'=>2,'content_id'=>$chat_id])
+			->count();
+		return $count;
+	}
+
+	//评论数
+	public static function ChatComByID($chat_id)
+	{
+		$count = Chat::find()
+			->where(['pid'=>$chat_id])
+			->count();
+		return $count;
+	}
+
+	//点赞信息
+	public static function ChatLikeInfoById($chat_id)
+	{
+		$count = Like::find()
+			->alias('l')
+			->innerJoinWith('user u', false)
+			->select(['u.id','u.avatar'])
+			->where(['l.channel'=>2,'l.content_id'=>$chat_id])
+			->asArray()
+			->all();
+		return $count;
+	}
+
+	//评论信息
+	public static function ChatComInfoById($chat_id)
+	{
+		$data = Chat::find()
+			->alias('c')
+			->innerJoinWith('user u', false)
+			->select(['c.created_at','c.content','u.avatar','u.username','u.id uid','c.id'])
+			->where(['c.pid'=> $chat_id])
+			->asArray()
+			->all();
+		return $data;
+	}
+
+	//是否点赞
+	public static function isLike($user_id, $chat_id)
+	{
+		$count = Like::find()
+			->where(['user_id'=>$user_id,'channel'=>2,'content_id'=>$chat_id])
+			->count();
+		return $count;
+	}
+
+	public static function childChild($chat_id)
+	{
+		$data = Chat::find()
+			->alias('c')
+			->innerJoinWith('user u', false)
+			->select(['c.id','c.content','c.created_at','u.id uid','u.avatar','u.username'])
+			->where(['c.pid'=>$chat_id])
+			->asArray()
+			->all();
+		return $data;
+	}
 }
