@@ -67,6 +67,10 @@ class SiteController extends BaseController
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+				'height' => 50,
+				'width' => 80,
+				'minLength' => 4,
+				'maxLength' => 4
             ],
         ];
     }
@@ -220,11 +224,11 @@ class SiteController extends BaseController
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                Yii::$app->session->setFlash('success', '已发送一封邮件该邮箱，请根据邮箱的指示进行下一步操作.');
 
                 return $this->goHome();
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('error', '对不起，我们无法为所提供的电子邮件地址重置密码。');
             }
         }
 
@@ -249,7 +253,7 @@ class SiteController extends BaseController
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
+            Yii::$app->session->setFlash('success', '修改密码成功！');
 
             return $this->goHome();
         }

@@ -18,6 +18,20 @@ use yii\db\Expression;
  */
 class PostForm extends Model
 {
+	public $verifyCode;
+
+	public function rules()
+	{
+		return [
+//			// name, email, subject and body are required
+//			[['name', 'email', 'subject', 'body'], 'required'],
+//			// email has to be a valid email address
+//			['email', 'email'],
+//			['verifyCode', 'required'],
+//			// verifyCode needs to be entered correctly
+			['verifyCode', 'captcha'],
+		];
+	}
 	public static function addVisistor($post_id)
 	{
 		Post::findOne($post_id);
@@ -159,9 +173,10 @@ class PostForm extends Model
 				->where(['u.id'=>$article['author']])
 				->asArray()
 				->one();
-			$data['cfan'] = PostForm::FanCount($data['article_info']['author']); //用户粉丝数
-			$data['score'] = UserForm::userScore($data['article_info']['author']); //积分
-			$data['isfan'] = Fans::findOne(['user_id'=>$data['article_info']['author'], 'fans_user_id'=>$user_id]); //是否关注文章作者
+
+			$data['cfan'] = PostForm::FanCount($article['author']); //用户粉丝数
+			$data['score'] = UserForm::userScore($article['author']); //积分
+			$data['isfan'] = Fans::findOne(['user_id'=>$article['author'], 'fans_user_id'=>$user_id]); //是否关注文章作者
 			return $data;
 		}
 	}

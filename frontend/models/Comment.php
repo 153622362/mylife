@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use common\models\User;
 use Yii;
 
 /**
@@ -29,6 +30,11 @@ class Comment extends \common\models\Comment
 			->asArray()
 			->count();
 		return $count;
+	}
+
+	public function getuser()
+	{
+		return $this->hasOne(User::className(), ['id'=>'user_id']);
 	}
 
 

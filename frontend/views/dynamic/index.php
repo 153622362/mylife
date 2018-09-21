@@ -73,7 +73,7 @@
 	<div>
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs " role="tablist">
-			<li role="presentation" class="active"><a href="/dynamic/index" aria-controls="dynamice" role="tab" data-toggle="tab">全部动态</a></li>
+<!--			<li role="presentation" class="active"><a href="/dynamic/index" aria-controls="dynamice" role="tab" data-toggle="tab">全部动态</a></li>-->
 
 		</ul>
 		<!-- Tab panes -->
@@ -102,7 +102,9 @@
 						</span>
 					</div>
 				</div>
-					<?php }}?>
+					<?php }}else{ ?>
+						<h3>找不到相关数据</h3>
+				<?php } ?>
 
 <!--				导航栏-->
 				<?php if (!empty($dy)){?>
@@ -125,6 +127,27 @@
 			<span class="glyphicon glyphicon-plus-sign"></span> <span>发布</span>
 		</a>
 	</div>
+	<?php if (!empty($newest_comment)){ ?>
+		<div class="panel panel-default">
+			<div class="panel-heading">最新评论</div>
+			<div class="panel-body">
+				<?php foreach ($newest_comment as $v){ ?>
+					<div class="media" >
+						<div class="media-left">
+							<a href="/user/center?id=<?=$v['uid']?>">
+								<img class="media-object avatar-width" src="<?=$v['avatar']?>" alt="...">
+							</a>
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading"><a href="/user/center?id=<?=$v['uid']?>"><?=$v['username']?></a></h4>
+							<a href="/post/index?id=<?=$v['post_id']?>#comment-<?=$v['cid']?>"><?=$v['content']?></a>
+							<p class="text-muted"><?=$v['created_at']?></p>
+						</div>
+					</div>
+				<?php }?>
+			</div>
+		</div>
+	<?php } ?>
 
 	<?php if (!empty($hot_dy)){ ?>
 	<div class="panel panel-default">
@@ -138,6 +161,8 @@
 		</div>
 	</div>
 	<?php } ?>
+
+
 
 	<?php if (!empty($tag_arr)){ ?>
 	<div class="panel panel-default">

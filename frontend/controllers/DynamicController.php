@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use frontend\models\Category;
 use frontend\models\Comment;
 use frontend\models\Favorite;
+use frontend\models\form\CommentForm;
 use frontend\models\form\PostForm;
 use frontend\models\Post;
 use frontend\models\Tag;
@@ -18,7 +19,7 @@ class DynamicController extends BaseController
 	   $category = \Yii::$app->request->get('category'); //请求的分类
 	   $limit = 20; //每页显示文章数
 	   $fileds = ['p.id','p.title','p.created_at','p.updated_at','p.post_category','p.visitor','u.username','u.avatar','u.id uid'];
-	   //获取标签文章
+	   //获取 标签 文章
 	   if (!empty($tag)){
 			$tag_arr = Tag::find()
 				->alias('t')
@@ -48,7 +49,8 @@ class DynamicController extends BaseController
 			   ->where(['in','p.id',$tag_content_id_arr])
 			   ->count();
 	   }
-	   if (!empty($category)){ //分类文章
+	   //获取 分类 文章
+	   if (!empty($category)){
 		   $category_arr = Category::find()
 			   ->alias('c')
 			   ->innerJoinWith('categoryunion cu', false)
@@ -78,6 +80,7 @@ class DynamicController extends BaseController
 			   ->count();
 	   }
 
+	   //默认文章
 	   if (empty($category) && empty($tag)){
 	   		$dy = Post::getTheNewestDynamic($page, $fileds, $limit);
 		   $query = Post::find()->where(['status'=> 10]);
@@ -96,17 +99,18 @@ class DynamicController extends BaseController
 		   }
 		   foreach ($dy as $k=>$v)
 		   {
-				$dy[$k]['comment'] = Comment::find()->where(['post_id'=>$v['id']])->count(); //评论
+				$dy[$k]['comment'] = Comment::find()->where(['post_id'=>$v['id'],'pid'=>0])->count(); //评论
 				$dy[$k]['favorite'] = Favorite::find()->where(['post_id'=>$v['id']])->count(); //收藏
 				$dy[$k]['post_category'] = $arr[$v['post_category']]; //分类
 		   }
 	   }
 	   //标签
-		$tag_arr = Tag::find()->asArray()->all();
-	    $hot_dy = PostForm::hotestDynamic();
-
+		$tag_arr = Tag::find()->asArray()->all();//标签
+	    $hot_dy = PostForm::hotestDynamic();//热门动态
+	    $newest_comment = CommentForm::NewestComment();
 	   return $this->render('index',[
 	   	'dy' => $dy,
+		'newest_comment' => $newest_comment,
 		'tag_arr' => $tag_arr,
 		'count'=>$count,
 		'limit'=> $limit,

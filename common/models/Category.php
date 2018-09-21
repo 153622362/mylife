@@ -31,6 +31,7 @@ class Category extends Base
             [['name'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 60],
+            [['is_nav'], 'integer', 'max' => 4],
         ];
     }
 

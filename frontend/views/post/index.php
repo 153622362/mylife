@@ -64,6 +64,15 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 	.m0{
 		margin: 0;
 	}
+	.mw200{
+		max-width: 200px;
+	}
+	.title{
+		text-overflow: ellipsis;
+		display: inline-block;
+		word-break: keep-all;
+		overflow: hidden;
+	}
 
 	@-webkit-keyframes rotation{
 		from {-webkit-transform: rotate(0deg);}
@@ -137,7 +146,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 			<?php if (!empty($data['article_info']['cominfo'])){
 				foreach ($data['article_info']['cominfo'] as $v){
 					?>
-			<div class="media">
+			<div class="media" id="comment-<?=$v['id']?>">
 				<div class="media-left">
 					<a href="/user/center?id=<?=$v['uid']?>">
 						<img class="media-object img-width" src="<?=$v['avatar']?>" alt="..."  >
@@ -161,7 +170,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 						<?php if (!empty($v['child_comment'])){
 								foreach ($v['child_comment'] as $vv){
 							?>
-							<div class="media">
+							<div class="media" id="comment-<?=$vv['id']?>">
 								<div class="media-left">
 									<a href="/user/center?id=<?=$vv['uid']?>">
 										<img class="media-object child-comment-avatr" src="<?=$vv['avatar']?>" alt="..." >
@@ -200,7 +209,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 		发表评论
 			<hr>
 		</h2>
-		<form action="" method="post" name="create-comment">
+		<form action="" method="post" name="create-comment" style="z-index: 0">
 			<div id="editor" >
 				<p></p>
 			</div>
@@ -240,7 +249,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 					</tr>
 				</table>
 				<span class="btn <?php if (!empty($data['userinfo']['isfan'])){ echo 'btn-danger';}else{echo 'btn-success';}?> btn-sm" <?php if (!empty($data['userinfo']['isfan'])){ echo 'disabled';}?> onclick="fan(this)" uid="<?=$data['userinfo']['id']?>"><?php if (!empty($data['userinfo']['isfan'])){ echo '已关注';}else{echo '关注';}?></span>&nbsp;
-<!--				<span class="btn btn-primary btn-sm">私信</span>-->
+				<a href="/user/letter?id=<?=$data['userinfo']['id']?>" class="btn btn-primary btn-sm">私信</a>
 			</div>
 		</div>
 		<div class="panel panel-default">
@@ -248,7 +257,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 			<div class="panel-body">
 				<?php if (!empty($data['hotdy'])){
 					foreach ($data['hotdy'] as $v){?>
-						<p><a href="/post/index?id=<?=$v['id']?>"><?=$v['title']?></a></p>
+						<p><a href="/post/index?id=<?=$v['id']?>" class="title mw200"><?=$v['title']?></a></p>
 				<?php }}?>
 			</div>
 		</div>

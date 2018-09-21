@@ -17,6 +17,7 @@ use frontend\models\Post;
 use frontend\models\Score;
 use frontend\models\Sign;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 
 class UserController extends BaseController
 {
@@ -124,8 +125,8 @@ class UserController extends BaseController
 			   $arr[$tmp_arr[0]] = $tmp_arr[1];
 		   }
 		   $user_obj = User::findOne(['id'=>\Yii::$app->user->id,'status'=>User::STATUS_ACTIVE]);
-		   $user_obj->username = $arr['nickname'];
-		   $user_obj->save();
+//		   $user_obj->username = $arr['nickname'];
+//		   $user_obj->save();
 		   if (!empty($user_obj))
 		   {
 			   $ue_obj = UserExt::findOne(['user_id'=>$user_obj->id]);
@@ -152,39 +153,97 @@ class UserController extends BaseController
 			   $arr[$tmp_arr[0]] = $tmp_arr[1];
 		   }
 		   $email = urldecode(urldecode($arr['email']));
+		   if (!empty($email)){
 		   $email_exists = User::findOne(['email'=>$email]);
 		   if (empty($email_exists)) {
+
+		   		//添加令牌
 			   $user_obj = User::findOne(['id'=>\Yii::$app->user->id,'status'=>User::STATUS_ACTIVE]);
-			   if (empty($user_obj->email))
-		   		{
-		   		//第一次绑定
-				     $user_obj->email = $email;
-					 $res = $user_obj->save();
-					 if (!empty($res))
-					 {
-						 \Yii::$app->session->setFlash('success', '邮箱绑定成功！');
+			   $user_obj->password_reset_token = \Yii::$app->security->generateRandomString() . '_' . time();
+			   $user_obj->tmp_email = $email;
+			   $res = $user_obj->save();
+				   if (empty($user_obj->email))
+					{
+					//第一次绑定
+						//Send Email
+						$res = UserForm::sendEmail($email,$user_obj->password_reset_token);
+						if (!empty($res)) {
+							\Yii::$app->session->setFlash('success', '已经发送一封邮件到'.$email.'邮箱！请按照邮箱中的指示进行下一步操作');
+						}else{
+							\Yii::$app->session->setFlash('danger', '邮箱修改事变,系统发送错误');
+						}
+					 }else{
+						 //TODO 发送邮件到现在的邮箱验证
+						   $res = UserForm::sendEmail($user_obj->email,$user_obj->password_reset_token);
+						   if (!empty($res))
+						   {
+							   \Yii::$app->session->setFlash('success', '已经发送一封邮件到'.$user_obj->email.'邮箱！请按照邮箱中的指示进行下一步操作！');
+						   }else{
+							   \Yii::$app->session->setFlash('danger', '邮箱修改失败,系统发送错误');
+						   }
 					 }
-		  		 }else{
-					 //TODO 发送邮件到现在的邮箱验证
-					   $mailer = \Yii::$app->mailer;
-					   $res = $mailer
-						   ->compose()
-						   ->setFrom('164271849@qq.com')
-						   ->setTo($user_obj->email)
-						   ->setSubject('【'.\Yii::$app->name.'】邮箱绑定修改验证')
-						   ->setHtmlBody("请点击以下链接<a href='http://www.baidu.com'>激活链接</a>")    //发布可以带html标签的文本
-						   ->send();
-					   if (!empty($res))
-					   {
-						   \Yii::$app->session->setFlash('success', '已经发送一封邮件到你当前账户的邮箱！');
-					   }
-		  			 }
-		   		}else{
-			   			\Yii::$app->session->setFlash('danger', '邮箱已经存在，请修改邮箱！');
-		  		 }
+
+		   	}else{
+			   \Yii::$app->session->setFlash('danger', '邮箱已经存在，请修改邮箱！');
+		   }
+		   }else{
+			   \Yii::$app->session->setFlash('danger', '邮箱修改失败,邮箱不能为空');
+		   }
 
 	   }
 	   return json_encode(['status'=>200,'data'=>$res,'msg'=>'','timestamp'=>time()]);
+   }
+
+   public function actionResetEmail()
+   {
+   		$token = \Yii::$app->request->get('token');
+	   $str = \Yii::$app->request->get('str');
+	   $arr = explode('_', $token); //0 token 1 expire 2email
+	   $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
+	   //PasswordResetTokenValid
+	    $res = $arr[1] + $expire >= time();
+	    if (!empty($res))
+		{
+			$user_obj = User::findOne(['password_reset_token'=>$token]);
+			//是否第一次绑定邮箱
+			if (empty($user_obj->email))
+			{
+				$user_obj->email = $user_obj->tmp_email;
+				$user_obj->tmp_email = null;
+				$user_obj->password_reset_token = null;
+				$res = $user_obj->save();
+				if (!empty($res)){
+					\Yii::$app->session->setFlash('success', '邮箱绑定成功');
+				}else{
+					\Yii::$app->session->setFlash('danger', '修改邮箱绑定，系统错误，请稍后再尝试');
+				}
+			}else{
+				$makr_str = md5('ngyhd'.date('m',time()));
+				if (empty($str)){
+					$res = UserForm::sendEmail($user_obj->tmp_email, $user_obj->password_reset_token,['str'=>$makr_str]);
+					if ($res){
+						\Yii::$app->session->setFlash('success', '邮箱验证成功,已发送一封邮件到'.$user_obj->tmp_email.',请按照邮件指示进行下一步操作');
+					}else{
+						\Yii::$app->session->setFlash('danger', '修改邮箱修改，系统错误，请稍后再尝试');
+					}
+				}else{
+					if ($str == $makr_str)
+					{
+						$user_obj->email = $user_obj->tmp_email;
+						$user_obj->tmp_email = null;
+						$user_obj->password_reset_token = null;
+						$res = $user_obj->save();
+						if (!empty($res))
+						{
+							\Yii::$app->session->setFlash('success', '邮箱修改成功');
+						}
+					}else{
+							\Yii::$app->session->setFlash('danger', '参数错误');
+					}
+				}
+			}
+		}
+	   return $this->redirect(['/site/index']);
    }
 
 
@@ -257,12 +316,18 @@ class UserController extends BaseController
 				switch ($v['category']){
 					case 0: //评论
 						$post_obj = Post::findOne($v['content_id']);
-
 						$text_content = '用户<a href="/user/center?id='.$user_obj->id.'">'.$user_obj->username.'</a>评论了你的文章<a href="/post/index?id='.$post_obj->id.'">'.$post_obj->title.'</a>';
 						break;
 					case 1: //@
 						$comment_obj = Comment::findOne($v['content_id']);
-						$text_content = '用户<a href="/user/center?id='.$user_obj->id.'">'.$user_obj->username.'</a>回复了你的评论<a href="/post/index?id='.$comment_obj->post_id.'">'.strip_tags($comment_obj->content).'</a>';
+						$arr = explode('@ngyhd@', $comment_obj->content);
+						$content = $comment_obj->content;
+						if (!empty($arr[1]) && !empty(intval($arr[1])))
+						{
+							$user_obj = User::findOne($arr[1]);
+							$content = $arr['2'];
+						}
+						$text_content = '用户<a href="/user/center?id='.$user_obj->id.'">'.$user_obj->username.'</a>回复了你的评论<a href="/post/index?id='.$comment_obj->post_id.'">'.$content.'</a>';
 						break;
 					case 2: //关注
 						$text_content = '用户<a href="/user/center?id='.$user_obj->id.'">'.$user_obj->username.'</a>关注了你';
@@ -438,6 +503,7 @@ class UserController extends BaseController
 		}
    		$receiver_id = \Yii::$app->request->get('id'); //当前窗口发送私信中的消费者
 	    $sender_id = \Yii::$app->user->id; //当前窗口发送私信中的生产者
+	   if ( $receiver_id == $sender_id) { echo '<script>alert("不能与自己私信");history.go(-1)</script>>';} //不能与自己私信
 	    //标记当前内容已读
 	   $sign_data = Letter::find()
 		   ->where(['sender'=>$receiver_id, 'receiver'=>$sender_id])
@@ -468,6 +534,9 @@ class UserController extends BaseController
 			->orderBy('l.created_at desc')
 			->asArray()
 			->all();
+	   //获取接收者信息
+	   $user_obj = User::findOne($receiver_id);
+
 
 
 	   $data = array_merge($sender_data, $receiver_data);
@@ -481,6 +550,7 @@ class UserController extends BaseController
 	   }
 	   return $this->render('letter', [
 	   			'data'=>$data,
+		   		'receiver' => $user_obj
 	   ]);
    }
 

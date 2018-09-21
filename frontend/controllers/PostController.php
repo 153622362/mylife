@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Post;
 use common\models\User;
 use frontend\models\Category;
+use frontend\models\CategoryUnion;
 use frontend\models\Comment;
 use frontend\models\Fans;
 use frontend\models\Favorite;
@@ -40,6 +41,7 @@ class PostController extends BaseController
         ];
     }
 
+
     public function actionIndex()
 	{
 		//发表评论
@@ -48,17 +50,18 @@ class PostController extends BaseController
 		{
 			$res = false;
 			$post = Yii::$app->request->post();
-			$post_id = strip_tags($post['post_id']);
-			$content = strip_tags($post['content']);
+			$post_id = $post['post_id'];
+			$content = $post['content'];
 			//添加评论
 			if (!empty($user_id) && !empty($post_id) && !empty($content)){
 				$res = UserForm::addComment($user_id,$post_id,$content); //添加评论
+				if (!empty($res)){
+					return $this->redirect(['/post/index','id'=>$post_id]);
+				}else{
+					return $this->redirect(['/site/login']);
+				}
 			}
-			if (!empty($res)){
-				return $this->redirect(['/post/index','id'=>$post_id]);
-			}else{
-				return $this->redirect(['/site/login']);
-			}
+
 		}
 
 		//信息页加载
@@ -269,9 +272,11 @@ class PostController extends BaseController
 
 	public function actionCreate()
 	{
-		if (Yii::$app->request->isPost)
+		$model = new PostForm();
+		$user_id = Yii::$app->user->id;
+		if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->validate())
 		{
-			$user_id = Yii::$app->user->id;
+
 			if (!empty($user_id)){
 				$post_obj = new Post();
 				$post_obj->title = Yii::$app->request->post('title');
@@ -283,6 +288,10 @@ class PostController extends BaseController
 				$res = $post_obj->save();
 				if (!empty($res))
 				{
+					$cu_obj = new CategoryUnion();
+					$cu_obj->content_id = $post_obj->id;
+					$cu_obj->category_id = Yii::$app->request->post('category');
+					$cu_obj->save();
 					return $this->redirect('/post/index?id='.$post_obj->id);
 				}
 			}else{
@@ -291,8 +300,12 @@ class PostController extends BaseController
 
 		}
 		$category = Category::find()->asArray()->all();
+		array_unshift($category, ['id'=>'','name'=>'请选择']);
+//		var_dump($category);exit;
 		return $this->render('create',[
-			'category' => $category
+			'category' => $category,
+			'model' => $model
+
 		]);
 	}
 

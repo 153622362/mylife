@@ -1,5 +1,7 @@
+<?php
+$this->title = '与'.$receiver->username.'私聊中';
+?>
 <div class="col-lg-3">
-
 	<div class="list-group">
 		<div class="list-group">
 			<a href="/user/setting" class="list-group-item">账户设置</a>
@@ -15,7 +17,7 @@
 </div>
 
 <div class="col-lg-9">
-	<h1>我的私信</h1>
+	<h1>我的私信- <span style="font-size: 15px">与<?=$receiver->username?>私聊中...</span></h1>
 	<?php if (!empty($data)){
 		foreach ($data as $v){
 			?>

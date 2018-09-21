@@ -34,13 +34,13 @@ class UserForm extends Model
 	{
 		$data['wealth'] = Score::find() //财富
 			->where(['user_id'=>$user_id,'category'=>1])
-			->sum('score');
+			->sum('score')?:0;
 		$data['honor'] = Score::find() //威望
 			->where(['user_id'=>$user_id,'category'=>2])
-			->sum('score');
+			->sum('score')?:0;
 		$data['score'] = Score::find() //积分
 			->where(['user_id'=>$user_id,'category'=>3])
-			->sum('score');
+			->sum('score')?:0;
 		return $data;
 
 	}
@@ -145,6 +145,27 @@ class UserForm extends Model
 			$arr['title'] = $tmp['title'];
 		}
 		return $arr;
+
+	}
+
+
+	public static function sendEmail($to_email,$token,$param=[])
+	{
+		if (!empty($param))
+		{
+			$url = \Yii::$app->urlManager->createAbsoluteUrl(['/user/reset-email','token'=>$token,'str'=>$param['str']]);
+		}else{
+			$url = \Yii::$app->urlManager->createAbsoluteUrl(['/user/reset-email','token'=>$token]);
+		}
+		$mailer = \Yii::$app->mailer;
+		$res = $mailer
+			->compose()
+			->setFrom('164271849@qq.com')
+			->setTo($to_email)
+			->setSubject('【'.\Yii::$app->name.'】邮箱绑定验证')
+			->setHtmlBody("请点击下面的链接进行下一步的操作;<a href='".$url."'>激活链接</a>")    //发布可以带html标签的文本
+			->send();
+		return $res;
 
 	}
 

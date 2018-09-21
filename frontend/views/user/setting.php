@@ -28,13 +28,7 @@
 <!--			个人信息-->
 			<div role="tabpanel" class="tab-pane active" id="profile">
 					<form class="form-horizontal" name="profile">
-						<div class="form-group">
-							<label for="nickname" class="col-sm-2 control-label">昵称</label>
-							<div class="col-sm-7">
-								<input type="text" class="form-control" id="nickname" name="nickname" placeholder="昵称" value="<?=$u_obj->username?>">
-							</div>
-							<label class="col-sm-3" style="padding-top:7px "></label>
-						</div>
+
 						<div class="form-group">
 							<label for="tag" class="col-sm-2 control-label">个性签名</label>
 							<div class="col-sm-7">

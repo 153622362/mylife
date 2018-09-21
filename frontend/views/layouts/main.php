@@ -36,14 +36,24 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
     $menuItems_left = [
         ['label' => '首页', 'url' => ['/site/index']],
         ['label' => '动态', 'url' => ['/dynamic/index']],
-//        ['label' => '问答', 'url' => ['/question/index']],
-//        ['label' => '话题', 'url' => ['/topic/index']],
-//        ['label' => '广场', 'url' => ['/site/square']],
-        ['label' => '关于本站', 'url' => ['/site/about']],
     ];
+    $category = \frontend\models\Category::find()->where(['is_nav'=>10])->limit(10)->orderBy('created_at desc')->asArray()->all();
+    if (!empty($category)){
+        $category_arr = [];
+        foreach ($category as $v)
+        {
+            $category_arr[] = [
+                'label'=>$v['name'],
+                'url'=>["/dynamic/index?category=".$v['id']]
+            ];
+        }
+        $menuItems_left = array_merge($menuItems_left, $category_arr);
+    }
+
     if (Yii::$app->user->isGuest) {
         $menuItems_right[] = ['label' => '注册', 'url' => ['/site/signup']];
         $menuItems_right[] = ['label' => '登陆', 'url' => ['/site/login'],'items'=>[
@@ -54,7 +64,7 @@ AppAsset::register($this);
             ['label'=>'新浪微博','options'=>['class'=>'disabled','title'=>'目前还未开通此功能']],
         ]];
     } else {
-        $menuItems_right[] = '<form class="navbar-form navbar-left" role="search" method="post" action="/search/index">
+        $menuItems_right[] = '<form class="navbar-form navbar-left visible-lg-inline-block" role="search" method="post" action="/search/index">
 <div class="input-group">
       <input type="text" class="form-control" placeholder="输入关键字">
       <span class="input-group-btn">
@@ -75,11 +85,14 @@ AppAsset::register($this);
             'label'=>'<img src="'.Yii::$app->user->identity->avatar.'" style="width: 30px;">',
             'encode'=>false,
             'items' => [
-                ['label' => '<span class="glyphicon glyphicon-user"></span>  个人中心','encode'=>false,'url'=>['user/center']],
-                ['label' => '<span class="glyphicon glyphicon-cog"></span>  账户设置','encode'=>false,'url'=>['user/setting']],
-                ['label' => '<span class="glyphicon glyphicon-tasks"></span>  我的帖子','encode'=>false,'url'=>['user/post']],
-                ['label' => '<span class="glyphicon glyphicon-star"></span>  我的收藏','encode'=>false,'url'=>['user/favorite']],
-                ['label' => '<span class="glyphicon glyphicon-piggy-bank"></span>  我的积分','encode'=>false,'url'=>['user/score']],
+                ['label' => '👲  个人中心','encode'=>false,'url'=>['user/center']],
+                ['label' => '🛠  账户设置','encode'=>false,'url'=>['user/setting']],
+                ['label' => '📢  我的提醒','encode'=>false,'url'=>['user/notice']],
+                ['label' => '📃  我的私信','encode'=>false,'url'=>['user/message']],
+                ['label' => '📅  我的签到','encode'=>false,'url'=>['user/sign']],
+                ['label' => '📝  我的帖子','encode'=>false,'url'=>['user/post']],
+                ['label' => '🧡  我的收藏','encode'=>false,'url'=>['user/favorite']],
+                ['label' => '🎈  我的积分','encode'=>false,'url'=>['user/score']],
                 '<li>' . Html::beginForm(['/site/logout'], 'post') . Html::submitButton('退出 (' . Yii::$app->user->identity->username . ')', ['class' => 'btn btn-link logout'])
             . Html::endForm()
             . '</li>'
@@ -92,6 +105,7 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-left'],
         'items' => $menuItems_left,
+        'activateItems' => false
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
