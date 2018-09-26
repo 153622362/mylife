@@ -6,14 +6,7 @@
     <br>
 </p>
 
->Yii 2 Advanced Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
->developing complex Web applications with multiple tiers.
 
->Documentation is at [docs/guide/README.md](docs/guide/README.md).
-
->[![Latest Stable Version](https://img.shields.io/packagist/v/yiisoft/yii2-app-advanced.svg)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
->[![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-app-advanced.svg)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
->[![Build Status](https://travis-ci.org/yiisoft/yii2-app-advanced.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-advanced)
 
 DESCRIPTION 
 -------------------
@@ -21,18 +14,37 @@ DESCRIPTION
 ### USAGE
 
 ```php
-php init
+php init //初始化YII2框架
 ```
-Configure your database in `main-local.php`  
-like this
+Configure your database in `main-local.php`   
 ```php
    'components' => [
-        'db' => [
+        'db' => [ //配置数据库连接
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=192.168.199.101;dbname=mylife',
             'username' => 'root',
             'password' => 'root',
             'charset' => 'utf8',
-        ]
+        ],
+       'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@common/mail',
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
+            // 'useFileTransport' => true, //测试可以开启这个
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.qq.com',
+                'username' => 'your email', //邮箱账号
+                'password' => 'the password of your email', //邮箱授权码
+                'port' => '465',
+                'encryption' => 'ssl',
+
+            ],
+        ],
     ],
 ```
+
+### DATABASE
+/install/sql/mylife.sql
