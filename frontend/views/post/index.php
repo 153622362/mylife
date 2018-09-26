@@ -128,11 +128,11 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 					<?php }}?>
 		</div>
 <!--		//分享-->
-		<div class="row">
-			<a href="#" class="thumbnail share"  data-toggle="tooltip" data-placement="top" title="微博分享">
-				<img src="/static/img/logo.png" alt="..." >
-			</a>
-		</div>
+<!--		<div class="row">-->
+<!--			<a href="#" class="thumbnail share"  data-toggle="tooltip" data-placement="top" title="微博分享">-->
+<!--				<img src="/static/img/logo.png" alt="..." >-->
+<!--			</a>-->
+<!--		</div>-->
 <!--		文章标签-->
 		<?php if (!empty($data['tag'])){ ?>
 			<h3>文章标签</h3>

@@ -10,11 +10,16 @@ use frontend\models\Comment;
 use frontend\models\Fans;
 use frontend\models\Favorite;
 use frontend\models\form\PostForm;
+use frontend\models\form\SearchForm;
+use frontend\models\form\SiteForm;
 use frontend\models\form\UserForm;
 use frontend\models\Like;
 use frontend\models\Notice;
+use frontend\models\Tag;
+use frontend\models\TagUnion;
 use Yii;
 use yii\db\Expression;
+use yii\db\Query;
 use yii\filters\AccessControl;
 
 
@@ -276,14 +281,21 @@ class PostController extends BaseController
 		$user_id = Yii::$app->user->id;
 		if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->validate())
 		{
-
+			$tag = '';
+			if (!empty($model->tag))
+			{
+				$tag = implode(',', $model->tag);
+			}
+			$descript = substr(strip_tags(Yii::$app->request->post('content')), 0,60);
+			$descript = strlen($descript) >= 60 ? $descript.'...':$descript;
 			if (!empty($user_id)){
 				$post_obj = new Post();
 				$post_obj->title = Yii::$app->request->post('title');
 				$post_obj->content = Yii::$app->request->post('content');
 				$post_obj->status = 10;
-				$post_obj->descript = substr(strip_tags(Yii::$app->request->post('content')), 0,60).'...';
+				$post_obj->descript = $descript;
 				$post_obj->author = $user_id;
+				$post_obj->tag = $tag;
 				$post_obj->post_category = Yii::$app->request->post('category');
 				$res = $post_obj->save();
 				if (!empty($res))
@@ -292,6 +304,29 @@ class PostController extends BaseController
 					$cu_obj->content_id = $post_obj->id;
 					$cu_obj->category_id = Yii::$app->request->post('category');
 					$cu_obj->save();
+				if (!empty($model->tag) && is_array($model->tag))
+				{
+					//查找
+					foreach ($model->tag as $v)
+					{
+						$tag_obj = Tag::findOne(['tag_name'=>$v]);
+						if (!empty($tag_obj))
+						{
+							$tu_obj = new TagUnion();
+							$tu_obj->tag_id = $tag_obj->id;
+							$tu_obj->content_id = $post_obj->id;
+							$tu_obj->save();
+						}else{
+							$tag_obj = new Tag();
+							$tag_obj->tag_name = trim($v);
+							$tag_obj->save();
+							$tu_obj = new TagUnion();
+							$tu_obj->tag_id = $tag_obj->id;
+							$tu_obj->content_id = $post_obj->id;
+							$tu_obj->save();
+						}
+					}
+				}
 					return $this->redirect('/post/index?id='.$post_obj->id);
 				}
 			}else{
@@ -301,14 +336,42 @@ class PostController extends BaseController
 		}
 		$category = Category::find()->asArray()->all();
 		array_unshift($category, ['id'=>'','name'=>'请选择']);
-//		var_dump($category);exit;
+		$tag_arr = Tag::find()->select(['tag_name','id'])->asArray()->all();
+		$tag = [];
+		if (!empty($tag_arr) && is_array($tag_arr))
+		{
+			foreach ($tag_arr as $v)
+			{
+				$tag[$v['tag_name']] = $v['tag_name'];
+			}
+		}
 		return $this->render('create',[
 			'category' => $category,
+			'tag' => $tag,
 			'model' => $model
 
 		]);
 	}
 
+	public function actionSearch()
+	{
+		$param = Yii::$app->request->get('param');
+		if (!empty($param)){
+		$data = \frontend\models\Post::find()
+			->alias('p')
+			->innerJoinWith('user u', false)
+			->select(['p.id pid','p.title','p.descript', 'p.created_at','u.username','u.id uid','u.avatar'])
+			->where(['like','p.title',$param])
+			->orwhere(['like', 'p.content', $param])
+			->asArray()
+			->orderBy('p.created_at desc')
+			->all();
+		}
+			return $this->render('search', [
+				'data' => $data,
+			]);
+
+	}
 
 
 }

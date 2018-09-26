@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 
+use common\models\UserExt;
 use frontend\models\Category;
 use frontend\models\form\ChatForm;
 use frontend\models\form\PostForm;
@@ -138,6 +139,9 @@ class SiteController extends BaseController
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        	$user_obj = UserExt::findOne(['user_id'=>Yii::$app->user->id]);
+			$user_obj->last_log_in = date('Y-m-d H:i:s', time());
+			$user_obj->save(); //更新最后登陆时间
             return $this->goBack();
         } else {
             $model->password = '';

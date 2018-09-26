@@ -18,20 +18,30 @@ use yii\db\Expression;
  */
 class PostForm extends Model
 {
-	public $verifyCode;
+	public $verifyCode; //验证码
+	public $tag;
+	public $content;
+
 
 	public function rules()
 	{
 		return [
-//			// name, email, subject and body are required
-//			[['name', 'email', 'subject', 'body'], 'required'],
-//			// email has to be a valid email address
-//			['email', 'email'],
-//			['verifyCode', 'required'],
-//			// verifyCode needs to be entered correctly
+			['tag', 'tagFilter'],
 			['verifyCode', 'captcha'],
 		];
 	}
+
+	public function tagFilter($attribute, $param)
+	{
+		if (!empty($this->tag) && is_array($this->tag)){
+			foreach ($this->tag as $k=>$v)
+			{
+				$arr[] = strip_tags(trim($v));
+			}
+			$this->tag = $arr;
+		}
+	}
+
 	public static function addVisistor($post_id)
 	{
 		Post::findOne($post_id);

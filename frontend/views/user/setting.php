@@ -1,17 +1,6 @@
 <meta name="csrf-token" content="<?= \Yii::$app->request->csrfToken ?>">
-<div class="col-lg-3">
+<?=\common\widgets\UserNav::widget()?>
 
-	<div class="list-group">
-		<a href="/user/setting" class="list-group-item active">账户设置</a>
-		<a href="/user/notice"  class="list-group-item">我的提醒</a>
-		<a href="/user/message" class="list-group-item">我的私信</a>
-		<a href="/user/sign" 		 class="list-group-item">我的签到</a>
-		<a href="/user/post" 		 class="list-group-item">我的帖子</a>
-		<a href="/user/favorite" class="list-group-item">我的收藏</a>
-		<a href="/user/score" 	 class="list-group-item">我的积分</a>
-	</div>
-
-</div>
 
 <div class="col-lg-9 nav">
 	<div>
@@ -21,7 +10,7 @@
 			<li role="presentation"><a href="#avatar" aria-controls="avatar" role="tab" data-toggle="tab">个人头像</a></li>
 			<li role="presentation"><a href="#passwod" aria-controls="passwod" role="tab" data-toggle="tab">修改密码</a></li>
 			<li role="presentation"><a href="#email" aria-controls="email" role="tab" data-toggle="tab">修改邮箱</a></li>
-			<li role="presentation"><a href="#login" aria-controls="login" role="tab" data-toggle="tab">第三方登陆</a></li>
+<!--			<li role="presentation"><a href="#login" aria-controls="login" role="tab" data-toggle="tab">第三方登陆</a></li>-->
 		</ul>
 		<!-- Tab panes -->
 		<div class="tab-content">
@@ -55,6 +44,25 @@
 				<?= $form->field($model, 'old_password')->textInput(['autofocus' => true]) ?>
 				<?= $form->field($model, 'new_password')->textInput() ?>
 				<?= $form->field($model, 'comfirm_password')->textInput() ?>
+<!--				$form->field($model, 'content')->widget(\kartik\select2\Select2::classname(), [-->
+<!--//					'initValueText' => $cityDesc, // set the initial display text-->
+<!--//					'options' => ['placeholder' => 'Search for a city ...'],-->
+<!--//					'pluginOptions' => [-->
+<!--//						'allowClear' => true,-->
+<!--//						'minimumInputLength' => 3,-->
+<!--//						'language' => [-->
+<!--//							'errorLoading' => new \yii\web\JsExpression("function () { return 'Waiting for results...'; }"),-->
+<!--//						],-->
+<!--//						'ajax' => [-->
+<!--//							'url' => '/post/search',-->
+<!--//							'dataType' => 'json',-->
+<!--//							'data' => new \yii\web\JsExpression('function(params) { return {q:params.term}; }')-->
+<!--//						],-->
+<!--//						'escapeMarkup' => new \yii\web\JsExpression('function (markup) { return markup; }'),-->
+<!--//						'templateResult' => new \yii\web\JsExpression('function(city) { return city.text; }'),-->
+<!--//						'templateSelection' => new \yii\web\JsExpression('function (city) { return city.text; }'),-->
+<!--//					],-->
+<!--//				]);-->
 				<div class="form-group">
 					<?= \yii\helpers\Html::submitButton('修改', ['class' => 'btn btn-primary']) ?>
 				</div>

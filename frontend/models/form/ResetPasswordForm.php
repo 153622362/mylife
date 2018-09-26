@@ -14,6 +14,9 @@ class ResetPasswordForm extends Model
     public $new_password;
 	public $comfirm_password;
 
+	public $content;
+
+
 
 	public function attributeLabels()
 	{

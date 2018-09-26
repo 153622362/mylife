@@ -117,7 +117,7 @@ $this->params['breadcrumbs'][] = $data['chat_info']['content'];
 			<?php if (!empty($data['cominfo'])){
 				foreach ($data['cominfo'] as $v){
 					?>
-					<div class="media">
+					<div class="media" id="comment-<?=$v['id']?>">
 						<div class="media-left">
 							<a href="/user/center?id=<?=$v['uid']?>">
 								<img class="media-object img-width" src="<?=$v['avatar']?>" alt="..."  >
@@ -137,7 +137,7 @@ $this->params['breadcrumbs'][] = $data['chat_info']['content'];
 								<?php if (!empty($v['child_comment'])){
 									foreach ($v['child_comment'] as $vv){
 										?>
-										<div class="media">
+										<div class="media" id="comment-<?=$vv['id']?>">
 											<div class="media-left">
 												<a href="/user/center?id=<?=$vv['uid']?>">
 													<img class="media-object child-comment-avatr" src="<?=$vv['avatar']?>" alt="..." >

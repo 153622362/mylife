@@ -32,7 +32,7 @@
 		<div class="panel-body">
 			<h5><span class="glyphicon glyphicon-calendar"></span> 注册日期：<?=date('Y-m-d', $user['created_at'])?></h5>
 			<h5><span class="glyphicon glyphicon-log-in"></span> 最后登陆：<?=substr($user['last_log_in'], 0,10)?></h5>
-			<h5><span class="glyphicon glyphicon-map-marker"></span> 城市：<?=$user['city']?></h5>
+<!--			<h5><span class="glyphicon glyphicon-map-marker"></span> 城市：--><?//=$user['city']?><!--</h5>-->
 		</div>
 	</div>
 
@@ -133,12 +133,14 @@
 		$content = $user['username'];
 	}
 	?>
-	<?php if (!empty($user['favorite'])){?>
+	<?php if (!empty($user['favorite'])){ ?>
 	<div class="panel panel-primary">
 		<div class="panel-heading"><?=$content?>关注</div>
 		<div class="panel-body">
 			<?php foreach ($user['favorite'] as $v){?>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></div>
+			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;">
+				<a href="/user/center?id=<?=$v['id']?>"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></a>
+			</div>
 			<?php }?>
 		</div>
 	</div>
@@ -149,7 +151,9 @@
 		<div class="panel-heading"><?=$content?>粉丝</div>
 		<div class="panel-body">
 			<?php foreach ($user['fans'] as $v){?>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></div>
+			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;">
+				<a href="/user/center?id=<?=$v['id']?>"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></a>
+			</div>
 			<?php }?>
 		</div>
 	</div>
@@ -160,7 +164,9 @@
 		<div class="panel-heading"><?=$content?>访客</div>
 		<div class="panel-body">
 			<?php foreach ($user['visitors'] as $v){?>
-			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></div>
+			<div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding: 2px 3px;">
+				<a href="/user/center?id=<?=$v['id']?>"><img style="border-radius: 0.25rem;border: 1px solid grey" src="<?=$v['avatar']?>" width="100%" alt=""></a>
+			</div>
 
 			<?php }?>
 		</div>

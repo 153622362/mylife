@@ -86,12 +86,14 @@
 				<div class="media">
 					<div class="media-left media-middle">
 						<a href="/user/center?id=<?=$v['uid']?>">
-							<img class="media-object avatar-width" src="<?=$v['avatar']?>" alt="" title="<?=$v['username']?>" data-toggle="tooltip" data-placement="bottom">
+							<img class="media-object avatar-width" src="<?=$v['avatar']?>" alt="" title="<?=$v['username']?>" data-toggle="tooltip" data-placement="bottom" >
 						</a>
 					</div>
 					<div class="media-body">
 						<h4 class="media-heading">
+							<?php if (!empty($v['post_category'])){?>
 							<span class="category"><?=$v['post_category']?></span>
+							<?php }?>
 							<a href="/post/index?id=<?=$v['id']?>" class="title mw360"><?=$v['title']?></a>
 						</h4>
 						<span class="text-muted">

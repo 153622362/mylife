@@ -338,6 +338,15 @@ class UserController extends BaseController
 				$data[$k]['text_content'] = urldecode($text_content);
 			}
 		}
+	   $n_arr_obj = Notice::find()->where(['receiver'=> \Yii::$app->user->id])->all();
+	   if (!empty($n_arr_obj))
+	   {
+	   		foreach ($n_arr_obj as $v)
+			{
+				$v->read_status = 1;
+				$v->save();
+			}
+	   }
    		return $this->render('notice',[
    			'data' => $data
 		]);
@@ -378,7 +387,7 @@ class UserController extends BaseController
 	   }
 		//获取签到记录的数据
 	   $sign_statistics = SignForm::StatisticsSign(\Yii::$app->user->id, $first_day, $last_day);
-
+//		var_dump($sign_statistics);exit;
    		return $this->render('sign',[
    			'data' => $data,
 			'sign_days' => $sign_days,
@@ -503,7 +512,7 @@ class UserController extends BaseController
 		}
    		$receiver_id = \Yii::$app->request->get('id'); //当前窗口发送私信中的消费者
 	    $sender_id = \Yii::$app->user->id; //当前窗口发送私信中的生产者
-	   if ( $receiver_id == $sender_id) { echo '<script>alert("不能与自己私信");history.go(-1)</script>>';} //不能与自己私信
+	   if ( $receiver_id == $sender_id) { echo '<script>alert("不能与自己私信");history.go(-1)</script>>'; exit;} //不能与自己私信
 	    //标记当前内容已读
 	   $sign_data = Letter::find()
 		   ->where(['sender'=>$receiver_id, 'receiver'=>$sender_id])

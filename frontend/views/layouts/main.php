@@ -64,23 +64,25 @@ AppAsset::register($this);
             ['label'=>'新浪微博','options'=>['class'=>'disabled','title'=>'目前还未开通此功能']],
         ]];
     } else {
-        $menuItems_right[] = '<form class="navbar-form navbar-left visible-lg-inline-block" role="search" method="post" action="/search/index">
+
+
+        $menuItems_right[] = '<form class="navbar-form navbar-left visible-lg-inline-block" role="search" method="get" action="/post/search">
 <div class="input-group">
-      <input type="text" class="form-control" placeholder="输入关键字">
+      <input type="text" class="form-control" name="param" placeholder="输入关键字">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Go!</button>
+        <button class="btn btn-default" type="submit">Go!</button>
       </span>
     </div>
 </form>';
-//        $menuItems_right[] = '<li>'
-//            . Html::beginForm(['/site/logout'], 'post')
-//            . Html::submitButton(
-//                'Logout (' . Yii::$app->user->identity->username . ')',
-//                ['class' => 'btn btn-link logout']
-//            )
-//            . Html::endForm()
-//            . '</li>';
-
+        if (!empty(Yii::$app->user->id) && (Yii::$app->params['l_count'] + Yii::$app->params['n_count']) > 0){
+            $url = Yii::$app->params['l_count'] > Yii::$app->params['n_count'] ?['/user/message']:['/user/notice'];
+            $menuItems_right[] = [
+                'label'=>'<span style="border-radius: 50%;background-color: orangered;width: 2rem;padding: 5px;color: white" title="未读消息">'.(Yii::$app->params['l_count'] + Yii::$app->params['n_count']).'</span>',
+                'encode' => false,
+                'url' => $url,
+                'active' => false,
+            ];
+        }
         $menuItems_right[] =[
             'label'=>'<img src="'.Yii::$app->user->identity->avatar.'" style="width: 30px;">',
             'encode'=>false,
@@ -108,7 +110,7 @@ AppAsset::register($this);
         'activateItems' => false
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
+        'options' => ['class' => 'navbar-nav navbar-right '],
         'items' => $menuItems_right,
     ]);
     NavBar::end();

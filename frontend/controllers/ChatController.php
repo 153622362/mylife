@@ -59,6 +59,14 @@ class ChatController extends BaseController
 		   }
 	   }
 	   $chat_id = Yii::$app->request->get('id',0);
+	   do{
+	   	//若不是父评论
+	   		$chat_obj = Chat::findOne($chat_id);
+		   	if ($chat_obj->pid != 0)
+			{
+				$chat_id = $chat_obj->pid;
+			}
+	   }while($chat_obj->pid != 0);
 	   $data['chat_info'] = ChatForm::ChatInfoById($chat_id); //评论信息
 	   $data['clike'] = ChatForm::ChatLikeByID($chat_id); //点赞数
 	   $data['ccom'] = ChatForm::ChatComByID($chat_id); //评论数

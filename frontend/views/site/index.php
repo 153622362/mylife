@@ -158,8 +158,8 @@ $this->title = 'My Life';
 <!--	右侧-->
     <div class="col-lg-3">
         <div>
-            <span  class="btn btn-success btn-lg " style="width: 50%;border-radius:6px 0 0 6px;font-size: 10px" onclick="sign()" <?php if (!empty($sign_data)){ echo 'disabled';}?>><?php if (!empty($sign_data)){ echo '已经签到<br>明天再来';}else{ echo '点击签到<br>获取积分';}?></span>
-            <spn  class="btn btn-primary btn-lg pull-right" style="width: 50%;border-radius:0 6px 6px 0;font-size: 10px"><?=date('Y-m-d', time())?><br>签到统计</spn>
+            <span  class="btn btn-success btn-lg " style="width: 100%;border-radius:6px 6px 6px 6px;font-size: 10px" onclick="sign()" <?php if (!empty($sign_data)){ echo 'disabled';}?>><?php if (!empty($sign_data)){ echo '已经签到<br>明天再来';}else{ echo '点击签到<br>获取积分';}?></span>
+<!--            <span  class="btn btn-primary btn-lg pull-right" style="width: 50%;border-radius:0 6px 6px 0;font-size: 10px">--><?//=date('Y-m-d', time())?><!--<br>签到统计</span>-->
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">大家都在说</div>
@@ -357,7 +357,7 @@ $this->title = 'My Life';
                 html += '<a href="/chat/detail?id=' + pid + '" class="glyphicon glyphicon-share-alt blue pointer text-danger">回复</a>';
                 for(v_msg in msg)
                 {
-                     html +='<div child-msg='+ msg[v_msg].id +' ><img src="'+ msg[v_msg].avatar +'" style="width: 40px" alt=""> <a href="/user/center?id= '+ msg[v_msg].uid + '">'+ msg[v_msg].username +'</a>:<span style="word-break: break-all;font-size: 16px">'+ msg[v_msg].content +'</span> <p><span  class="text-muted" style="font-size: 14px">' + msg[v_msg].created_at +'</span></p> </div>';
+                     html +='<div child-msg='+ msg[v_msg].id +' ><img src="'+ msg[v_msg].avatar +'" style="width: 40px" alt=""> <a href="/user/center?id= '+ msg[v_msg].uid + '">'+ msg[v_msg].username +'</a>:<a href="/chat/detail?id='+ pid +'#comment-'+ msg[v_msg].id +'" style="word-break: break-all;font-size: 16px">'+ msg[v_msg].content +'</a> <p><span  class="text-muted" style="font-size: 14px">' + msg[v_msg].created_at +'</span></p> </div>';
                 }
                 $('[message='+ pid+']').prepend(html);
 

@@ -27,6 +27,9 @@
 
 	</div>
 </div>
+<?php
+
+?>
 	<textarea id="text1" name="content" style="display: none" ></textarea>
 	<input name="_csrf-frontend" type="hidden" id="_csrf-frontend" value="<?= Yii::$app->request->csrfToken ?>">
 	<?= $form->field($model, 'verifyCode')->widget(\yii\captcha\Captcha::className(), [
@@ -34,6 +37,20 @@
 		'imageOptions'=>['alt'=>'点击换图','title'=>'点击换图', 'style'=>'cursor:pointer'],
 		'template' => '<div class="row"><div class="col-lg-offset-1 col-lg-2">{image}</div><div class="col-lg-3">{input}</div></div>',
 	])->label('') ?>
+
+<div class="col-sm-offset-1 col-lg-10">
+<?php echo $form->field($model, 'tag')->widget(\kartik\select2\Select2::classname(), [
+	'data' => $tag,
+	'options' => ['placeholder' => '选择一个标签', 'multiple' => true],
+	'pluginOptions' => [
+	'tags' => true,
+	'tokenSeparators' => [',', ' '],
+	'maximumInputLength' => 7,
+
+	],
+	])->label('选择一个标签');
+?>
+</div>
 	<div class="form-group">
 		<div class="col-sm-offset-1 col-sm-10">
 			<button type="submit" class="btn btn-default">发布</button>

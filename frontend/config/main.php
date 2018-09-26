@@ -52,7 +52,6 @@ return [
 //			'enableStrictParsing' => true, //严格解释
             'showScriptName' => false,
             'rules' => [
-
 				[
 					'class' => 'yii\rest\UrlRule',
 //					'only' => [],//仅支持哪些动作
