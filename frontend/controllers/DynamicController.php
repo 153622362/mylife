@@ -6,113 +6,69 @@ use frontend\models\Category;
 use frontend\models\Comment;
 use frontend\models\Favorite;
 use frontend\models\form\CommentForm;
+use frontend\models\form\DynamicForm;
 use frontend\models\form\PostForm;
 use frontend\models\Post;
 use frontend\models\Tag;
 
 class DynamicController extends BaseController
 {
+	public function behaviors()
+	{
+		return [
+			[
+				'class' => 'yii\filters\PageCache', //页面缓存
+				'only' => ['index'],
+				'duration' => 60, //过期时间
+				'variations' => [ //变化
+					\Yii::$app->request->get('page'), //根据页面变化而变化
+					\Yii::$app->request->get('tag'), //根据页面变化而变化
+					\Yii::$app->request->get('category'), //根据页面变化而变化
+//					\Yii::$app->language,
+				],
+				'dependency' => [ //缓存依赖
+					'class' => 'yii\caching\DbDependency',
+					'sql' => 'SELECT COUNT(*) FROM post', //当文章数量变多或减少都会更新
+				],
+
+			],
+
+		];
+	}
+
    public function actionIndex()
    {
 	   $page = \Yii::$app->request->get('page', '1') - 1; //请求的页面
 	   $tag  = \Yii::$app->request->get('tag'); //请求的标签
 	   $category = \Yii::$app->request->get('category'); //请求的分类
 	   $limit = 20; //每页显示文章数
-	   $fileds = ['p.id','p.title','p.created_at','p.updated_at','p.post_category','p.visitor','u.username','u.avatar','u.id uid'];
 	   //获取 标签 文章
 	   if (!empty($tag)){
-			$tag_arr = Tag::find()
-				->alias('t')
-				->innerJoinWith('tagunion tu', false)
-				->select(['tu.content_id'])
-				->where(['t.id'=>$tag])
-				->asArray()
-				->all();
-		   $tag_content_id_arr = [];
-		   if (!empty($tag_arr)){
-		   		foreach ($tag_arr as $v)
-				{
-					$tag_content_id_arr[] = $v['content_id'];
-				}
-		   }
-		   $dy = Post::find()
-			   ->alias('p')
-			   ->innerJoinWith('user u', false)
-			   ->select($fileds)
-			   ->where(['in','p.id',$tag_content_id_arr])
-			   ->offset($page * $limit)
-			   ->asArray()
-			   ->limit($limit)
-			   ->all();
-		   $count = Post::find()
-			   ->alias('p')
-			   ->where(['in','p.id',$tag_content_id_arr])
-			   ->count();
+			$data = DynamicForm::tagPost($tag, $page, $limit);
 	   }
 	   //获取 分类 文章
 	   if (!empty($category)){
-		   $category_arr = Category::find()
-			   ->alias('c')
-			   ->innerJoinWith('categoryunion cu', false)
-			   ->select(['cu.content_id'])
-			   ->where(['c.id'=>$category])
-			   ->asArray()
-			   ->all();
-		   $category_content_id_arr = [];
-		   if (!empty($category_arr)){
-			   foreach ($category_arr as $v)
-			   {
-				   $category_content_id_arr[] = $v['content_id'];
-			   }
-		   }
-		   $dy = Post::find()
-			   ->alias('p')
-			   ->innerJoinWith('user u', false)
-			   ->select($fileds)
-			   ->where(['in','p.id',$category_content_id_arr])
-			   ->offset($page * $limit)
-			   ->asArray()
-			   ->limit($limit)
-			   ->all();
-		   $count = Post::find()
-			   ->alias('p')
-			   ->where(['in','p.id',$category_content_id_arr])
-			   ->count();
+		   $data = DynamicForm::tagPost($category, $page, $limit);
 	   }
-
 	   //默认文章
 	   if (empty($category) && empty($tag)){
-	   		$dy = Post::getTheNewestDynamic($page, $fileds, $limit);
+	   	   $data['dy'] = Post::getTheNewestDynamic($page, DynamicForm::$fileds, $limit);
 		   $query = Post::find()->where(['status'=> 10]);
-		   $count = $query->count();
+		   $data['count'] = $query->count();
 	   }
-
-	   if (!empty($dy)){
-	   	//文章分类
-		   $arr = [];
-		   $category_arr = Category::find()->asArray()->all();
-		   if (!empty($category_arr)){
-		   		foreach ($category_arr as $v)
-				{
-					$arr[$v['id']] = $v['name'];
-				}
-		   }
-		   foreach ($dy as $k=>$v)
-		   {
-				$dy[$k]['comment'] = Comment::find()->where(['post_id'=>$v['id'],'pid'=>0])->count(); //评论
-				$dy[$k]['favorite'] = Favorite::find()->where(['post_id'=>$v['id']])->count(); //收藏
-				$dy[$k]['post_category'] = $arr[$v['post_category']]; //分类
-		   }
+	   if (!empty($data['dy'])){
+	   	//处理文章数据
+		   $data = DynamicForm::dealPost($data);
 	   }
 	   //标签
 		$tag_arr = Tag::find()->asArray()->all();//标签
 	    $hot_dy = PostForm::hotestDynamic();//热门动态
 	    $newest_comment = CommentForm::NewestComment();
 	   return $this->render('index',[
-	   	'dy' => $dy,
+	   	'dy' => $data['dy'],
 		'newest_comment' => $newest_comment,
 		'tag_arr' => $tag_arr,
-		'count'=>$count,
+		'count'=>$data['count'],
 		'limit'=> $limit,
 		'hot_dy' => $hot_dy
 	   ]);

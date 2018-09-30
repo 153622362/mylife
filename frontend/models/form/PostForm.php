@@ -100,13 +100,22 @@ class PostForm extends Model
 	//根据ID获取文章信息
 	public static function PostInfoById($post_id, $user_id)
 	{
-		$data = Post::find()
-			->alias('p')
-			->innerJoinWith('user u', false)
-			->select(['p.id','p.title','p.content','p.visitor','p.created_at','p.updated_at','p.author','u.username'])
-			->where(['p.id'=>$post_id,'p.status'=>10])
-			->asArray()
-			->one();
+		$dependency = new \yii\caching\DbDependency(['sql' => "select updated_at from post where id ={$post_id}"]);
+		$cache = Yii::$app->cache;
+		$data =$cache->getOrSet('post_'.$post_id, function () use ($post_id){
+			//不存在则用回调函数
+//			User::find()->cache(7200)->all();//查询缓存
+//			$result = Customer::getDb()->cache(function ($db) {
+//				return Customer::find()->where(['id' => 1])->one();
+//			}); //查询缓存
+			return Post::find()
+				->alias('p')
+				->innerJoinWith('user u', false)
+				->select(['p.id','p.title','p.content','p.visitor','p.created_at','p.updated_at','p.author','u.username'])
+				->where(['p.id'=>$post_id,'p.status'=>10])
+				->asArray()
+				->one();
+		}, 30, $dependency);
 		$data['clike'] = self::PostLikeByID($post_id); //点赞数
 		$data['cfav'] = self::PostFavByID($post_id); //收藏数
 		$data['ccom'] = self::PostComByID($post_id); //评论数

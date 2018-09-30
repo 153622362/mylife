@@ -2,11 +2,10 @@
 namespace common\models;
 
 use Yii;
-use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
 use yii\filters\RateLimitInterface;
+use yii\web\IdentityInterface;
 
 
 /**
@@ -23,30 +22,46 @@ use yii\filters\RateLimitInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class User extends ActiveRecord implements IdentityInterface,
-	 RateLimitInterface
+class User extends ActiveRecord implements IdentityInterface
+	,RateLimitInterface
 {
 
-
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
-	//限流
+//返回允许的请求的最大数目及时间，例如，[100, 600] 表示在 600 秒内最多 100 次的 API 调用。
 	public function getRateLimit($request, $action)
 	{
-		return [2, 10]; // $rateLimit requests per second 						limit seconds
+		return [60, 60]; // $rateLimit requests per second
 	}
-
+//返回剩余的允许的请求和最后一次速率限制检查时 相应的 UNIX 时间戳数。
 	public function loadAllowance($request, $action)
 	{
-		return [1, time()];
+		return [$this->allowance, $this->allowance_updated_at];
 	}
-
+//保存剩余的允许请求数和当前的 UNIX 时间戳。
 	public function saveAllowance($request, $action, $allowance, $timestamp)
 	{
-//		$this->allowance = $allowance;
-//		$this->allowance_updated_at = $timestamp;
-//		$this->save();
+		$this->allowance = $allowance;
+		$this->allowance_updated_at = $timestamp;
+		$this->save(false);
 	}
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 10;
+//	//限流
+//	public function getRateLimit($request, $action)
+//	{
+//		return [2, 10]; // $rateLimit requests per second 						limit seconds
+//	}
+//
+//	public function loadAllowance($request, $action)
+//	{
+//		return [1, time()];
+//	}
+//
+//	public function saveAllowance($request, $action, $allowance, $timestamp)
+//	{
+////		$this->allowance = $allowance;
+////		$this->allowance_updated_at = $timestamp;
+////		$this->save();
+//	}
 
     /**
      * {@inheritdoc}
@@ -74,7 +89,8 @@ class User extends ActiveRecord implements IdentityInterface,
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-			[['avatar','tmp_email'],'string']
+			[['avatar','tmp_email'],'string'],
+			[['allowance','allowance_updated_at'],'safe']
         ];
     }
 
@@ -221,42 +237,4 @@ class User extends ActiveRecord implements IdentityInterface,
 	}
 
 
-
-	//API 明确列出每个字段，适用于你希望数据表或
-// 模型属性修改时不导致你的字段修改（保持后端API兼容性）
-//	public function fields()
-//	{
-//		return [
-//			// 字段名和属性名相同
-//			'id',
-//			// 字段名为"email", 对应的表字段属性名为"email"
-////			<email>153622362@qq.com</email>
-//			'email' => 'email',
-////			// 字段名为"name", 值由一个PHP回调函数定义
-////			'name' => function ($model) {
-////				return $model->first_name . ' ' . $model->last_name;
-////			},
-//		];
-//	}
-
-// 过滤掉一些字段，适用于你希望继承
-// 父类实现同时你想屏蔽掉一些敏感字段
-	public function fields()
-	{
-		$fields = parent::fields();
-
-		// 删除一些包含敏感信息的字段
-		unset($fields['auth_key'], $fields['password_hash'], $fields['password_reset_token']);
-
-		return $fields;
-	}
-
-	public  $profile;
-	//额外的字段
-	//http://localhost?expand=obj
-	public function extraFields()
-	{
-		$this->profile = User::findOne(1); //额外的字段
-		return ['profile'];
-	}
 }

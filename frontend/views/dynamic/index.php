@@ -180,6 +180,7 @@
 
 <script>
 	//bootstrap提示
+
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip()
 	})

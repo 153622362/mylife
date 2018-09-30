@@ -6,14 +6,15 @@ use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
+use yii\filters\RateLimiter;
 use yii\rest\ActiveController;
-use yii\web\IdentityInterface;
 use yii\web\Response;
 
 class UserController extends ActiveController
-
 {
 	public $modelClass = 'frontend\modules\api\v1\models\User';
+
+
 
 	//过滤器
 	//[[yii\filters\ContentNegotiator|contentNegotiator]]: 支持内容协商， 在 响应格式化 一节描述;
@@ -23,34 +24,64 @@ class UserController extends ActiveController
 	public function behaviors()
 	{
 		$behaviors = parent::behaviors();
-//		$behaviors['authenticator'] = [
-////			'class'=>QueryParamAuth::className(), //参数认证
-//			'class'=>HttpBasicAuth::className(), //用户名认证
-////			'class'=>HttpBearerAuth::className(), //OAUTH2.0认证
-//		];
-		$behaviors['rateLimiter']['enableRateLimitHeaders'] = true; //限流
-//		$behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON; //设置响应格式
+		//认证过滤器
+		$behaviors['authenticator'] = [
+				'class'=>QueryParamAuth::className(), //参数认证
+//			    'class'=>HttpBasicAuth::className(), //用户名认证
+//			'class'=>HttpBearerAuth::className(), //OAUTH2.0认证 //发送头函数
+		];
+		//限制请求速率的过滤器
+		$behaviors['rateLimiter'] = [
+			'class' => RateLimiter::className(),
+			'enableRateLimitHeaders' => true,
+		];
+		$behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON; //设置响应格式
 		return $behaviors;
 	}
+	public function init()
+	{
+		parent::init();
+		\Yii::$app->user->enableSession = false;
+		\Yii::$app->user->loginUrl = null;
+	}
 
-	//禁用动作配置
-//	public function actions()
-//	{
-//		$actions = parent::actions();
-//
-//		// 禁用"delete" 和 "create" 动作
-//		unset($actions['delete'], $actions['create']);
-//
-//		// 使用"prepareDataProvider()"方法自定义数据provider
+
+
+//	禁用动作配置
+	public function actions()
+	{
+		$actions = parent::actions();
+
+		// 禁用"delete" 和 "create" 动作
+		unset($actions['delete'], $actions['create']);
+
+		// 使用"prepareDataProvider()"方法自定义数据provider
 //		$actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
-//
-//		return $actions;
-//	}
-//	//搭配actions
+
+		return $actions;
+	}
+
 //	public function prepareDataProvider()
 //	{
-//		// 为"index"动作准备和返回数据provider
+//		return ['1'=>2];// 为"index"动作准备和返回数据provider
 //	}
+
+	//执行访问检查
+	//checkAccess() 方法默认会被[[yii\rest\ActiveController]]默认动作所调用，如果创建新的操作并想执行权限检查， 应在新的动作中明确调用该方法。
+	public function checkAccess($action, $model = null, $params = [])
+	{
+		// check if the user can access $action and $model
+		// throw ForbiddenHttpException if access should be denied
+		if ($action === 'index') {
+			if (empty($model->id)){
+				throw new \yii\web\ForbiddenHttpException(sprintf('id不能为空.', $action));
+			}
+		}
+		if (($action === 'update' || $action === 'delete')) {
+			if ($model->id !== \Yii::$app->user->id)
+				throw new \yii\web\ForbiddenHttpException(sprintf('You can only %s articles that you\'ve created.', $action));
+		}
+	}
 
 	public function actionView($id)
 	{
@@ -69,15 +100,5 @@ class UserController extends ActiveController
 			'query' => User::find(),
 		]);
 	}
-	//执行访问检查
-	//checkAccess() 方法默认会被[[yii\rest\ActiveController]]默认动作所调用，如果创建新的操作并想执行权限检查， 应在新的动作中明确调用该方法。
-	public function checkAccess($action, $model = null, $params = [])
-	{
-		// check if the user can access $action and $model
-		// throw ForbiddenHttpException if access should be denied
-		if ($action === 'update' || $action === 'delete') {
-			if ($model->author_id !== \Yii::$app->user->id)
-				throw new \yii\web\ForbiddenHttpException(sprintf('You can only %s articles that you\'ve created.', $action));
-		}
-	}
+
 }

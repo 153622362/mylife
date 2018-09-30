@@ -50,34 +50,40 @@ class SignForm extends Model
 		//进行计算
 		if (!empty($data['m_data'])){
 			$data['m_sign'] = 1; //月连续签到天数
-			foreach ($data['m_data'] as $k=>$v)
-		{
 			if (count($data['m_data']) > 1)
 			{
-				$time_timestamp = strtotime($v['created_at']);
-				$time_timestamp = date('Y-m-d 00:00:00', $time_timestamp); //第一个签到时间
-				//下一天时间
-				if (!empty($data['m_data'][$k + 1]))
+				foreach ($data['m_data'] as $k=>$v)
 				{
-					$next_time_timestamp = strtotime($data['m_data'][$k + 1]['created_at']);
-					$next_time_timestamp = date('Y-m-d 00:00:00', $next_time_timestamp); //上一次签到时间
-					$time_timestamp_int = strtotime($time_timestamp);
-					$next_time_timestamp_int = strtotime($next_time_timestamp);
-//					var_dump($time_timestamp,$next_time_timestamp);exit;
-					if ($time_timestamp_int - $next_time_timestamp_int == 86400)
+					$time_timestamp = strtotime($v['created_at']);
+					$time_timestamp = date('Y-m-d 00:00:00', $time_timestamp); //第一个签到时间
+					//下一天时间
+					if (!empty($data['m_data'][$k + 1]))
 					{
-						$data['m_sign'] += 1;
-					}else{
-						$data['m_sign'] = 1;
+						$next_time_timestamp = strtotime($data['m_data'][$k + 1]['created_at']);
+						$next_time_timestamp = date('Y-m-d 00:00:00', $next_time_timestamp); //上一次签到时间
+						$time_timestamp_int = strtotime($time_timestamp);
+						$next_time_timestamp_int = strtotime($next_time_timestamp);
+						if ($time_timestamp_int - $next_time_timestamp_int == 86400)
+						{
+							$data['m_sign'] += 1;
+						}else{
+							if ($data['m_sign'] > $data['tmp_sign']){
+								$data['tmp_sign'] = $data['m_sign'];
+							}
+							$data['m_sign'] = 1;
+						}
 					}
 				}
+				if ($data['m_sign'] < $data['tmp_sign']){
+					$data['m_sign'] = $data['tmp_sign'];
+				}
+
 			}else{
 				$data['m_sign'] = 1;
 			}
-		}}else{
+		}else{
 			$data['m_sign'] = 0;
 		}
-
 
 		//最多连续签到天数
 		$data['all_data'] = Sign::find()
@@ -89,6 +95,7 @@ class SignForm extends Model
 		//进行计算
 		if (!empty($data['all_data'])){
 			$data['t_sign'] = 1; //连续签到最多天数
+			$data['tmp_sign'] = 0; //连续签到最多天数中间变量
 			foreach ($data['all_data'] as $k=>$v)
 			{
 				if (count($data['all_data']) > 1)
@@ -106,12 +113,18 @@ class SignForm extends Model
 						{
 							$data['t_sign'] += 1;
 						}else{
+							if ($data['t_sign'] > $data['tmp_sign']){
+								$data['tmp_sign'] = $data['t_sign'];
+							}
 							$data['t_sign'] = 1;
 						}
 					}
 				}else{
 					$data['t_sign'] = 1;
 				}
+			}
+			if ($data['t_sign'] < $data['tmp_sign']){
+				$data['t_sign'] = $data['tmp_sign'];
 			}
 		}else{
 			$data['t_sign'] = 0;

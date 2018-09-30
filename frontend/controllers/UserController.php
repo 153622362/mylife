@@ -125,8 +125,6 @@ class UserController extends BaseController
 			   $arr[$tmp_arr[0]] = $tmp_arr[1];
 		   }
 		   $user_obj = User::findOne(['id'=>\Yii::$app->user->id,'status'=>User::STATUS_ACTIVE]);
-//		   $user_obj->username = $arr['nickname'];
-//		   $user_obj->save();
 		   if (!empty($user_obj))
 		   {
 			   $ue_obj = UserExt::findOne(['user_id'=>$user_obj->id]);

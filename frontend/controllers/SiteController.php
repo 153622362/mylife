@@ -106,7 +106,6 @@ class SiteController extends BaseController
 			foreach ($category_arr as $v)
 			{
 				$data[$v['name']] = PostForm::PostInfo($v['id']);
-
 			}
 		}
 		$chat_newest = ChatForm::getThenewestChat(); //最新聊天内容
