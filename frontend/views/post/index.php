@@ -252,15 +252,17 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 				<a href="/user/letter?id=<?=$data['userinfo']['id']?>" class="btn btn-primary btn-sm">私信</a>
 			</div>
 		</div>
-		<div class="panel panel-default">
-			<h4 class="panel-heading m0" >热门动态</h4>
-			<div class="panel-body">
-				<?php if (!empty($data['hotdy'])){
-					foreach ($data['hotdy'] as $v){?>
-						<p><a href="/post/index?id=<?=$v['id']?>" class="title mw200"><?=$v['title']?></a></p>
-				<?php }}?>
+		<?php if (!empty($data['hotdy'])){ ?>
+
+			<div class="panel panel-default">
+				<h4 class="panel-heading m0" >热门动态</h4>
+				<div class="panel-body">
+					<?php	foreach ($data['hotdy'] as $v){?>
+							<p><a href="/post/index?id=<?=$v['id']?>" class="title mw200"><?=$v['title']?></a></p>
+					<?php }?>
+				</div>
 			</div>
-		</div>
+		<?php }?>
 	</div>
 </div>
 

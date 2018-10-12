@@ -144,7 +144,13 @@
 	var m = '<?=$data['m']?>';
 	$('table tbody tr td span.bg-primary').attr('data-placement', 'top').attr('title', '点击补签').css('cursor','pointer').on('click', function () {
 		//补签ajax
-		var param = year + m +$(this).html();
+		var day = $(this).html();
+		if (day.length < 2)
+		{
+			day = '0' + day
+		}
+
+		var param = year + m + day;
 		//签到
 		var url ='/user/sign-api';
 			$.ajax({

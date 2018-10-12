@@ -25,7 +25,6 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-
 <div class="wrap">
     <?php
     NavBar::begin([
@@ -38,10 +37,10 @@ AppAsset::register($this);
     ]);
 
     $menuItems_left = [
-        ['label' => '首页', 'url' => ['/site/index']],
+        ['label' => '首页', 'url' => \common\utils\CreateUrl::createUrl('site/index')],
         ['label' => '动态', 'url' => ['/dynamic/index']],
     ];
-    $category = \frontend\models\Category::find()->where(['is_nav'=>10])->limit(10)->orderBy('created_at desc')->asArray()->all();
+    $category = \frontend\models\Category::find()->where(['is_nav'=>10])->limit(8)->orderBy('created_at desc')->asArray()->all();
     if (!empty($category)){
         $category_arr = [];
         foreach ($category as $v)

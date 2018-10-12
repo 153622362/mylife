@@ -110,10 +110,12 @@ class SiteController extends BaseController
 		}
 		$chat_newest = ChatForm::getThenewestChat(); //最新聊天内容
 		$sign_data = SignForm::QuerySign();
+		$banner = SiteForm::bannerInfo();
 
 		return $this->render('index',[
         	'dynamic' => $dynamic_newest,
 			'data' => $data,
+			'banner' => $banner,
 			'chat' => $chat_newest,
 			'uid' => $uid,
 			'sign_data' => $sign_data

@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] =['label'=>'搜索'];
 		</div>
 	</div>
 <?php } }else{?>
-	<h1>关键词不能为空</h1>
+	<h1>目前还没有相关数据</h1>
 	<?php }?>
 
 

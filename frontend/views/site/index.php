@@ -30,13 +30,12 @@ $this->title = 'My Life';
     }
     .box-wrapper {
         width: 45px;
-        background: #009688;
+        background: rgba(245, 245, 255, 0);
         position: fixed;
         top: 100px;
         left: 5px;
         bottom: 100px;
         overflow: hidden;
-        border: 1px solid grey;
         border-radius: 0.25rem;
     }
     .box {
@@ -61,9 +60,9 @@ $this->title = 'My Life';
         font-size: 16px;
         color: #555555;
     }
-    a:hover{
-        text-decoration: none;
-        color: inherit;
+    .panel a:hover{
+        text-decoration: underline !important;
+        color: #35b558;
     }
     a:link{
         text-decoration: none;
@@ -72,49 +71,113 @@ $this->title = 'My Life';
         text-decoration: none;
     }
 
+    html, body {
+        position: relative;
+        height: 100%;
+    }
+    body {
+        background: #eee;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color:#000;
+        margin: 0;
+        padding: 0;
+    }
+
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+        border-radius: 0.25rem;
+        box-shadow: 0px 0px 3px 2px #888;
+        margin-bottom: 10px !important;
+    }
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+    .col-lg-6 li:hover{
+        background-color: #eae1e1;
+    }
+
 </style>
 <link rel="stylesheet" href="/css/stie.css">
+<link rel="stylesheet" href="/static/swiper/css/swiper.min.css">
 <meta name="csrf-token" content="<?= \Yii::$app->request->csrfToken ?>">
-<div style="position: fixed;top: 58px;left: 5px;width: 45px;text-align: center;border: 1px solid black;border-radius: 0.25rem" class="visible-lg-block">在线<span id="people">0</span>人</div>
-<div class="box-wrapper visible-lg-block" >
-    <div class="box visible-lg-block" >
-<!--在线区域-->
-    </div>
-</div>
+
+
 
 <div class="container">
     <div class="col-lg-9">
+        <?php if (!empty($banner) && count($banner) > 0){?>
+        <!-- Swiper -->
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <?php foreach ($banner as $v) {?>
+                <a href="<?=$v['href']?>" class="swiper-slide" alt="<?=$v['descript']?>" style="height: 300px;background-image:url('<?=$v['url']?>');background-repeat: no-repeat;cursor: pointer">
+
+                </a>
+                <?php }?>
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+            <!-- Add Arrows -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+        <?php }?>
+
         <div class="panel panel-default">
-            <div class="panel-heading"><h3><span class="glyphicon glyphicon-send"></span>  最新动态</h3></div>
             <div class="panel-body">
                 <?php if (is_array($dynamic) && count($dynamic) > 0){ ?>
                 <div class="col-lg-6 ">
-					<ul class="list-unstyled ">
+					<ul class="list-unstyled">
                         <?php for ($x = 0; $x<=4; $x++){?>
-						<li style="line-height: 35px">
-                            <div class="text-one-line" style="width: 20rem;display: inline-block">
-                                <span class="glyphicon glyphicon-menu-right font-size " style="color: grey"></span>
-                                <a href="/post/index?id=<?=$dynamic[$x]['id']?>"><?=$dynamic[$x]['title']?></a>
+						<li>
+                            <div class="text-one-line">
+                                <a href="/post/index?id=<?=$dynamic[$x]['id']?>" class="pull-left" title="文章标题"><?=$dynamic[$x]['title']?></a>
+                                <small  class="hidden-xs hidden-md  hidden-sm text-muted pull-right" title="日期"><?php echo date('Y-m-d',strtotime($dynamic[$x]['created_at']))?></small>
                             </div>
-                            <span style="font-size: 1rem;float: right;color: grey" class="hidden-xs hidden-md  hidden-sm"><?php echo date('Y-m-d',strtotime($dynamic[$x]['created_at']))?></span>
                         </li>
-                        <?php }}?>
+                        <?php }?>
 					</ul>
 				</div>
+                <?php }?>
+
+                <?php if (is_array($dynamic) && count($dynamic) > 0){ ?>
+                <div class="col-lg-6 ">
+					<ul class="list-unstyled">
+                        <?php for ($x = 5; $x<=9; $x++){?>
+						<li>
+                            <div class="text-one-line">
+                                <a href="/post/index?id=<?=$dynamic[$x]['id']?>" class="pull-left" title="文章标题"><?=$dynamic[$x]['title']?></a>
+                                <small  class="hidden-xs hidden-md  hidden-sm text-muted pull-right" title="日期"><?php echo date('Y-m-d',strtotime($dynamic[$x]['created_at']))?></small>
+                            </div>
+                        </li>
+                        <?php }?>
+					</ul>
+				</div>
+                <?php }?>
+
+
                 <?php if (is_array($dynamic) && count($dynamic) >5 ){?>
                 <div class="col-lg-6 hidden-xs hidden-md hidden-sm">
-					<ul class="list-unstyled">
-                        <?php for ($x = 5; $x<=9; $x++){ if (!empty($dynamic[$x]['title'])){?>
-                            <li  style="line-height: 35px">
-                                <div class="text-one-line" style="width: 20rem;display: inline-block">
-                                    <span class="glyphicon glyphicon-menu-right font-size" style="color: grey"></span>
-                                    <a href="/post/index?id=<?=$dynamic[$x]['id']?>"><?=$dynamic[$x]['title']?></a>
-                                </div>
-                                <span style="font-size: 1rem;float: right;color: grey"><?php echo date('Y-m-d',strtotime($dynamic[$x]['created_at']))?></span>
-                            </li>
-                        <?php }}}?>
-					</ul>
+
 				</div>
+                <?php }?>
             </div>
         </div>
         <?php if (!empty($data)){
@@ -124,27 +187,23 @@ $this->title = 'My Life';
             <div class="panel-heading"></span>  <?=$k?></h3></div>
             <div class="panel-body">
                 <table class="table table-hover">
-                    <tr>
-                        <th style="width: 20rem">标题</th>
-<!--                        <th class="hidden-xs hidden-sm hidden-md">版本</th>-->
-                        <th class="hidden-xs hidden-sm hidden-md">作者</th>
-                        <th class="hidden-xs hidden-sm hidden-md">发表时间</th>
-                        <th class="hidden-xs hidden-sm hidden-md"></th></tr>
                     <?php foreach ($v as $vv){
                         ?>
                     <tr><td >
                             <div class="col-lg-9 text-one-line" style="padding-left: 0px;width: 20rem">
 <!--                            --><?php //if ($v_question['post_status'] == 1){ echo '<span class="glyphicon glyphicon-question-sign text-danger"></span>';}else{ echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>';}?>
-                            <a href="/post/index?id=<?=$vv['id']?>" class=""><?=$vv['title']?></a>
+                            <a href="/post/index?id=<?=$vv['id']?>" class="" title="文章标题"><?=$vv['title']?></a>
                             </div>
                         </td>
 <!--                        <td class="hidden-xs hidden-sm hidden-md">--><?//=$vv['post_version']?><!--</td>-->
-                        <td class="hidden-xs hidden-sm hidden-md"><a href="/user/center?id=<?=$vv['uid']?>"><?=$vv['username']?></a></td>
-                        <td class="hidden-xs hidden-sm hidden-md"><?=$vv['created_at']?></td>
+                        <td class="hidden-xs hidden-sm hidden-md"><a href="/user/center?id=<?=$vv['uid']?>" title="作者"><?=$vv['username']?></a></td>
+                        <td class="hidden-xs hidden-sm hidden-md"><small class="text-muted" title="发布时间"><?=$vv['created_at']?></small></td>
                         <td class="hidden-xs hidden-sm hidden-md">
+                            <small>
                                 <span data-toggle="tooltip" data-placement="bottom" title="评论数"><?=$vv['count']?></span>/
                                 <span data-toggle="tooltip" data-placement="bottom" title="收藏数"><?=$vv['cfav']?></span>/
                                 <span data-toggle="tooltip" data-placement="bottom" title="浏览数"><?=$vv['visitor']?></span>
+                            </small>
                         </td>
                     </tr>
                     <?php }?>
@@ -162,7 +221,7 @@ $this->title = 'My Life';
 <!--            <span  class="btn btn-primary btn-lg pull-right" style="width: 50%;border-radius:0 6px 6px 0;font-size: 10px">--><?//=date('Y-m-d', time())?><!--<br>签到统计</span>-->
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading">大家都在说</div>
+            <div class="panel-heading">大家都在说<small class="text-muted text-sm">(在线<span id="people">0</span>人)</small></div>
             <div class="panel-body">
                 <div class="input-group">
                     <textarea  class="form-control" placeholder="文明上网,理性发言" style="resize:none;height: 54px" id="message"></textarea>
@@ -201,7 +260,26 @@ $this->title = 'My Life';
         </div>
     </div>
 </div>
+<script src="/static/swiper/js/swiper.min.js"></script>
 
+<!-- Initialize Swiper -->
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        preventClicks : false,//默认true
+        loop:true,
+        pagination: {
+            el: '.swiper-pagination',
+            type: 'progressbar',
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        autoplay:{
+            delay:2000,
+        }
+    });
+</script>
 <script>
     //bootstrap提示
     $(function () {

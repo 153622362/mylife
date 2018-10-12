@@ -160,6 +160,7 @@ class UserController extends BaseController
 			   $user_obj->password_reset_token = \Yii::$app->security->generateRandomString() . '_' . time();
 			   $user_obj->tmp_email = $email;
 			   $res = $user_obj->save();
+			   if(!empty($res)){
 				   if (empty($user_obj->email))
 					{
 					//第一次绑定
@@ -180,6 +181,7 @@ class UserController extends BaseController
 							   \Yii::$app->session->setFlash('danger', '邮箱修改失败,系统发送错误');
 						   }
 					 }
+			   }
 
 		   	}else{
 			   \Yii::$app->session->setFlash('danger', '邮箱已经存在，请修改邮箱！');
@@ -416,6 +418,7 @@ class UserController extends BaseController
 					->one();
 				if (empty($sign_data))
 				{
+					$transaction = \Yii::$app->db->beginTransaction();
 					$sign_obj = new Sign();
 					$sign_obj->user_id =  $user_id;
 					$sign_obj->created_at = date('Y-m-d H:i:s', $date);
@@ -425,8 +428,12 @@ class UserController extends BaseController
 						//添加分数
 						$res = SignForm::addScore($user_id, $date);
 						if (!empty($res)){
+							$transaction->commit();
 							$res = true;
 							\Yii::$app->session->setFlash('success', '补签成功');
+						}else{
+							$transaction->rollBack();
+							\Yii::$app->session->setFlash('danger', '补签失败,系统发生未知错误');
 						}
 					}
 				}else{
@@ -435,6 +442,7 @@ class UserController extends BaseController
 				return json_encode(['status'=>200,'data'=>$res,'msg'=>"$message",'timestamp'=>time()], JSON_UNESCAPED_UNICODE);
 			}
 		}
+
 	   $res = false;
 	   $sign_data = SignForm::QuerySign(); //查询是否已签到
 	   if (empty($sign_data)){

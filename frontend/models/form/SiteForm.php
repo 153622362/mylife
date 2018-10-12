@@ -3,6 +3,7 @@
 namespace frontend\models\form;
 
 use Chumper\Zipper\Zipper;
+use common\models\Banner;
 use Yii;
 use yii\base\Model;
 
@@ -69,6 +70,12 @@ class SiteForm extends Model
 			}else{
 				echo '无';
 			}
+	}
+
+	//获取banner图信息
+	public static function bannerInfo()
+	{
+		return Banner::find()->where(['is_show'=>10])->limit(10)->orderBy('updated_at desc')->all();
 	}
 
 }
