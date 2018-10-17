@@ -14,14 +14,17 @@
 	?>
 	<div class="media">
 		<div class="media-left media-middle">
-			<a href="/user/center?id=<?=$v['info']['id']?>">
+<!--			<a href="/user/center?id=--><?//=$v['info']['id']?><!--">-->
+			<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['info']['id']])?>">
 				<img class="media-object" src="<?=$v['info']['avatar']?>" alt="..." style="width: 4rem">
 			</a>
 		</div>
 		<div class="media-body">
 			<h4 class="media-heading">
-				<a href="/user/center?id=<?=$v['info']['id']?>"><?=$v['info']['username']?>&nbsp;</a><span class="badge"><?=$v['info']['count']?></span></h4>
-			<a href="/user/letter?id=<?=$v['info']['id']?>"><blockquote><?=$v['content']?></blockquote></a>
+<!--				<a href="/user/center?id=--><?//=$v['info']['id']?><!--">--><?//=$v['info']['username']?><!--&nbsp;</a><span class="badge">--><?//=$v['info']['count']?><!--</span></h4>-->
+				<a href="<?=\common\utils\CreateUrl::createUrl('user/center', ['id'=>$v['info']['id']])?>"><?=$v['info']['username']?>&nbsp;</a><span class="badge"><?=$v['info']['count']?></span></h4>
+<!--			<a href="/user/letter?id=--><?//=$v['info']['id']?><!--"><blockquote>--><?//=$v['content']?><!--</blockquote></a>-->
+			<a href="<?=\common\utils\CreateUrl::createUrl('user/letter',['id'=>$v['info']['id']])?>"><blockquote><?=$v['content']?></blockquote></a>
 		</div>
 	</div>
 	<?php }}?>

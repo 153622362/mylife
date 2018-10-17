@@ -20,13 +20,13 @@
 				?>
 				<div class="media">
 					<div class="media-left media-middle">
-						<a href="/user/center?id=<?=$v['uid']?>">
+						<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 							<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 						</a>
 					</div>
 					<div class="media-body">
 						<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
-						<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+						<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 					</div>
 				</div>
 				<?php }}?>
@@ -38,13 +38,13 @@
 						?>
 						<div class="media">
 							<div class="media-left media-middle">
-								<a href="/user/center?id=<?=$v['uid']?>">
+								<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 									<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 								</a>
 							</div>
 							<div class="media-body">
 								<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
-								<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+								<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 							</div>
 						</div>
 					<?php }}?>
@@ -57,13 +57,13 @@
 							?>
 							<div class="media">
 								<div class="media-left media-middle">
-									<a href="/user/center?id=<?=$v['uid']?>">
+									<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 									</a>
 								</div>
 								<div class="media-body">
 									<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
-									<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+									<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 								</div>
 							</div>
 						<?php }}?>
@@ -76,13 +76,13 @@
 							?>
 							<div class="media">
 								<div class="media-left media-middle">
-									<a href="/user/center?id=<?=$v['uid']?>">
+									<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 									</a>
 								</div>
 								<div class="media-body">
 									<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
-									<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+									<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 								</div>
 							</div>
 						<?php }}?>
@@ -95,13 +95,13 @@
 							?>
 							<div class="media">
 								<div class="media-left media-middle">
-									<a href="/user/center?id=<?=$v['uid']?>">
+									<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 									</a>
 								</div>
 								<div class="media-body">
 									<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
-									<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+									<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 								</div>
 							</div>
 						<?php }}?>
@@ -114,13 +114,13 @@
 							?>
 							<div class="media">
 								<div class="media-left media-middle">
-									<a href="/user/center?id=<?=$v['uid']?>">
+									<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 										<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 									</a>
 								</div>
 								<div class="media-body">
 									<h4 class="media-heading">收藏于<?=$v['created_at']?></h4>
-									<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+									<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 								</div>
 							</div>
 						<?php }}?>

@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\User;
 use common\models\UserExt;
+use common\utils\CreateUrl;
 use frontend\models\Category;
 use frontend\models\Comment;
 use frontend\models\Fans;
@@ -316,7 +317,7 @@ class UserController extends BaseController
 				switch ($v['category']){
 					case 0: //评论
 						$post_obj = Post::findOne($v['content_id']);
-						$text_content = '用户<a href="/user/center?id='.$user_obj->id.'">'.$user_obj->username.'</a>评论了你的文章<a href="/post/index?id='.$post_obj->id.'">'.$post_obj->title.'</a>';
+						$text_content = '用户<a href="'.CreateUrl::createUrl('user/center',['id'=>$user_obj->id]).'">'.$user_obj->username.'</a>评论了你的文章<a href="'.CreateUrl::createUrl('post/index',['id'=>$post_obj->id]).'">'.$post_obj->title.'</a>';
 						break;
 					case 1: //@
 						$comment_obj = Comment::findOne($v['content_id']);
@@ -327,10 +328,10 @@ class UserController extends BaseController
 							$user_obj = User::findOne($arr[1]);
 							$content = $arr['2'];
 						}
-						$text_content = '用户<a href="/user/center?id='.$user_obj->id.'">'.$user_obj->username.'</a>回复了你的评论<a href="/post/index?id='.$comment_obj->post_id.'">'.$content.'</a>';
+						$text_content = '用户<a href="'.CreateUrl::createUrl('user/center',['id'=>$user_obj->id]).'">'.$user_obj->username.'</a>回复了你的评论<a href="'.CreateUrl::createUrl('post/index',['id'=>$comment_obj->post_id]).'#comment-'.$comment_obj->id.'">'.$content.'</a>';
 						break;
 					case 2: //关注
-						$text_content = '用户<a href="/user/center?id='.$user_obj->id.'">'.$user_obj->username.'</a>关注了你';
+						$text_content = '用户<a href="'.CreateUrl::createUrl('user/center',['id'=>$user_obj->id]).'">'.$user_obj->username.'</a>关注了你';
 						break;
 					default:
 						break;

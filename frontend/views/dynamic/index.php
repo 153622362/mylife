@@ -161,7 +161,7 @@
 						</div>
 						<div class="media-body">
 							<h4 class="media-heading"><a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>"><?=$v['username']?></a></h4>
-							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['post_id']])?>"><?=$v['content']?></a>
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['post_id']])?><?php echo '#comment-'.$v['cid']?>"><?=$v['content']?></a>
 							<p class="text-muted"><?=$v['created_at']?></p>
 						</div>
 					</div>

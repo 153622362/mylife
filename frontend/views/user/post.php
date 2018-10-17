@@ -20,13 +20,13 @@
 					?>
 				<div class="media">
 					<div class="media-left media-middle">
-						<a href="/user/center?id=<?=$v['uid']?>">
+						<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 							<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 						</a>
 					</div>
 					<div class="media-body">
 						<h4 class="media-heading">发表于<?=$v['created_at']?></h4>
-						<a href="/post/index?id=<?=$v['pid']?>"><?=$v['title']?></a>
+						<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 					</div>
 				</div>
 				<?php }}?>
@@ -39,7 +39,7 @@
 				 if ($v['post_category'] == 1){?>
 					<div class="media">
 						<div class="media-left media-middle">
-							<a href="/post/index?id=<?=$v['uid']?>">
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['id']])?>">
 								<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 							</a>
 						</div>
@@ -59,7 +59,7 @@
 				 if ($v['post_category'] == 2){?>
 					<div class="media">
 						<div class="media-left media-middle">
-							<a href="/post/index?id=<?=$v['uid']?>">
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['id']])?>">
 								<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 							</a>
 						</div>
@@ -79,7 +79,7 @@
 				if ($v['post_category'] == 3){?>
 					<div class="media">
 						<div class="media-left media-middle">
-							<a href="/post/index?id=<?=$v['uid']?>">
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['id']])?>">
 								<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 							</a>
 						</div>
@@ -97,7 +97,7 @@
 				if ($v['post_category'] == 4){?>
 					<div class="media">
 						<div class="media-left media-middle">
-							<a href="/post/index?id=<?=$v['uid']?>">
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['id']])?>">
 								<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 							</a>
 						</div>
@@ -116,7 +116,7 @@
 				if ($v['post_category'] == 5){?>
 					<div class="media">
 						<div class="media-left media-middle">
-							<a href="/post/index?id=<?=$v['uid']?>">
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['id']])?>">
 								<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 							</a>
 						</div>

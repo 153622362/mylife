@@ -102,9 +102,16 @@ return [
 				'search' => 'post/search',
 				'login'=>'site/login',
 				''=>'site/index',
+//				[
+//					'pattern' => 'dynamic/<page:\d+>',
+//					'route'=>'dynamic/index',
+//					'defaults' => ['category'=>'','tag'=>'']
+//				],
 				'page/<id:\d+>' => 'post/index', //文章
 				'dynamic/<page:\d+>' => 'dynamic/index', //动态
 				'u/<id:\d+>'=> 'user/center', //用户中心
+				'chat/<id:\d+>' => 'chat/detail',
+				'letter/<id:\d+>' => 'user/letter',
 				[
 					//API
 					'class' => 'yii\rest\UrlRule',
