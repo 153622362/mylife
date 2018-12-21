@@ -17,7 +17,7 @@
 				?>
 				<div class="media">
 					<div class="media-left media-middle">
-						<a href="/user/center?id=<?=$v['uid']?>">
+						<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 							<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 						</a>
 					</div>

@@ -16,23 +16,21 @@ class DynamicController extends BaseController
 	public function behaviors()
 	{
 		return [
-			[
-				'class' => 'yii\filters\PageCache', //页面缓存
-				'only' => ['index'],
-				'duration' => 60, //过期时间
-				'variations' => [ //变化
-					\Yii::$app->request->get('page'), //根据页面变化而变化
-					\Yii::$app->request->get('tag'), //根据页面变化而变化
-					\Yii::$app->request->get('category'), //根据页面变化而变化
-//					\Yii::$app->language,
-				],
-				'dependency' => [ //缓存依赖
-					'class' => 'yii\caching\DbDependency',
-					'sql' => 'SELECT COUNT(*) FROM post', //当文章数量变多或减少都会更新
-				],
-
-			],
-
+//			[//缓存配置
+//				'class' => 'yii\filters\PageCache', //页面缓存
+//				'only' => ['index'],
+//				'duration' => 60, //过期时间
+//				'variations' => [ //变化
+//					\Yii::$app->request->get('page'), //根据页面变化而变化
+//					\Yii::$app->request->get('tag'), //根据页面变化而变化
+//					\Yii::$app->request->get('category'), //根据页面变化而变化
+////					\Yii::$app->language,
+//				],
+//				'dependency' => [ //缓存依赖
+//					'class' => 'yii\caching\DbDependency',
+//					'sql' => 'SELECT COUNT(*) FROM post', //当文章数量变多或减少都会更新
+//				],
+//			],
 		];
 	}
 
@@ -48,7 +46,7 @@ class DynamicController extends BaseController
 	   }
 	   //获取 分类 文章
 	   if (!empty($category)){
-		   $data = DynamicForm::tagPost($category, $page, $limit);
+		   $data = DynamicForm::categoryPost($category, $page, $limit);
 	   }
 	   //默认文章
 	   if (empty($category) && empty($tag)){

@@ -1,5 +1,10 @@
-API documentation generator for Yii 2
-=====================================
+<p align="center">
+    <a href="https://github.com/yiisoft" target="_blank">
+        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
+    </a>
+    <h1 align="center">API documentation generator for Yii 2</h1>
+    <br>
+</p>
 
 This extension provides an API documentation generator for the [Yii framework 2.0](http://www.yiiframework.com).
 
@@ -7,6 +12,7 @@ For license information check the [LICENSE](LICENSE.md)-file.
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-apidoc/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-apidoc)
 [![Total Downloads](https://poser.pugx.org/yiisoft/yii2-apidoc/downloads.png)](https://packagist.org/packages/yiisoft/yii2-apidoc)
+[![Build Status](https://travis-ci.org/yiisoft/yii2-apidoc.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-apidoc)
 
 
 Installation
@@ -58,7 +64,7 @@ Currently there is only the `bootstrap` template available.
 You may also add the `yii\apidoc\commands\ApiController` and `GuideController` to your console application command map
 and run them inside of your applications console app.
 
-### Generting docs from multiple sources
+### Generating docs from multiple sources
 
 The apidoc generator can use multiple directories, so you can generate docs for your application and include the yii framework
 docs to enable links between your classes and framework classes. This also allows `@inheritdoc` to work
@@ -110,9 +116,9 @@ See the [code style guide](https://github.com/yiisoft/yii2/blob/master/docs/inte
 Creating your own templates
 ---------------------------
 
-TDB
+TBD
 
 Using the model layer
 ---------------------
 
-TDB
+TBD

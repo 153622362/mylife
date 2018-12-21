@@ -561,10 +561,9 @@ class Module extends ServiceLocator
      */
     public function createController($route)
     {
-        if ($route === '') {
+		if ($route === '') {
             $route = $this->defaultRoute;
         }
-
         // double slashes or leading/ending slashes may cause substr problem
         $route = trim($route, '/');
         if (strpos($route, '//') !== false) {
@@ -583,11 +582,11 @@ class Module extends ServiceLocator
             $controller = Yii::createObject($this->controllerMap[$id], [$id, $this]);
             return [$controller, $route];
         }
+
         $module = $this->getModule($id);
         if ($module !== null) {
             return $module->createController($route);
         }
-
         if (($pos = strrpos($route, '/')) !== false) {
             $id .= '/' . substr($route, 0, $pos);
             $route = substr($route, $pos + 1);
@@ -637,9 +636,8 @@ class Module extends ServiceLocator
         if (strpos($className, '-') !== false || !class_exists($className)) {
             return null;
         }
-
         if (is_subclass_of($className, 'yii\base\Controller')) {
-            $controller = Yii::createObject($className, [$id, $this]);
+            $controller = Yii::createObject($className, [$id, $this]); //$className frontend\controllers\DynamicController
             return get_class($controller) === $className ? $controller : null;
         } elseif (YII_DEBUG) {
             throw new InvalidConfigException('Controller class must extend from \\yii\\base\\Controller.');

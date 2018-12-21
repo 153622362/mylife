@@ -8,7 +8,6 @@
 namespace yii\apidoc\templates\html;
 
 use yii\apidoc\helpers\ApiMarkdown;
-use yii\console\Controller;
 use yii\helpers\Console;
 use yii\apidoc\renderers\GuideRenderer as BaseGuideRenderer;
 use Yii;
@@ -32,6 +31,9 @@ abstract class GuideRenderer extends BaseGuideRenderer
      * @var View
      */
     private $_view;
+    /**
+     * @var string
+     */
     private $_targetDir;
 
 

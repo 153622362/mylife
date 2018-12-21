@@ -133,7 +133,6 @@ class ServiceLocator extends Component
             if (is_object($definition) && !$definition instanceof Closure) {
                 return $this->_components[$id] = $definition;
             }
-
             return $this->_components[$id] = Yii::createObject($definition);
         } elseif ($throwException) {
             throw new InvalidConfigException("Unknown component ID: $id");
@@ -188,12 +187,10 @@ class ServiceLocator extends Component
     public function set($id, $definition)
     {
         unset($this->_components[$id]);
-
         if ($definition === null) {
             unset($this->_definitions[$id]);
             return;
         }
-
         if (is_object($definition) || is_callable($definition, true)) {
             // an object, a class name, or a PHP callable
             $this->_definitions[$id] = $definition;
@@ -207,7 +204,7 @@ class ServiceLocator extends Component
         } else {
             throw new InvalidConfigException("Unexpected configuration type for the \"$id\" component: " . gettype($definition));
         }
-    }
+	}
 
     /**
      * Removes the component from the locator.

@@ -62,34 +62,11 @@
 							<h4 class="media-heading"><?=$user['username']?>
 							<?=$v['category'].$v['other_category']?>
 							</h4>
-							<p><a href="/post/index?id=<?=$v['other_id']?>"><?=$v['title']?></a></p>
+							<p><a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['other_id']])?>"><?=$v['title']?></a></p>
 							<p><?=$v['created_at']?></p>
 						</div>
 					</div>
 				<?php }?>
-			</div>
-
-<!--			话题-->
-			<div role="tabpanel" class="tab-pane" id="topic">
-				<?php foreach ($user['dy'] as $v){
-					if ($v['other_category'] == '文章'){
-					?>
-
-				<div class="media">
-					<div class="media-left media-middle">
-						<a href="#">
-							<img class="media-object" src="<?=$user['avatar']?>" style="width: 60px" alt="头像">
-						</a>
-					</div>
-					<div class="media-body">
-						<h4 class="media-heading"><?=$user['username']?>
-							<?=$v['category'].$v['other_category']?>
-						</h4>
-						<p><a href="?<?=$v['other_id']?>"><?=$v['title']?></a></p>
-						<p><?=$v['created_at']?></p>
-					</div>
-				</div>
-				<?php }}?>
 			</div>
 		</div>
 	</div>

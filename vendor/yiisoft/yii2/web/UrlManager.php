@@ -171,7 +171,6 @@ class UrlManager extends Component
     public function init()
     {
         parent::init();
-
         if ($this->normalizer !== false) {
             $this->normalizer = Yii::createObject($this->normalizer);
             if (!$this->normalizer instanceof UrlNormalizer) {
@@ -188,7 +187,7 @@ class UrlManager extends Component
         if (empty($this->rules)) {
             return;
         }
-        $this->rules = $this->buildRules($this->rules);
+		$this->rules = $this->buildRules($this->rules);
     }
 
     /**

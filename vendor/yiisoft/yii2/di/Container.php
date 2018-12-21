@@ -157,7 +157,6 @@ class Container extends Component
         }
 
         $definition = $this->_definitions[$class];
-
         if (is_callable($definition, true)) {
             $params = $this->resolveDependencies($this->mergeParams($class, $params));
             $object = call_user_func($definition, $this, $params, $config);
@@ -363,27 +362,35 @@ class Container extends Component
         /* @var $reflection ReflectionClass */
         list($reflection, $dependencies) = $this->getDependencies($class);
 
+
         foreach ($params as $index => $param) {
             $dependencies[$index] = $param;
         }
 
         $dependencies = $this->resolveDependencies($dependencies, $reflection);
-        if (!$reflection->isInstantiable()) {
+        if (!$reflection->isInstantiable()) { // 检查类是否可实例化
             throw new NotInstantiableException($reflection->name);
         }
+
+
         if (empty($config)) {
-            return $reflection->newInstanceArgs($dependencies);
+        	//frontend\controllers\DynamicController
+//			if ($class == 'frontend\controllers\DynamicController')
+//			{
+//				var_dump($dependencies);exit;
+//			}
+            return $reflection->newInstanceArgs($dependencies); //实例化控制器 数组每一个元素代表一个参数
         }
 
         $config = $this->resolveDependencies($config);
 
-        if (!empty($dependencies) && $reflection->implementsInterface('yii\base\Configurable')) {
+        if (!empty($dependencies) && $reflection->implementsInterface('yii\base\Configurable')) { //检查它是否实现了一个接口（interface）。
             // set $config as the last parameter (existing one will be overwritten)
             $dependencies[count($dependencies) - 1] = $config;
             return $reflection->newInstanceArgs($dependencies);
         }
 
-        $object = $reflection->newInstanceArgs($dependencies);
+        $object = $reflection->newInstanceArgs($dependencies); //创建一个类的新实例，给出的参数将传递到类的构造函数。 返回新的实例
         foreach ($config as $name => $value) {
             $object->$name = $value;
         }
@@ -425,17 +432,18 @@ class Container extends Component
         }
 
         $dependencies = [];
-        $reflection = new ReflectionClass($class);
+        $reflection = new ReflectionClass($class);  //ReflectionClass对象 name = $class
 
-        $constructor = $reflection->getConstructor();
+        $constructor = $reflection->getConstructor(); //返回值一个 ReflectionMethod 对象，反射了类的构造函数，或者当类不存在构造函数时返回 NUL
         if ($constructor !== null) {
+        	//$constructor->getParameters() 返回构造函数的参数列表
             foreach ($constructor->getParameters() as $param) {
-                if (version_compare(PHP_VERSION, '5.6.0', '>=') && $param->isVariadic()) {
+                if (version_compare(PHP_VERSION, '5.6.0', '>=') && $param->isVariadic()) { //Checks if the parameter was declared as a variadic parameter 意思就是否可以传入任意个参数
                     break;
-                } elseif ($param->isDefaultValueAvailable()) {
+                } elseif ($param->isDefaultValueAvailable()) { //检查参数是否有默认值
                     $dependencies[] = $param->getDefaultValue();
                 } else {
-                    $c = $param->getClass();
+                    $c = $param->getClass(); //获取参数的类型提示类，类型为ReflectionClass对象。
                     $dependencies[] = Instance::of($c === null ? null : $c->getName());
                 }
             }
@@ -443,7 +451,6 @@ class Container extends Component
 
         $this->_reflections[$class] = $reflection;
         $this->_dependencies[$class] = $dependencies;
-
         return [$reflection, $dependencies];
     }
 
@@ -461,8 +468,8 @@ class Container extends Component
                 if ($dependency->id !== null) {
                     $dependencies[$index] = $this->get($dependency->id);
                 } elseif ($reflection !== null) {
-                    $name = $reflection->getConstructor()->getParameters()[$index]->getName();
-                    $class = $reflection->getName();
+                    $name = $reflection->getConstructor()->getParameters()[$index]->getName(); //获取参数名称
+                    $class = $reflection->getName(); //获取类名
                     throw new InvalidConfigException("Missing required parameter \"$name\" when instantiating \"$class\".");
                 }
             }

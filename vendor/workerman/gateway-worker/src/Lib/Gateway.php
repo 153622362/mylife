@@ -32,7 +32,7 @@ class Gateway
     /**
      * 注册中心地址
      *
-     * @var string
+     * @var string|array
      */
     public static $registerAddress = '127.0.0.1:1236';
 
@@ -125,10 +125,6 @@ class Gateway
         } // 运行在其它环境中，通过注册中心得到gateway地址
         else {
             $all_addresses = static::getAllGatewayAddressesFromRegister();
-            if (!$all_addresses) {
-                throw new Exception('Gateway::getAllGatewayAddressesFromRegister() with registerAddress:' .
-                    static::$registerAddress . '  return ' . var_export($all_addresses, true));
-            }
             foreach ($all_addresses as $address) {
                 $gateway_data['ext_data'] = isset($address_connection_array[$address]) ?
                     json_encode(array('exclude'=> $address_connection_array[$address])) : '';
@@ -220,7 +216,7 @@ class Gateway
         if (!$group) {
             $gateway_data['cmd']      = GatewayProtocol::CMD_GET_ALL_CLIENT_SESSIONS;
         } else {
-            $gateway_data['cmd']      = GatewayProtocol::CMD_GET_CLINET_SESSUONS_BY_GROUP;
+            $gateway_data['cmd']      = GatewayProtocol::CMD_GET_CLIENT_SESSIONS_BY_GROUP;
             $gateway_data['ext_data'] = $group;
         }
         $status_data      = array();
@@ -714,9 +710,7 @@ class Gateway
         $addresses = static::getAllGatewayAddress();
         $gateway_buffer_array = array();
         $gateway_buffer = GatewayProtocol::encode($gateway_data);
-        if (!is_array($gateway_data)) {
-            $gateway_buffer = static::$secretKey ? static::generateAuthBuffer() . $gateway_buffer : $gateway_buffer;
-        }
+        $gateway_buffer = static::$secretKey ? static::generateAuthBuffer() . $gateway_buffer : $gateway_buffer;
         foreach ($addresses as $address) {
             $gateway_buffer_array[$address] = $gateway_buffer;
         }
@@ -1019,10 +1013,6 @@ class Gateway
         } // 运行在其它环境中，通过注册中心得到gateway地址
         else {
             $addresses = static::getAllGatewayAddressesFromRegister();
-            if (!$addresses) {
-                throw new Exception('Gateway::getAllGatewayAddressesFromRegister() with registerAddress:' .
-                    static::$registerAddress . '  return ' . var_export($addresses, true));
-            }
             foreach ($addresses as $address) {
                 $gateway_data['ext_data'] = isset($address_connection_array[$address]) ?
                     json_encode(array('group'=> $group, 'exclude'=> $address_connection_array[$address])) :
@@ -1072,7 +1062,7 @@ class Gateway
     public static function updateSession($client_id, array $session)
     {
         if (Context::$client_id === $client_id) {
-            $_SESSION = $session + (array)$_SESSION;
+            $_SESSION = array_replace_recursive((array)$_SESSION, $session);
             Context::$old_session = $_SESSION;
         }
         static::sendCmdAndMessageToClient($client_id, GatewayProtocol::CMD_UPDATE_SESSION, '', Context::sessionEncode($session));
@@ -1243,10 +1233,6 @@ class Gateway
         } // 运行在其它环境中，通过注册中心得到gateway地址
         else {
             $all_addresses = static::getAllGatewayAddressesFromRegister();
-            if (!$all_addresses) {
-                throw new Exception('Gateway::getAllGatewayAddressesFromRegister() with registerAddress:' .
-                    static::$registerAddress . '  return ' . var_export($all_addresses, true));
-            }
             foreach ($all_addresses as $address) {
                 static::sendBufferToGateway($address, $buffer);
             }
@@ -1325,20 +1311,31 @@ class Gateway
         static $addresses_cache, $last_update;
         $time_now = time();
         $expiration_time = 1;
+        $register_addresses = (array)static::$registerAddress;
         if(empty($addresses_cache) || $time_now - $last_update > $expiration_time) {
-            $client = stream_socket_client('tcp://' . static::$registerAddress, $errno, $errmsg, static::$connectTimeout);
-            if (!$client) {
-                throw new Exception('Can not connect to tcp://' . static::$registerAddress . ' ' . $errmsg);
+            foreach ($register_addresses as $register_address) {
+                $client = stream_socket_client('tcp://' . $register_address, $errno, $errmsg, static::$connectTimeout);
+                if (!$client) {
+                    continue;
+                }
             }
+            if (!$client) {
+                throw new Exception('Can not connect to tcp://' . $register_address . ' ' . $errmsg);
+            }
+
             fwrite($client, '{"event":"worker_connect","secret_key":"' . static::$secretKey . '"}' . "\n");
             stream_set_timeout($client, 5);
             $ret = fgets($client, 655350);
             if (!$ret || !$data = json_decode(trim($ret), true)) {
                 throw new Exception('getAllGatewayAddressesFromRegister fail. tcp://' .
-                    static::$registerAddress . ' return ' . var_export($ret, true));
+                    $register_address . ' return ' . var_export($ret, true));
             }
             $last_update = $time_now;
             $addresses_cache = $data['addresses'];
+        }
+        if (!$addresses_cache) {
+            throw new Exception('Gateway::getAllGatewayAddressesFromRegister() with registerAddress:' .
+                json_encode(static::$registerAddress) . '  return ' . var_export($addresses_cache, true));
         }
         return $addresses_cache;
     }

@@ -2,10 +2,13 @@
 
 $this->params['breadcrumbs'][] =['label'=>'聊天室','url'=>\yii\helpers\Url::to(['/site/index'])];
 $this->params['breadcrumbs'][] = $data['chat_info']['content'];
+
+$this->registerJsFile('@web/static/wangEditor/release/wangEditor.min.js', [
+	'position' => $this::POS_HEAD //在头部注册
+] );
 ?>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" xmlns="http://www.w3.org/1999/html">
 <meta name="csrf-token" content="<?= \Yii::$app->request->csrfToken ?>">
-<script src="https://unpkg.com/wangeditor@3.1.1/release/wangEditor.min.js"></script>
 
 <style>
 	.red:hover{
@@ -55,6 +58,7 @@ $this->params['breadcrumbs'][] = $data['chat_info']['content'];
 		margin-top: 5px;
 	}
 
+	/*动画*/
 	@-webkit-keyframes rotation{
 		from {-webkit-transform: rotate(0deg);}
 		to {-webkit-transform: rotate(360deg);}
@@ -74,7 +78,8 @@ $this->params['breadcrumbs'][] = $data['chat_info']['content'];
 		<hr>
 		<h4 class="text-muted">
 			<span class="blue">
-				<a href="/user/center?id=<?=$data['chat_info']['user_id']?>" data-toggle="tooltip" data-placement="top" title="作者">🧑<?=$data['chat_info']['username']?></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<!--				<a href="/user/center?id=--><?//=$data['chat_info']['user_id']?><!--" data-toggle="tooltip" data-placement="top" title="作者">🧑--><?//=$data['chat_info']['username']?><!--</a>&nbsp;&nbsp;&nbsp;&nbsp;-->
+				<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$data['chat_info']['user_id']])?>" data-toggle="tooltip" data-placement="top" title="作者">🧑<?=$data['chat_info']['username']?></a>&nbsp;&nbsp;&nbsp;&nbsp;
 			</span>
 			<span class="blue">
 			   <span data-toggle="tooltip" data-placement="top" title="创建时间">⏰<?=substr($data['chat_info']['created_at'],0,10)?> </span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -97,7 +102,7 @@ $this->params['breadcrumbs'][] = $data['chat_info']['content'];
 				echo '	<h5>喜欢此内容的人</h5>';
 				foreach ($data['likeinfo'] as $v){
 					?>
-					<a href="/user/center?id=<?=$v['id']?>" class="thumbnail inline-block" >
+					<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['id']])?>" class="thumbnail inline-block" >
 						<img src="<?=$v['avatar']?>" alt="..." class="img-avatar rotate">
 					</a>
 				<?php }}?>
@@ -119,14 +124,18 @@ $this->params['breadcrumbs'][] = $data['chat_info']['content'];
 					?>
 					<div class="media" id="comment-<?=$v['id']?>">
 						<div class="media-left">
-							<a href="/user/center?id=<?=$v['uid']?>">
+<!--							<a href="/user/center?id=--><?//=$v['uid']?><!--">-->
+							<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 								<img class="media-object img-width" src="<?=$v['avatar']?>" alt="..."  >
 							</a>
 						</div>
 						<div class="media-body">
 
 							<div cid="<?=$v['id']?>" >
-								<h4 class="media-heading" uid="<?=$v['uid']?>" id=""><a href="/user/center?id=<?=$v['uid']?>"><?=$v['username']?> </a><span class="text-muted">评论于<?=$v['created_at']?></span>
+								<h4 class="media-heading" uid="<?=$v['uid']?>" id="">
+<!--									<a href="/user/center?id=--><?//=$v['uid']?><!--">--><?//=$v['username']?><!-- </a>-->
+									<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>"><?=$v['username']?> </a>
+									<span class="text-muted">评论于<?=$v['created_at']?></span>
 								</h4>
 								<h4><?=$v['content']?></h4>
 								<?php if (!empty(Yii::$app->user->id)){?>
@@ -139,14 +148,17 @@ $this->params['breadcrumbs'][] = $data['chat_info']['content'];
 										?>
 										<div class="media" id="comment-<?=$vv['id']?>">
 											<div class="media-left">
-												<a href="/user/center?id=<?=$vv['uid']?>">
+<!--												<a href="/user/center?id=--><?//=$vv['uid']?><!--">-->
+												<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$vv['uid']])?>">
 													<img class="media-object child-comment-avatr" src="<?=$vv['avatar']?>" alt="..." >
 												</a>
 											</div>
 											<div class="media-body">
 												<div cid="<?=$v['id']?>" ccid="<?=$vv['id']?>">
 													<h5 class="media-heading" uid="<?=$v['uid']?>" id="">
-														<a href="/user/center?id=<?=$vv['uid']?>"><?=$vv['username']?> </a><span class="text-muted">回复于<?=$vv['created_at']?></span>
+<!--														<a href="/user/center?id=--><?//=$vv['uid']?><!--">--><?//=$vv['username']?><!-- </a>-->
+														<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$vv['uid']])?>"><?=$vv['username']?> </a>
+														<span class="text-muted">回复于<?=$vv['created_at']?></span>
 														&nbsp;&nbsp;
 													</h5>
 

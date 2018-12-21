@@ -48,9 +48,15 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      * @var View
      */
     private $_view;
+    /**
+     * @var string
+     */
     private $_targetDir;
 
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
@@ -84,7 +90,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      * Renders a given [[Context]].
      *
      * @param Context $context the api documentation context to render.
-     * @param $targetDir
+     * @param string $targetDir
      */
     public function render($context, $targetDir)
     {
@@ -135,11 +141,10 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         $output = $this->getView()->render($viewFile, $params, $this);
         if ($this->layout !== false) {
             $params['content'] = $output;
-
             return $this->getView()->renderFile($this->layout, $params, $this);
-        } else {
-            return $output;
         }
+
+        return $output;
     }
 
     /**
@@ -222,6 +227,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
 
     /**
      * @param PropertyDoc $property
+     * @param mixed $context
      * @return string
      */
     public function renderPropertySignature($property, $context = null)
@@ -247,7 +253,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
             . '<span class="signature-type">' . $this->createTypeLink($property->types, $context) . '</span>'
             . ' ' . $this->createSubjectLink($property, $property->name) . ' '
-            . ApiMarkdown::highlight('= ' . ($property->defaultValue === null ? 'null' : $property->defaultValue), 'php');
+            . ApiMarkdown::highlight('= ' . $this->renderDefaultValue($property->defaultValue), 'php');
     }
 
     /**
@@ -262,7 +268,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
                 . ($param->isPassedByReference ? '<b>&</b>' : '')
                 . ApiMarkdown::highlight(
                     $param->name
-                    . ($param->isOptional ? ' = ' . $param->defaultValue : ''),
+                    . ($param->isOptional ? ' = ' . $this->renderDefaultValue($param->defaultValue) : ''),
                     'php'
                 );
         }
@@ -281,6 +287,38 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
             . ($method->returnType === null ? 'void' : $this->createTypeLink($method->returnTypes, $context)) . '</span> '
             . '<strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
             . str_replace('  ', ' ', ' ( ' . implode(', ', $params) . ' )');
+    }
+
+    /**
+     * Renders the default value.
+     * @param mixed $value
+     * @return string
+     * @since 2.1.1
+     */
+    public function renderDefaultValue($value)
+    {
+        if ($value === null) {
+            return 'null';
+        }
+
+        // special numbers which are usually used in octal or hex notation
+        static $specials = [
+            // file permissions
+            '420' => '0644',
+            '436' => '0664',
+            '438' => '0666',
+            '493' => '0755',
+            '509' => '0775',
+            '511' => '0777',
+            // colors used in yii\captcha\CaptchaAction
+            '2113696' => '0x2040A0',
+            '16777215' => '0xFFFFFF',
+        ];
+        if (isset($specials[$value])) {
+            return $specials[$value];
+        }
+
+        return $value;
     }
 
     /**

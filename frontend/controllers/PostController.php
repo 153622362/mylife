@@ -42,7 +42,7 @@ class PostController extends BaseController
                     [
                         'actions' => ['fav','zan','create'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['@'], //@认证用户
                     ],
                 ],
             ],

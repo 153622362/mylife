@@ -109,7 +109,6 @@ class Application extends \yii\base\Application
             if ($result !== null) {
                 $response->data = $result;
             }
-
             return $response;
         } catch (InvalidRouteException $e) {
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'), $e->getCode(), $e);

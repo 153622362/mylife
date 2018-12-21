@@ -26,9 +26,13 @@ use InvalidArgumentException;
  */
 class HttpCommandExecutor implements WebDriverCommandExecutor
 {
+    const DEFAULT_HTTP_HEADERS = [
+        'Content-Type: application/json;charset=UTF-8',
+        'Accept: application/json',
+    ];
+
     /**
-     * @see
-     *   http://code.google.com/p/selenium/wiki/JsonWireProtocol#Command_Reference
+     * @see https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#command-reference
      */
     protected static $commands = [
         DriverCommand::ACCEPT_ALERT => ['method' => 'POST', 'url' => '/session/:sessionId/accept_alert'],
@@ -154,7 +158,7 @@ class HttpCommandExecutor implements WebDriverCommandExecutor
 
         if (!empty($http_proxy)) {
             curl_setopt($this->curl, CURLOPT_PROXY, $http_proxy);
-            if (!empty($http_proxy_port)) {
+            if ($http_proxy_port !== null) {
                 curl_setopt($this->curl, CURLOPT_PROXYPORT, $http_proxy_port);
             }
         }
@@ -170,14 +174,7 @@ class HttpCommandExecutor implements WebDriverCommandExecutor
 
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt(
-            $this->curl,
-            CURLOPT_HTTPHEADER,
-            [
-                'Content-Type: application/json;charset=UTF-8',
-                'Accept: application/json',
-            ]
-        );
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, static::DEFAULT_HTTP_HEADERS);
         $this->setRequestTimeout(30000);
         $this->setConnectionTimeout(30000);
     }
@@ -262,6 +259,14 @@ class HttpCommandExecutor implements WebDriverCommandExecutor
             curl_setopt($this->curl, CURLOPT_POST, 1);
         } else {
             curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $http_method);
+        }
+
+        if (in_array($http_method, ['POST', 'PUT'])) {
+            // Disable sending 'Expect: 100-Continue' header, as it is causing issues with eg. squid proxy
+            // https://tools.ietf.org/html/rfc7231#section-5.1.1
+            curl_setopt($this->curl, CURLOPT_HTTPHEADER, array_merge(static::DEFAULT_HTTP_HEADERS, ['Expect:']));
+        } else {
+            curl_setopt($this->curl, CURLOPT_HTTPHEADER, static::DEFAULT_HTTP_HEADERS);
         }
 
         $encoded_params = null;

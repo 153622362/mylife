@@ -277,7 +277,6 @@ class Request extends \yii\base\Request
             } else {
                 $this->_queryParams = $params + $this->_queryParams;
             }
-
             return [$route, $this->getQueryParams()];
         }
 

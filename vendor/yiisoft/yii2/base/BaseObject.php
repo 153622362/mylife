@@ -7,6 +7,7 @@
 
 namespace yii\base;
 
+use Symfony\Component\Finder\Expression\Expression;
 use Yii;
 
 /**
@@ -103,11 +104,10 @@ class BaseObject implements Configurable
      */
     public function __construct($config = [])
     {
-
 		if (!empty($config)) {
-
             Yii::configure($this, $config);
         }
+
         $this->init();
     }
 
