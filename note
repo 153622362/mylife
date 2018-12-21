@@ -1,0 +1,102 @@
+框架必须
+路由/日志/组件/请求组件
+
+组件
+日期组件
+图片上传组件
+富文本组件
+选择框组件
+头像上传组件
+OAUTH组件
+轮播组件
+RBAC组件
+Excel组件
+图表组件
+
+
+余额设计 
+累计字段设计
+null是否会变为空字符串 可以但不能传null
+数据库的设计
+常量定义状态
+事务
+代码规范
+safari返回上一页刷新问题
+
+服务器版本更新回滚
+
+分清
+空、null
+字节、字符   
+UTF－8：一个汉字＝3个字节  GBK：一个汉字＝2个字节
+
+数组函数能力提高
+js jq能力提高
+1.网址一定要生成
+2.缓存键多个就生成一个变量
+
+多人开发团队分配问题
+传输加密
+
+需求分析 
+比如爬虫 分析所有语言的爬虫库/框架  相亲网站，求职网站
+
+yii2
+assets
+当资源不在根目录应该设置$sourcePath
+
+资源位置
+   源资源: 资源文件和PHP源代码放在一起，不能被Web直接访问
+   发布资源: 可通过Web直接访问的资源
+   外部资源: 资源文件放在与你的Web应用不同 的Web服务器上
+资源依赖---优先加载依赖
+资源选项---加载位置、浏览器、部分资源发布等行为判断
+
+从服务器获取资源
+return [
+    // ...
+    'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [ //资源包名
+                    'sourcePath' => null,   // 一定不要发布该资源
+                    'js' => [
+                        '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js',
+                    ]
+                ],
+            ],
+        ],
+    ],
+];
+
+'yii\web\JqueryAsset' => [
+    'js' => [
+        YII_ENV_DEV ? 'jquery.js' : 'jquery.min.js'
+    ]
+],
+
+禁用资源包
+return [
+    // ...
+    'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => false,
+            ],
+        ],
+    ],
+];
+
+修正资源包部署---包Ajquery.min.js 包Bjquery.js 配置
+
+资源发布
+return [
+    // ...
+    'components' => [
+        'assetManager' => [
+            'linkAssets' => true, //不设置链接，则发布到根目录
+        ],
+    ],
+];
+
+资源分组
