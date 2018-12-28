@@ -94,7 +94,8 @@ class Configuration
             'log_incomplete_skipped'    => false,
             'report_useless_tests'      => false,
             'disallow_test_output'      => false,
-            'be_strict_about_changes_to_global_state' => false
+            'be_strict_about_changes_to_global_state' => false,
+            'shuffle'     => false,
         ],
         'coverage'   => [],
         'params'     => [],
@@ -186,7 +187,7 @@ class Configuration
         // we check for the "extends" key in the yml file
         if (isset($config['extends'])) {
             // and now we search for the file
-            $presetFilePath = realpath(self::$dir . DIRECTORY_SEPARATOR . $config['extends']);
+            $presetFilePath = codecept_absolute_path($config['extends']);
             if (file_exists($presetFilePath)) {
                 // and merge it with our configuration file
                 $config = self::mergeConfigs(self::getConfFromFile($presetFilePath), $config);
@@ -543,7 +544,7 @@ class Configuration
 
         if (!is_writable($dir)) {
             throw new ConfigurationException(
-                "Path for output is not writable. Please, set appropriate access mode for output path."
+                "Path for output is not writable. Please, set appropriate access mode for output path: {$dir}"
             );
         }
 
@@ -690,7 +691,10 @@ class Configuration
 
         // now we check the suite config file, if a extends key is defined
         if (isset($suiteConf['extends'])) {
-            $presetFilePath = realpath($suiteDir . DIRECTORY_SEPARATOR . $suiteConf['extends']);
+            $presetFilePath = codecept_is_path_absolute($suiteConf['extends'])
+                ? $suiteConf['extends'] // If path is absolute – use it
+                : realpath($suiteDir . DIRECTORY_SEPARATOR . $suiteConf['extends']); // Otherwise try to locate it in the suite dir
+
             if (file_exists($presetFilePath)) {
                 $settings = self::mergeConfigs(self::getConfFromFile($presetFilePath), $settings);
             }

@@ -3,6 +3,16 @@
 /* @var $this yii\web\View */
 
 $this->title = 'My Life';
+$this->registerCssFile('@web/static/swiper/css/swiper.min.css', [
+    'position' => $this::POS_HEAD //在头部注册
+] );
+$this->registerCssFile('@web/css/site.css', [
+    'position' => $this::POS_HEAD //在头部注册
+] );
+
+$this->registerJSFile('@web/static/swiper/js/swiper.min.js', [
+    'position' => $this::POS_BEGIN //在头部注册
+] );
 ?>
 <style>
     body{
@@ -112,10 +122,8 @@ $this->title = 'My Life';
     .col-lg-6 li:hover{
         background-color: #eae1e1;
     }
-
 </style>
-<link rel="stylesheet" href="/css/stie.css">
-<link rel="stylesheet" href="/static/swiper/css/swiper.min.css">
+
 <meta name="csrf-token" content="<?= \Yii::$app->request->csrfToken ?>">
 
 
@@ -127,9 +135,7 @@ $this->title = 'My Life';
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <?php foreach ($banner as $v) {?>
-                <a href="<?=$v['href']?>" class="swiper-slide" alt="<?=$v['descript']?>" style="height: 300px;background-image:url('<?=$v['url']?>');background-repeat: no-repeat;cursor: pointer">
-
-                </a>
+                <a href="<?=$v['href']?>" class="swiper-slide" alt="<?=$v['descript']?>" style="height: 300px;background-image:url('<?=$v['url']?>');background-repeat: no-repeat;cursor: pointer"></a>
                 <?php }?>
             </div>
             <!-- Add Pagination -->
@@ -148,7 +154,6 @@ $this->title = 'My Life';
                         <?php for ($x = 0; $x<=4; $x++){?>
 						<li>
                             <div class="text-one-line">
-<!--                                <a href="/post/index?id=--><?//=$dynamic[$x]['id']?><!--" class="pull-left" title="文章标题">--><?//=$dynamic[$x]['title']?><!--</a>-->
                                 <a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$dynamic[$x]['id']])?>" class="pull-left" title="文章标题"><?=$dynamic[$x]['title']?></a>
                                 <small  class="hidden-xs hidden-md  hidden-sm text-muted pull-right" title="日期"><?php echo date('Y-m-d',strtotime($dynamic[$x]['created_at']))?></small>
                             </div>
@@ -164,7 +169,6 @@ $this->title = 'My Life';
                         <?php for ($x = 5; $x<=9; $x++){?>
 						<li>
                             <div class="text-one-line">
-<!--                                <a href="/post/index?id=--><?//=$dynamic[$x]['id']?><!--" class="pull-left" title="文章标题">--><?//=$dynamic[$x]['title']?><!--</a>-->
                                 <a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$dynamic[$x]['id']])?>" class="pull-left" title="文章标题"><?=$dynamic[$x]['title']?></a>
                                 <small  class="hidden-xs hidden-md  hidden-sm text-muted pull-right" title="日期"><?php echo date('Y-m-d',strtotime($dynamic[$x]['created_at']))?></small>
                             </div>
@@ -191,10 +195,9 @@ $this->title = 'My Life';
                 <table class="table table-hover">
                     <?php foreach ($v as $vv){
                         ?>
-                    <tr><td >
+                    <tr class="table-tr"><td >
                             <div class="col-lg-9 text-one-line" style="padding-left: 0px;width: 20rem">
 <!--                            --><?php //if ($v_question['post_status'] == 1){ echo '<span class="glyphicon glyphicon-question-sign text-danger"></span>';}else{ echo '<span class="glyphicon glyphicon-ok-sign text-success"></span>';}?>
-<!--                            <a href="/post/index?id=--><?//=$vv['id']?><!--" class="" title="文章标题">--><?//=$vv['title']?><!--</a>-->
                             <a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$vv['id']])?>" class="" title="文章标题"><?=$vv['title']?></a>
                             </div>
                         </td>
@@ -241,17 +244,14 @@ $this->title = 'My Life';
                             <div class="col-lg-3 col-sm-3 col-md-3" ><img src="<?=$v_chat['avatar']?>" style="width: 40px" alt=""></div>
                             <div class="col-lg-9 col-sm-9 col-md-9">
         <!--                        名字-->
-<!--                                <a href="/user/center?id=--><?//=$v_chat['id']?><!--">--><?//=$v_chat['username']?><!--</a>:-->
-                                <a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v_chat['id']])?>"><?=$v_chat['username']?></a>:
+                                <a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v_chat['user_id']])?>"><?=$v_chat['username']?></a>:
         <!--                        内容-->
                                 <span style="word-break: break-all;font-size: 16px"><?=$v_chat['content']?></span>
         <!--                        留言底部-->
                                 <div style="margin: 1rem 0;font-size: 16px" class="text-muted" >
                                     <span  class="" style="font-size: 14px"><?=$v_chat['created_at']?></span>
                                     <span style="float: right;">
-<!--                                        <a href="/chat/detail?id=--><?//=$v_chat['id']?><!--" class="text-muted" message-id="--><?//=$v_chat['id']?><!--">-->
-                                        <a href="<?=\common\utils\CreateUrl::createUrl('chat/detail',['id'=>$v_chat['id']])?>" class="text-muted" message-id="<?=$v_chat['id']?>">
-                                        <span class="glyphicon glyphicon-comment" title="回复"></span> <span><?=$v_chat['pid']?></span></a>
+                                        <a href="<?=\common\utils\CreateUrl::createUrl('chat/detail',['id'=>$v_chat['id']])?>" class="text-muted" message-id="<?=$v_chat['id']?>"><span class="glyphicon glyphicon-comment" title="回复"></span> <span><?=$v_chat['pid']?></span></a>
                                         <a href="#" class="text-muted" chat-id="<?=$v_chat['id']?>"><span class="glyphicon glyphicon-thumbs-up <?php echo $v_chat['zan']? 'text-success':'' ?>" title="顶"  ></span> <span><?=$v_chat['like']?></span></a>
                                     </span>
                                 </div>
@@ -266,7 +266,6 @@ $this->title = 'My Life';
         </div>
     </div>
 </div>
-<script src="/static/swiper/js/swiper.min.js"></script>
 
 <!-- Initialize Swiper -->
 <script>

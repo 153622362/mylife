@@ -27,15 +27,18 @@ trait RendererTrait
         'elasticsearch',
         'faker',
         'gii',
+        'httpclient',
         'imagine',
         'jui',
         'mongodb',
         'redis',
+        'shell',
         'smarty',
         'sphinx',
         'swiftmailer',
         'twig',
     ];
+
 
     /**
      * Returns nav TypeDocs

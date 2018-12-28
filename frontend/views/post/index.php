@@ -2,11 +2,15 @@
 
 $this->params['breadcrumbs'][] =['label'=>'动态','url'=>\yii\helpers\Url::to(['/dynamic/index'])];
 $this->params['breadcrumbs'][] = $data['article_info']['title'];
+$this->registerJsFile('@web/static/wangEditor/release/wangEditor.min.js', [
+	'position' => $this::POS_HEAD //在头部注册
+] );
 
 ?>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" xmlns="http://www.w3.org/1999/html">
 <meta name="csrf-token" content="<?= \Yii::$app->request->csrfToken ?>">
-<script src="https://unpkg.com/wangeditor@3.1.1/release/wangEditor.min.js"></script>
+
+<!--<script src="https://unpkg.com/wangeditor@3.1.1/release/wangEditor.min.js"></script>-->
 
 <style>
 	.red:hover{
@@ -93,7 +97,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 		<hr>
 		<h4 class="text-muted">
 			<span class="blue">
-				<a href="/user/center?id=<?=$data['article_info']['author']?>" data-toggle="tooltip" data-placement="top" title="作者">🧑<?=$data['article_info']['username']?></a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$data['article_info']['author']])?>" data-toggle="tooltip" data-placement="top" title="作者">🧑<?=$data['article_info']['username']?></a>&nbsp;&nbsp;&nbsp;&nbsp;
 			</span>
 		<span class="blue">
 			   <span data-toggle="tooltip" data-placement="top" title="创建时间">⏰<?=substr($data['article_info']['created_at'],0,10)?> </span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -122,7 +126,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 				echo '	<h5>喜欢这篇文章的人</h5>';
 				 foreach ($data['article_info']['likeinfo'] as $v){
 				?>
-					<a href="/user/center?id=<?=$v['id']?>" class="thumbnail inline-block" >
+					<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['id']])?>" class="thumbnail inline-block" >
 						<img src="<?=$v['avatar']?>" alt="..." class="img-avatar rotate">
 					</a>
 					<?php }}?>
@@ -137,7 +141,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 		<?php if (!empty($data['tag'])){ ?>
 			<h3>文章标签</h3>
 				<?php foreach ($data['tag'] as $k=>$v){ ?>
-		<a href="/dynamic/index?tag=<?=$k?>" class="btn btn-success"><?=$v?></a>
+		<a href="<?=\common\utils\CreateUrl::createUrl('dynamic/index',['tag'=>$k])?>" class="btn btn-success"><?=$v?></a>
 		<?php }}?>
 <!--		评论-->
 		<h4>共 <span><?=$data['article_info']['ccom']?></span>条评论</h4>
@@ -148,14 +152,14 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 					?>
 			<div class="media" id="comment-<?=$v['id']?>">
 				<div class="media-left">
-					<a href="/user/center?id=<?=$v['uid']?>">
+					<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 						<img class="media-object img-width" src="<?=$v['avatar']?>" alt="..."  >
 					</a>
 				</div>
 				<div class="media-body">
 
 					<div cid="<?=$v['id']?>" >
-						<h4 class="media-heading" uid="<?=$v['uid']?>" id=""><a href="/user/center?id=<?=$v['uid']?>"><?=$v['username']?> </a><span class="text-muted">评论于<?=$v['created_at']?></span>
+						<h4 class="media-heading" uid="<?=$v['uid']?>" id=""><a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>"><?=$v['username']?> </a><span class="text-muted">评论于<?=$v['created_at']?></span>
 							<span class="pull-right glyphicon glyphicon-flag blue pointer"  data-toggle="tooltip" data-placement="top" title="举报此评论!" cid="<?=$v['id']?>">举报</span></h4>
 						<h4><?=$v['content']?></h4>
 						<h5 >
@@ -172,14 +176,14 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 							?>
 							<div class="media" id="comment-<?=$vv['id']?>">
 								<div class="media-left">
-									<a href="/user/center?id=<?=$vv['uid']?>">
+									<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$vv['uid']])?>">
 										<img class="media-object child-comment-avatr" src="<?=$vv['avatar']?>" alt="..." >
 									</a>
 								</div>
 								<div class="media-body">
 									<div cid="<?=$vv['id']?>">
 										<h5 class="media-heading" uid="<?=$v['uid']?>" id="">
-											<a href="/user/center?id=<?=$vv['uid']?>"><?=$vv['username']?> </a><span class="text-muted">回复于<?=$vv['created_at']?></span>
+											<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$vv['uid']])?>"><?=$vv['username']?> </a><span class="text-muted">回复于<?=$vv['created_at']?></span>
 											<span class="pull-right">
 												<span class="glyphicon glyphicon-thumbs-up green pointer<?php if (!empty($vv['ulike'])) echo 'text-success'?>" data-toggle="tooltip" data-placement="top" title="点个赞!" onclick="czan(this)"><?=$vv['like']?> </span>
 												<span class="glyphicon glyphicon-thumbs-down red pointer <?php if (!empty($vv['uunlike'])) echo 'text-danger'?> "  data-toggle="tooltip" data-placement="top" title="踩一下!" onclick="cunzan(this)"><?=$vv['unlike']?></span>&nbsp;&nbsp;&nbsp;
@@ -219,7 +223,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 			<button class="btn btn-primary publish" >发表</button>
 		</form>
 		<?php }else{?>
-			<a href="/site/login" class="btn btn-primary">登陆后即可发言</a>
+			<a href="<?=\common\utils\CreateUrl::createUrl('site/login')?>" class="btn btn-primary">登陆后即可发言</a>
 		<?php }?>
 	</div>
 
@@ -228,13 +232,13 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 			<div class="panel-body">
 				<div class="media">
 					<div class="media-left">
-						<a href="/user/center?id=<?=$data['userinfo']['id']?>">
+						<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$data['userinfo']['id']])?>">
 							<img class="media-object img-avatar" src="<?=$data['userinfo']['avatar']?>" alt="..." >
 						</a>
 						<h6 class="badge badge-primary">见习主管</h6>
 					</div>
 					<div class="media-body">
-						<h3 class="media-heading" title="<?=$data['userinfo']['username']?>"><a href="/user/center?id=<?=$data['userinfo']['id']?>"><?=$data['userinfo']['username']?></a></h3>
+						<h3 class="media-heading" title="<?=$data['userinfo']['username']?>"><a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$data['userinfo']['id']])?>"><?=$data['userinfo']['username']?></a></h3>
 						<h5>注册时间：<?=date('Y-m-d', $data['userinfo']['created_at'])?></h5>
 						<h5>最后登陆：<?=substr($data['userinfo']['last_log_in'], 0, 10)?></h5>
 						<h5>地区：<?=$data['userinfo']['city']?></h5>
@@ -249,7 +253,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 					</tr>
 				</table>
 				<span class="btn <?php if (!empty($data['userinfo']['isfan'])){ echo 'btn-danger';}else{echo 'btn-success';}?> btn-sm" <?php if (!empty($data['userinfo']['isfan'])){ echo 'disabled';}?> onclick="fan(this)" uid="<?=$data['userinfo']['id']?>"><?php if (!empty($data['userinfo']['isfan'])){ echo '已关注';}else{echo '关注';}?></span>&nbsp;
-				<a href="/user/letter?id=<?=$data['userinfo']['id']?>" class="btn btn-primary btn-sm">私信</a>
+				<a href="<?=\common\utils\CreateUrl::createUrl('user/letter', ['id' => $data['userinfo']['id']])?>" class="btn btn-primary btn-sm">私信</a>
 			</div>
 		</div>
 		<?php if (!empty($data['hotdy'])){ ?>
@@ -258,7 +262,7 @@ $this->params['breadcrumbs'][] = $data['article_info']['title'];
 				<h4 class="panel-heading m0" >热门动态</h4>
 				<div class="panel-body">
 					<?php	foreach ($data['hotdy'] as $v){?>
-							<p><a href="/post/index?id=<?=$v['id']?>" class="title mw200"><?=$v['title']?></a></p>
+							<p><a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['id']])?>" class="title mw200"><?=$v['title']?></a></p>
 					<?php }?>
 				</div>
 			</div>

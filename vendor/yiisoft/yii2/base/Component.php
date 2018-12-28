@@ -182,20 +182,20 @@ class Component extends BaseObject
             return;
         } elseif (strncmp($name, 'on ', 3) === 0) {
             // on event: attach event handler
-            $this->on(trim(substr($name, 3)), $value);
+            $this->on(trim(substr($name, 3)), $value); //配置事件
 
             return;
         } elseif (strncmp($name, 'as ', 3) === 0) {
             // as behavior: attach behavior
             $name = trim(substr($name, 3));
-            $this->attachBehavior($name, $value instanceof Behavior ? $value : Yii::createObject($value));
+            $this->attachBehavior($name, $value instanceof Behavior ? $value : Yii::createObject($value)); //附加行为
 
             return;
         }
 
         // behavior property
         $this->ensureBehaviors();
-        foreach ($this->_behaviors as $behavior) {
+        foreach ($this->_behaviors as $behavior) { //附加行为
             if ($behavior->canSetProperty($name)) {
                 $behavior->$name = $value;
                 return;

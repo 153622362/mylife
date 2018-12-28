@@ -198,12 +198,12 @@ abstract class Application extends Module
         static::setInstance($this);
 
         $this->state = self::STATE_BEGIN;
-
         $this->preInit($config);
 
         $this->registerErrorHandler($config);
 
         Component::__construct($config);
+
     }
 
     /**
@@ -219,8 +219,9 @@ abstract class Application extends Module
         if (!isset($config['id'])) {
             throw new InvalidConfigException('The "id" configuration for the Application is required.');
         }
+
         if (isset($config['basePath'])) {
-            $this->setBasePath($config['basePath']);
+            $this->setBasePath($config['basePath']); //设置$this->_basePath 定义在\yii\base\Module.php
             unset($config['basePath']);
         } else {
             throw new InvalidConfigException('The "basePath" configuration for the Application is required.');
@@ -233,6 +234,7 @@ abstract class Application extends Module
             // set "@vendor"
             $this->getVendorPath();
         }
+
         if (isset($config['runtimePath'])) {
             $this->setRuntimePath($config['runtimePath']);
             unset($config['runtimePath']);
@@ -262,6 +264,7 @@ abstract class Application extends Module
                 $config['components'][$id]['class'] = $component['class'];
             }
         }
+
     }
 
     /**
@@ -282,12 +285,12 @@ abstract class Application extends Module
     {
         if ($this->extensions === null) {
             $file = Yii::getAlias('@vendor/yiisoft/extensions.php');
-            $this->extensions = is_file($file) ? include $file : [];
+            $this->extensions = is_file($file) ? include $file : []; //composer安装的第三方包映射文件
         }
         foreach ($this->extensions as $extension) {
             if (!empty($extension['alias'])) {
                 foreach ($extension['alias'] as $name => $path) {
-                    Yii::setAlias($name, $path);
+                    Yii::setAlias($name, $path); //帮助包设置别名
                 }
             }
             if (isset($extension['bootstrap'])) {
@@ -300,8 +303,7 @@ abstract class Application extends Module
                 }
             }
         }
-
-        foreach ($this->bootstrap as $mixed) {
+        foreach ($this->bootstrap as $mixed) { //gii debug log引导 //对应配置文件$config['bootstrap']
             $component = null;
             if ($mixed instanceof \Closure) {
                 Yii::debug('Bootstrap with Closure', __METHOD__);
@@ -321,10 +323,9 @@ abstract class Application extends Module
             if (!isset($component)) {
                 $component = Yii::createObject($mixed);
             }
-
             if ($component instanceof BootstrapInterface) {
                 Yii::debug('Bootstrap with ' . get_class($component) . '::bootstrap()', __METHOD__);
-                $component->bootstrap($this);
+                $component->bootstrap($this); //引导方法
             } else {
                 Yii::debug('Bootstrap with ' . get_class($component), __METHOD__);
             }
@@ -342,6 +343,7 @@ abstract class Application extends Module
                 echo "Error: no errorHandler component is configured.\n";
                 exit(1);
             }
+
             $this->set('errorHandler', $config['components']['errorHandler']);
             unset($config['components']['errorHandler']);
             $this->getErrorHandler()->register();
@@ -391,6 +393,7 @@ abstract class Application extends Module
             $this->state = self::STATE_SENDING_RESPONSE;
             $response->send();
 
+
             $this->state = self::STATE_END;
 
             return $response->exitStatus;
@@ -421,7 +424,7 @@ abstract class Application extends Module
     public function getRuntimePath()
     {
         if ($this->_runtimePath === null) {
-            $this->setRuntimePath($this->getBasePath() . DIRECTORY_SEPARATOR . 'runtime');
+            $this->setRuntimePath($this->getBasePath() . DIRECTORY_SEPARATOR . 'runtime'); ///home/www/mylife/mylife/frontend/runtime
         }
 
         return $this->_runtimePath;

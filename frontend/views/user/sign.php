@@ -70,8 +70,9 @@
 					$data['prev']['m'] = $data['m'] - 1;
 				}
 				?>
-				<a href="/user/sign?year=<?=$data['prev']['year']?>&m=<?=$data['prev']['m']?>">上一个月</a>
-				<a href="/user/sign?year=<?=$data['next']['year']?>&m=<?=$data['next']['m']?>">下一个月</a></h5>
+				<a href="<?=\common\utils\CreateUrl::createUrl('user/sign',['year'=>$data['prev']['year'],'m'=>$data['prev']['m']])?>">上一个月</a>
+				<a href="<?=\common\utils\CreateUrl::createUrl('user/sign',['year'=>$data['next']['year'],'m'=>$data['next']['m']])?>">下一个月</a>
+			</h5>
 			<table>
 				<tr><th class="red">日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th class="red">六</th></tr>
 				<tr>

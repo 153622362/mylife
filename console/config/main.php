@@ -21,6 +21,7 @@ return [
             'namespace' => 'common\fixtures',
           ],
     ],
+
     'components' => [
         'log' => [
             'targets' => [

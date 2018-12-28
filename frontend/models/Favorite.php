@@ -2,8 +2,7 @@
 
 namespace frontend\models;
 
-use common\models\Post;
-use common\models\User;
+
 use Yii;
 
 /**
@@ -17,15 +16,5 @@ use Yii;
  */
 class Favorite extends \common\models\Favorite
 {
-		//关联文章模型
-		public function getPost()
-		{
-			return $this->hasOne(Post::className(), ['id'=>'post_id']);
-		}
 
-		//关联用户模型
-		public function getUser()
-		{
-			return $this->hasOne(User::className(), ['id'=>'user_id']);
-		}
 }

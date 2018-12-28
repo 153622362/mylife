@@ -123,7 +123,7 @@ class Controller extends Component implements ViewContextInterface
      */
     public function runAction($id, $params = [])
     {
-        $action = $this->createAction($id);
+        $action = $this->createAction($id); // \yii\base\InlineAction
         if ($action === null) {
             throw new InvalidRouteException('Unable to resolve the request: ' . $this->getUniqueId() . '/' . $id);
         }
@@ -139,7 +139,6 @@ class Controller extends Component implements ViewContextInterface
 
         $modules = [];
         $runAction = true;
-
         // call beforeAction on modules
         foreach ($this->getModules() as $module) {
             if ($module->beforeAction($action)) {
@@ -151,20 +150,17 @@ class Controller extends Component implements ViewContextInterface
         }
 
         $result = null;
-
         if ($runAction && $this->beforeAction($action)) {
             // run the action
-            $result = $action->runWithParams($params);
+			$result = $action->runWithParams($params);
 
             $result = $this->afterAction($action, $result);
-
             // call afterAction on modules
             foreach ($modules as $module) {
                 /* @var $module Module */
                 $result = $module->afterAction($action, $result);
             }
         }
-
         if ($oldAction !== null) {
             $this->action = $oldAction;
         }
@@ -318,7 +314,6 @@ class Controller extends Component implements ViewContextInterface
             array_unshift($modules, $module->module);
             $module = $module->module;
         }
-
         return $modules;
     }
 

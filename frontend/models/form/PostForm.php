@@ -121,8 +121,8 @@ class PostForm extends Model
 		$data['ccom'] = self::PostComByID($post_id); //评论数
 		$fav = PostForm::isFav($user_id, $post_id);
 		$like = PostForm::isLike($user_id, $post_id);
-		$data['ulike'] = $like > 0?1:0; //用户是否已点赞
-		$data['ufav'] = $fav > 0?1:0; //用户是否已收藏
+		$data['ulike'] = $like > 0 ? 1 : 0; //用户是否已点赞
+		$data['ufav'] = $fav > 0 ? 1 : 0; //用户是否已收藏
 		$data['likeinfo'] = PostForm::PostLikeInfoById($post_id); //点赞信息
 		$data['cominfo'] = PostForm::PostComInfoById($post_id); //评论信息
 		self::addVisistor($post_id); //文章阅读+1

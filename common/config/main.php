@@ -8,6 +8,7 @@ return [
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
+//			'keyPrefix' => 'myapp',       // 唯一键前缀
         ],
 		'mailer' => [
 			'class' => 'yii\swiftmailer\Mailer',

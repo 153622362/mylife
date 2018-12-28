@@ -278,11 +278,12 @@ class BaseYii
     {
         if (isset(static::$classMap[$className])) {
             $classFile = static::$classMap[$className];
+
             if ($classFile[0] === '@') {
                 $classFile = static::getAlias($classFile);
             }
         } elseif (strpos($className, '\\') !== false) {
-            $classFile = static::getAlias('@' . str_replace('\\', '/', $className) . '.php', false);
+			$classFile = static::getAlias('@' . str_replace('\\', '/', $className) . '.php', false);
             if ($classFile === false || !is_file($classFile)) {
                 return;
             }

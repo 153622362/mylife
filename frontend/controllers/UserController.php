@@ -599,7 +599,6 @@ class UserController extends BaseController
 		   return json_encode(['status'=>200,'data'=>$res,'msg'=>'','timestamp'=>time()]);
 	   }else{
 		   return json_encode(['status'=>200,'data'=>false,'msg'=>'exists','timestamp'=>time()]);
-
 	   }
    }
 

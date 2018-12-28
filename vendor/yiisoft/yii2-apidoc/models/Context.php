@@ -187,7 +187,7 @@ class Context extends Component
 
     /**
      * Add methods to subinterfaces
-     * @param InterfaceDoc $class
+     * @param InterfaceDoc $interface
      */
     protected function updateSubInterfaceInheritance($interface)
     {
@@ -201,7 +201,7 @@ class Context extends Component
     }
 
     /**
-     * Inhertit docsblocks using `@inheritDoc` tag.
+     * Inherit docsblocks using `@inheritDoc` tag.
      * @param ClassDoc $class
      * @see http://phpdoc.org/docs/latest/guides/inheritance.html
      */
@@ -362,12 +362,12 @@ class Context extends Component
     }
 
     /**
-     * Add properties for getters and setters if class is subclass of [[\yii\base\Object]].
+     * Add properties for getters and setters if class is subclass of [[\yii\base\BaseObject]].
      * @param ClassDoc $class
      */
     protected function handlePropertyFeature($class)
     {
-        if (!$this->isSubclassOf($class, 'yii\base\Object')) {
+        if (!$this->isSubclassOf($class, 'yii\base\BaseObject')) {
             return;
         }
         foreach ($class->getPublicMethods() as $name => $method) {

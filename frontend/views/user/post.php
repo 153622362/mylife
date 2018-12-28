@@ -39,13 +39,13 @@
 				 if ($v['post_category'] == 1){?>
 					<div class="media">
 						<div class="media-left media-middle">
-							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['id']])?>">
+							<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 								<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 							</a>
 						</div>
 						<div class="media-body">
 							<h4 class="media-heading">发表于<?=$v['created_at']?></h4>
-							<a href="<?=$v['pid']?>"><?=$v['title']?></a>
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 						</div>
 					</div>
 				<?php }?>
@@ -59,13 +59,13 @@
 				 if ($v['post_category'] == 2){?>
 					<div class="media">
 						<div class="media-left media-middle">
-							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['id']])?>">
+							<a href="<?=\common\utils\CreateUrl::createUrl('user/center',['id'=>$v['uid']])?>">
 								<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 							</a>
 						</div>
 						<div class="media-body">
 							<h4 class="media-heading">发表于<?=$v['created_at']?></h4>
-							<a href="<?=$v['pid']?>"><?=$v['title']?></a>
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 						</div>
 					</div>
 				<?php }?>
@@ -79,13 +79,13 @@
 				if ($v['post_category'] == 3){?>
 					<div class="media">
 						<div class="media-left media-middle">
-							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['id']])?>">
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['uid']])?>">
 								<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 							</a>
 						</div>
 						<div class="media-body">
 							<h4 class="media-heading">发表于<?=$v['created_at']?></h4>
-							<a href="<?=$v['pid']?>"><?=$v['title']?></a>
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 						</div>
 					</div>
 				<?php }?>
@@ -97,13 +97,13 @@
 				if ($v['post_category'] == 4){?>
 					<div class="media">
 						<div class="media-left media-middle">
-							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['id']])?>">
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['uid']])?>">
 								<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 							</a>
 						</div>
 						<div class="media-body">
 							<h4 class="media-heading">发表于<?=$v['created_at']?></h4>
-							<a href="<?=$v['pid']?>"><?=$v['title']?></a>
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 						</div>
 					</div>
 				<?php }?>
@@ -116,13 +116,13 @@
 				if ($v['post_category'] == 5){?>
 					<div class="media">
 						<div class="media-left media-middle">
-							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['id']])?>">
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['uid']])?>">
 								<img class="media-object" src="<?=$v['avatar']?>" alt="..." style="width: 4rem">
 							</a>
 						</div>
 						<div class="media-body">
 							<h4 class="media-heading">发表于<?=$v['created_at']?></h4>
-							<a href="<?=$v['pid']?>"><?=$v['title']?></a>
+							<a href="<?=\common\utils\CreateUrl::createUrl('post/index',['id'=>$v['pid']])?>"><?=$v['title']?></a>
 						</div>
 					</div>
 				<?php }?>
@@ -131,10 +131,4 @@
 
 		</div>
 	</div>
-<!--	<ul class="nav nav-tabs">-->
-<!--		<li role="presentation" class="active"><a href="#">全部帖子</a></li>-->
-<!--		<li role="presentation"><a href="#">教程</a></li>-->
-<!--		<li role="presentation"><a href="#">扩展</a></li>-->
-<!--		<li role="presentation"><a href="#">源码</a></li>-->
-<!--	</ul>-->
 </div>

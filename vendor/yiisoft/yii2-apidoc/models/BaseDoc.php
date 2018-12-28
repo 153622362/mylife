@@ -7,9 +7,10 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
 use phpDocumentor\Reflection\DocBlock\Tag\SinceTag;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
 /**
@@ -18,7 +19,7 @@ use yii\helpers\StringHelper;
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
-class BaseDoc extends Object
+class BaseDoc extends BaseObject
 {
     /**
      * @var \phpDocumentor\Reflection\DocBlock\Context
@@ -34,7 +35,7 @@ class BaseDoc extends Object
     public $deprecatedSince;
     public $deprecatedReason;
     /**
-     * @var \phpDocumentor\Reflection\DocBlock\Tag[]
+     * @var Tag[]
      */
     public $tags = [];
 
@@ -69,8 +70,8 @@ class BaseDoc extends Object
 
     /**
      * Get the first tag of a given name
-     * @param string $name
-     * @return \phpDocumentor\Reflection\DocBlock\Tag
+     * @param string $name tag name.
+     * @return Tag|null tag instance, `null` if not found.
      * @since 2.0.5
      */
     public function getFirstTag($name)
@@ -80,8 +81,9 @@ class BaseDoc extends Object
                 return $this->tags[$i];
             }
         }
-    }
 
+        return null;
+    }
 
     /**
      * @param \phpDocumentor\Reflection\BaseReflector $reflector
@@ -126,6 +128,14 @@ class BaseDoc extends Object
                     unset($this->tags[$i]);
                 }
             }
+
+            if ($this->shortDescription === '{@inheritdoc}') {
+                // Mock up parsing of '{@inheritdoc}' (in brackets) tag, which is not yet supported at "phpdocumentor/reflection-docblock" 2.x
+                // todo consider removal in case of "phpdocumentor/reflection-docblock" upgrade
+                $this->tags[] = new Tag('inheritdoc', '');
+                $this->shortDescription = '';
+            }
+
         } elseif ($context !== null) {
             $context->warnings[] = [
                 'line' => $this->startLine,
@@ -165,9 +175,9 @@ class BaseDoc extends Object
                 }
             }
             return $sentence;
-        } else {
-            return $text;
         }
+
+        return $text;
     }
 
     /**

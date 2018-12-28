@@ -182,10 +182,6 @@
 		</div>
 	</div>
 	<?php } ?>
-
-
-
-
 </div>
 
 <script>
