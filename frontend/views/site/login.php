@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div style="color:#999;margin:1em 0">
                      <?= Html::a('重置密码', ['site/request-password-reset']) ?>.
                 </div>
+            <?= $form->errorSummary($model) ?>
 
                 <div class="form-group">
                     <?= Html::submitButton('登陆', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>

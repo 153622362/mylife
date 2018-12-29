@@ -9,6 +9,19 @@ use yii\bootstrap\ActiveForm;
 
 $this->title = '重置密码';
 $this->params['breadcrumbs'][] = $this->title;
+$str = <<<ET
+ $('#contact-form').yiiActiveForm('add', {
+    id: 'address',
+    name: 'address',
+    container: '.field-address',
+    input: '#address',
+    error: '.help-block',
+    validate:  function (attribute, value, messages, deferred, $form) {
+        yii.validation.required(value, messages, {message: "Validation Message Here"});
+    }
+});
+ET;
+$this->registerJs($str)
 ?>
 <div class="site-request-password-reset">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -29,3 +42,5 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+
+

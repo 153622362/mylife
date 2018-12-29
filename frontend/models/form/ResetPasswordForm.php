@@ -2,7 +2,6 @@
 namespace frontend\models\form;
 
 use yii\base\Model;
-use yii\base\InvalidParamException;
 use common\models\User;
 
 /**

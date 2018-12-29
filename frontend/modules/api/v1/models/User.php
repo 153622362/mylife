@@ -22,8 +22,8 @@ use yii\web\Linkable;
  * @property string $password write-only password
  */
 class User extends \common\models\User implements
-	Linkable //	要实现接口 yii\web\Linkable
-	,IdentityInterface
+//	Linkable //	要实现接口 yii\web\Linkable
+	IdentityInterface
 {
 	public function rules()
 	{
@@ -39,16 +39,16 @@ class User extends \common\models\User implements
 		];
 	}
 
-	public function getLinks()
-	{
-		//返回链接集合
-		return [
-			Link::REL_SELF => Url::to(['user/view', 'id' => $this->id], true),
-			'edit' => Url::to(['user/view', 'id' => $this->id], true),
-			'profile' => Url::to(['user/profile/view', 'id' => $this->id], true), //http://localhost/api/users/1?expand=profile
-			'index' => Url::to(['user/index'], true),
-		];
-	}
+//	public function getLinks()
+//	{
+//		//返回链接集合
+//		return [
+//			Link::REL_SELF => Url::to(['user/view', 'id' => $this->id], true),
+//			'edit' => Url::to(['user/view', 'id' => $this->id], true),
+//			'profile' => Url::to(['user/profile/view', 'id' => $this->id], true), //http://localhost/api/users/1?expand=profile
+//			'index' => Url::to(['user/index'], true),
+//		];
+//	}
 	// 过滤掉一些字段
 	public function fields()
 	{
@@ -59,10 +59,10 @@ class User extends \common\models\User implements
 		return [
 			'id',
 			'username',
-//			'头像'=>'avatar',
-//			'id+name' => function ($model) {
-//				return $model->id . ' ' . $model->username;
-//			},
+			'头像'=>'avatar',
+			'id+name' => function ($model) {
+				return $model->id . ' ' . $model->username;
+			},
 		];
 	}
 

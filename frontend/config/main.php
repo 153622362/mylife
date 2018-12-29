@@ -13,8 +13,9 @@ return [
     'bootstrap' => ['log'],
 	//控制器命名空间
     'controllerNamespace' => 'frontend\controllers',
-	//语音
-	'language'=>'zh-CN',
+	//语言
+	'language' => 'zh-CN',
+	'sourceLanguage' => 'en-US',
 	//组件配置
     'components' => [
 //		'assetManager' => [ //资源管理器
@@ -35,6 +36,37 @@ return [
 //				],
 //			],
 //		],
+
+		'i18n' => [
+			'translations' => [
+				'app*' => [
+					'class' => 'yii\i18n\PhpMessageSource',
+					//'basePath' => '@app/messages',
+					//'sourceLanguage' => 'en-US',
+					'fileMap' => [
+						'app' => 'yii.php',
+						'app/error' => 'error.php',
+					],
+				],
+				'yii' => [
+					'class' => 'yii\i18n\PhpMessageSource',
+//					'sourceLanguage' => 'en-US',
+//					'basePath' => '@app/messages'
+					'fileMap' => [
+						'yii' => 'yii.php',
+					],
+				],
+
+			],
+		],
+
+		'formatter' => [
+			'dateFormat' => 'dd.MM.yyyy',
+			'decimalSeparator' => ',',
+			'thousandSeparator' => ' ',
+			'currencyCode' => 'EUR',
+			'defaultTimeZone' => 'Asia/Shanghai'
+		],
 
 		//Redis-组件
         'redis' => [
@@ -144,7 +176,7 @@ return [
 //					'except' => [], //除了XX动作
 					'controller' => [
 //						'<controller:\w+>/<id:\d+>'=>'<controller>/detail', //
-						'u'=>'api/user', //http://localhost/u/1
+						'au'=>'api/user', //http://localhost/u/1
 						'api/user', //http://localhost/api/users/1
 //						------------大致如下效果
 //						'PUT,PATCH users/<id>' => 'api/user/update',

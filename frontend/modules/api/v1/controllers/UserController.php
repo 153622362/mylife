@@ -14,8 +14,6 @@ class UserController extends ActiveController
 {
 	public $modelClass = 'frontend\modules\api\v1\models\User';
 
-
-
 	//过滤器
 	//[[yii\filters\ContentNegotiator|contentNegotiator]]: 支持内容协商， 在 响应格式化 一节描述;
 	//[[yii\filters\VerbFilter|verbFilter]]: 支持HTTP 方法验证;
@@ -25,10 +23,10 @@ class UserController extends ActiveController
 	{
 		$behaviors = parent::behaviors();
 		//认证过滤器
-		$behaviors['authenticator'] = [
-				'class'=>QueryParamAuth::className(), //参数认证
-//			    'class'=>HttpBasicAuth::className(), //用户名认证
-//			'class'=>HttpBearerAuth::className(), //OAUTH2.0认证 //发送头函数
+		$behaviors['authenticator'] = [ //可以同时支持这三种方法 https://www.yiichina.com/doc/guide/2.0/rest-authentication
+				'class'=>QueryParamAuth::className(), //参数认证  http://mylife2.test/api/users/1?access-token=lkjh
+//			    'class'=>HttpBasicAuth::className(), //用户名认证 http://mylife2.test/api/users/1  输入文本框lkjh
+//			'class'=>HttpBearerAuth::className(), //OAUTH2.0认证 //客户端 header中传入 Authorization:Bearer xxxxxx，然后在你的 user identity class 类中实现 findIdentityByAccessToken() 方法
 		];
 		//限制请求速率的过滤器
 		$behaviors['rateLimiter'] = [

@@ -63,12 +63,12 @@ class DynamicController extends BaseController
 	    $hot_dy = PostForm::hotestDynamic();//热门动态
 	    $newest_comment = CommentForm::NewestComment();
 	   return $this->render('index',[
-	   	'dy' => $data['dy'],
-		'newest_comment' => $newest_comment,
-		'tag_arr' => $tag_arr,
-		'count'=>$data['count'],
-		'limit'=> $limit,
-		'hot_dy' => $hot_dy
+			'dy' => $data['dy'],
+			'newest_comment' => $newest_comment,
+			'tag_arr' => $tag_arr,
+			'count'=>$data['count'],
+			'limit'=> $limit,
+			'hot_dy' => $hot_dy
 	   ]);
    }
 }

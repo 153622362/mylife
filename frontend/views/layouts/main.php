@@ -62,6 +62,11 @@ AppAsset::register($this);
             ['label'=>'微信登陆','options'=>['class'=>'disabled','title'=>'目前还未开通此功能']],
             ['label'=>'新浪微博','options'=>['class'=>'disabled','title'=>'目前还未开通此功能']],
         ]];
+        $menuItems_right[] = ['label' => '语言','items'=>[
+            ['label'=>'中文','url'=>Yii::$app->urlManager->createUrl(['/language/language','lang'=>'zh-CN'])],
+            ['label'=>'英文','url'=>Yii::$app->urlManager->createUrl(['/language/language','lang'=>'en'])],
+
+        ]];
     } else {
 
 

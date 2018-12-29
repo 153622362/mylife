@@ -5,7 +5,7 @@ return [
         '@npm'   => '@vendor/npm-asset',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
-    'components' => [
+	'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
 //			'keyPrefix' => 'myapp',       // 唯一键前缀

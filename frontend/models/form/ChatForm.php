@@ -19,26 +19,7 @@ class ChatForm extends Model
 			{
 				foreach ($arr as $k =>$v)
 				{
-					$nowtime = time();
-					$chat_time = strtotime($v['created_at']);
-					$diff = $nowtime - $chat_time;
-					if ($diff < 3600)
-					{
-						$min = floor($diff / 60);
-						$content = "{$min}分钟前";
-						if ($min < 1)
-						{
-							$min = $diff % 60;
-							$content = "{$min}秒前";
-						}
-					}elseif($diff >= 3600 && $diff < 86400){
-						$min = floor($diff / 3600);
-						$content = "{$min}小时前";
-					}else{
-						$min = floor($diff / 86400);
-						$content = "{$min}天前";
-					}
-					$arr[$k]['created_at'] = $content;
+					$arr[$k]['created_at'] = Yii::$app->formatter->asRelativeTime($arr[$k]['created_at']);
 					$arr[$k]['pid'] = Chat::getCountChatByPid($v['id']); //获取留言数
 					$arr[$k]['like'] = Like::getCountLike('2', $v['id']); //获取点赞数
 					$list = Like::getUserListByChatId('2', $v['id']);
