@@ -34,3 +34,4 @@ phpunit.phar
 /.vagrant
 
 composer.lock
+vendor/

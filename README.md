@@ -1,20 +1,11 @@
-<p align="center">
-    <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
-    </a>
-    <h1 align="center">Use Yii2 To Make Personal Project by ngyhd</h1>
-    <br>
-</p>
-
-
-
-DESCRIPTION 
+描述 
 -------------------
+一个简单的聊天论坛
 
-### USAGE
+### 用法
 
 ```php
-php init //初始化YII2框架
+php init //初始化YII2框架，输入0，开发环境
 ```
 Configure your database in `main-local.php`   
 ```php
@@ -45,6 +36,3 @@ Configure your database in `main-local.php`
         ],
     ],
 ```
-
-### DATABASE
-/install/sql/mylife.sql

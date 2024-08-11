@@ -50,7 +50,9 @@ class SignForm extends Model
 		//进行计算
 		if (!empty($data['m_data'])){
 			$data['m_sign'] = 1; //月连续签到天数
-			if (count($data['m_data']) > 1)
+            $data['tmp_sign'] = 0;
+
+            if (count($data['m_data']) > 1)
 			{
 				foreach ($data['m_data'] as $k=>$v)
 				{

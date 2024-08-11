@@ -321,17 +321,17 @@ class UserController extends BaseController
 						break;
 					case 1: //@
 						$comment_obj = Comment::findOne($v['content_id']);
-						$arr = explode('@ngyhd@', $comment_obj->content);
-						$content = $comment_obj->content;
+						$arr = explode('@ngyhd@', $comment_obj['content']);
+						$content = $comment_obj['content'];
 						if (!empty($arr[1]) && !empty(intval($arr[1])))
 						{
 							$user_obj = User::findOne($arr[1]);
 							$content = $arr['2'];
 						}
-						$text_content = '用户<a href="'.CreateUrl::createUrl('user/center',['id'=>$user_obj->id]).'">'.$user_obj->username.'</a>回复了你的评论<a href="'.CreateUrl::createUrl('post/index',['id'=>$comment_obj->post_id]).'#comment-'.$comment_obj->id.'">'.$content.'</a>';
+						$text_content = '用户<a href="'.CreateUrl::createUrl('user/center',['id'=>$user_obj->id]).'">'.$user_obj['username'].'</a>回复了你的评论<a href="'.CreateUrl::createUrl('post/index',['id'=>$comment_obj['post_id']]).'#comment-'.$comment_obj['id'].'">'.$content.'</a>';
 						break;
 					case 2: //关注
-						$text_content = '用户<a href="'.CreateUrl::createUrl('user/center',['id'=>$user_obj->id]).'">'.$user_obj->username.'</a>关注了你';
+						$text_content = '用户<a href="'.CreateUrl::createUrl('user/center',['id'=>$user_obj->id]).'">'.$user_obj['username'].'</a>关注了你';
 						break;
 					default:
 						break;
@@ -482,7 +482,7 @@ class UserController extends BaseController
 			->innerJoinWith('user u', false)
 			->select(['u.id uid','u.avatar','u.username','f.created_at','f.content','f.read_status','f.sender'])
 			->where(['f.receiver'=>\Yii::$app->user->id])->orderBy('f.created_at asc')->asArray()->all();
-	    $data_group = '';
+	    $data_group = [];
 	    if (!empty($data)){
 	    	foreach ($data as $v)
 			{

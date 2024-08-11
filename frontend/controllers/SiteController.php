@@ -106,6 +106,7 @@ class SiteController extends BaseController
 		$uid = Yii::$app->user->id;
     	$dynamic_newest = PostForm::getTheNewestDynamic(); //最新动态
 		$category_arr = Category::find()->asArray()->all();
+		$data = [];
 		if (!empty($category_arr)){
 			foreach ($category_arr as $v)
 			{

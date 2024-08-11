@@ -294,7 +294,7 @@ class PostForm extends Model
 				$data['tag'][$v['id']] = $v['tag_name'];
 			}
 		}
-		return $data['tag'];
+		return $data['tag']??'';
 
 	}
 }

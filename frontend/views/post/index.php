@@ -1,7 +1,7 @@
 <?php
 
 $this->params['breadcrumbs'][] =['label'=>'动态','url'=>\yii\helpers\Url::to(['/dynamic/index'])];
-$this->params['breadcrumbs'][] = $data['article_info']['title'];
+$this->params['breadcrumbs'][] = $data['article_info']['title']??'';
 $this->registerJsFile('@web/static/wangEditor/release/wangEditor.min.js', [
 	'position' => $this::POS_HEAD //在头部注册
 ] );

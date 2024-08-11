@@ -99,7 +99,7 @@ class DynamicForm extends Model
 		{
 			$data['dy'][$k]['comment'] = Comment::find()->where(['post_id'=>$v['id'],'pid'=>0])->count(); //评论数
 			$data['dy'][$k]['favorite'] = Favorite::find()->where(['post_id'=>$v['id']])->count(); //收藏数
-			$data['dy'][$k]['post_category'] = $arr[$v['post_category']]; //分类
+			$data['dy'][$k]['post_category'] = $arr[$v['post_category']]??''; //分类
 		}
 		return $data;
 	}

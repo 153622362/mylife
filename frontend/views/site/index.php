@@ -292,7 +292,7 @@ $this->registerJSFile('@web/static/swiper/js/swiper.min.js', [
     });
 
     var uid = '<?=$uid?>';
-    var ws = new WebSocket("ws://192.168.199.102:3123");
+    var ws = new WebSocket("ws://192.168.199.101:3123");
     ws.onopen = function() {
         $('#message-board').prepend('<h6 style="color: grey">系统消息:连接成功</h6>');
         console.log("连接成功");
